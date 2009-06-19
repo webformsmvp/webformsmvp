@@ -195,6 +195,7 @@
     <Content Include="Controls\AsyncMessagesControl.ascx" />
     <Content Include="Controls\LookupWidgetControl.ascx" />
     <Content Include="Controls\RedirectControl.ascx" />
+    <Content Include="License.txt" />
     <Content Include="Redirect.aspx" />
     <Content Include="RedirectTo.aspx" />
     <Content Include="Web.sitemap" />
