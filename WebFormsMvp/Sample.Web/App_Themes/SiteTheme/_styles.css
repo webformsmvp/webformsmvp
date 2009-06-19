@@ -1,0 +1,79 @@
+﻿* {
+	/* Zero-out margins & padding */
+	margin: 0; padding: 0;
+}
+
+body {
+	font-family: Calibri, Arial, Helvetica, Sans-Serif;
+	font-size: 1.4em;
+	background: #4f6db0;
+	padding: 20px 0;
+}
+
+#pageContainer {
+	background: #fff;
+	width: 940px;
+	margin: 0 auto;
+	padding: 10px 14px;
+	min-height: 500px;
+}
+
+h1 {
+	font-family: Cambria;
+	font-size: 28px;
+	margin: 0 0 0.5em;
+	color: #851928;
+}
+
+a, a:visited {
+	color: #ef7c00;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #879eff;
+	text-decoration: underline;
+}
+
+#pageContainer div.AspNet-TreeView ul {
+	margin: 0 1em;
+	list-style-type: disc;
+}
+
+.lookup-widget {
+	
+}
+
+	.lookup-widget .validation-error {
+		font-size: 0.8em;
+		color: Red;
+	}
+	
+	.lookup-widget fieldset {
+		padding: 0 5px 5px;
+	}
+	
+		.lookup-widget fieldset ol {
+			list-style-type: none;
+		}
+		
+		.lookup-widget fieldset ol label {
+			display: block;
+			width: 100px;
+			float: left;
+			color: #666;
+		}
+	
+	.lookup-widget .AspNet-DetailsView li {
+		clear: both;
+	}
+		
+	.lookup-widget .AspNet-DetailsView span[class$='-Name'] {
+		display: block;
+		width: 120px;
+		float: left;
+	}
+	
+	.lookup-widget .AspNet-DetailsView span[class$='-Name']:after {
+		content: ':';
+	}
