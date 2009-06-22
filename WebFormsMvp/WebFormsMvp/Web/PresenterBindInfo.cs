@@ -23,13 +23,6 @@ namespace WebFormsMvp.Web
         /// <value>The type of the view.</value>
         public Type ViewType { get; private set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the presenter's public properties should be automatically resolved as dependencies
-        /// using the configured IOC container.
-        /// </summary>
-        /// <value><c>true</c> if public properties of the presenter should be automatically resolved; otherwise, <c>false</c>.</value>
-        public bool ResolveDependencies { get; private set; }
-
         DynamicMethod dynamicMethod;
 
         /// <summary>
@@ -38,11 +31,10 @@ namespace WebFormsMvp.Web
         /// <param name="presenterType">Type of the presenter.</param>
         /// <param name="viewType">Type of the view.</param>
         /// <param name="resolveDependencies">if set to <c>true</c> public properties of the presenter will be resolved using the configured IOC container.</param>
-        public PresenterBindInfo(Type presenterType, Type viewType, bool resolveDependencies)
+        public PresenterBindInfo(Type presenterType, Type viewType)
         {
             PresenterType = presenterType;
             ViewType = viewType;
-            ResolveDependencies = resolveDependencies;
 
             var constructor = PresenterType.GetConstructor(new Type[] { ViewType });
             if (constructor == null)

@@ -86,18 +86,15 @@ namespace WebFormsMvp.Web
             var presenterAttributes = hostType.GetCustomAttributes(typeof(PresenterHostAttribute), true).Cast<PresenterHostAttribute>();
             foreach (var attribute in presenterAttributes)
             {
-                var presenterBinder = new PresenterBindInfo(attribute.PresenterType, attribute.ViewType, attribute.ResolveDependencies);
+                var presenterBinder = new PresenterBindInfo(attribute.PresenterType, attribute.ViewType);
                 presentersBindInfo.Add(presenterBinder);
-                if (attribute.ResolveDependencies)
+                lock (registeredPresenters)
                 {
-                    lock (registeredPresenters)
+                    if (!registeredPresenters.ContainsKey(attribute.PresenterType.TypeHandle.Value))
                     {
-                        if (!registeredPresenters.ContainsKey(attribute.PresenterType.TypeHandle.Value))
-                        {
-                            string key = String.Format("{0}-{1}", hostType.FullName, attribute.PresenterType.FullName);
-                            ServiceLocator.Kernel.AddComponent(key, attribute.PresenterType);
-                            registeredPresenters[attribute.PresenterType.TypeHandle.Value] = true;
-                        }
+                        string key = String.Format("{0}-{1}", hostType.FullName, attribute.PresenterType.FullName);
+                        ServiceLocator.Container.AddComponent(key, attribute.PresenterType);
+                        registeredPresenters[attribute.PresenterType.TypeHandle.Value] = true;
                     }
                 }
             }
@@ -111,15 +108,7 @@ namespace WebFormsMvp.Web
         private void CreatePresenterAndAddToList(PresenterBindInfo presenterBind, IView view, MvpPage page)
         {
             IPresenter presenter;
-            if (presenterBind.ResolveDependencies)
-            {
-                // we need to go via Castle for proper routing
-                presenter = ServiceLocator.ResolvePresenter(presenterBind.PresenterType, view);
-            }
-            else
-            {
-                presenter = presenterBind.Create(view);
-            }
+            presenter = ServiceLocator.ResolvePresenter(presenterBind.PresenterType, view);
             presenter.HttpContext = httpContextBase;
             presenter.AsyncManager = new PageAsyncTaskManagerWrapper(page);
             presenters.Add(presenter);

@@ -10,7 +10,7 @@ using WebFormsMvp.Sample.Web.Framework;
 
 namespace WebFormsMvp.Sample.Web
 {
-    [PresenterHost(typeof(AsyncMessagesPresenter), typeof(IAsyncMessagesView), ResolveDependencies = true)]
+    [PresenterHost(typeof(AsyncMessagesPresenter), typeof(IAsyncMessagesView))]
     public partial class AsyncMessages : PageBase
     {
 

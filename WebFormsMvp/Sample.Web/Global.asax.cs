@@ -8,6 +8,8 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Castle.Core.Resource;
 using Castle.Windsor.Configuration.Interpreters;
+using WebFormsMvp.Sample.Logic.Presenters;
+using WebFormsMvp.Sample.Logic.Data;
 
 namespace WebFormsMvp.Sample.Web
 {
@@ -15,7 +17,7 @@ namespace WebFormsMvp.Sample.Web
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-
+            ServiceLocator.RegisterServices(typeof(HelloWorldPresenter).Assembly, typeof(IWidgetRepository));
         }
 
         protected void Session_Start(object sender, EventArgs e)

@@ -22,14 +22,6 @@ namespace WebFormsMvp
         /// </summary>
         /// <value>The type of the view.</value>
         public Type ViewType { get; set; }
-        
-        /// <summary>
-        /// Gets or sets a value indicating whether the presenter's public properties should be automatically resolved as dependencies
-        /// using the configured IOC container.
-        /// </summary>
-        /// <value><c>true</c> if public properties of the presenter should be automatically resolved; otherwise, <c>false</c>.
-        /// The deafault is false.</value>
-        public bool ResolveDependencies { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PresenterHostAttribute"/> class with the specified presenter type and view type.

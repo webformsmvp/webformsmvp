@@ -3,6 +3,7 @@ using System.Web;
 using WebFormsMvp;
 using Castle.Windsor.Configuration.Interpreters;
 using Castle.Core.Resource;
+using Castle.Windsor;
 
 namespace WebFormsMvp.Web
 {
@@ -11,17 +12,13 @@ namespace WebFormsMvp.Web
     /// </summary>
     public class WebFormsMvpModule : IHttpModule
     {
-        private static WebAppContainer container;
-
         public void Init(HttpApplication context)
         {
-            container = new WebAppContainer(new XmlInterpreter(new ConfigResource("castle")));
-            ServiceLocator.SetKernel(container.Kernel);
         }
 
         public void Dispose()
         {
-            container.Dispose();
+            ServiceLocator.TearDown();
         }
     }
 }

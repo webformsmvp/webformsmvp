@@ -94,8 +94,6 @@
     <Compile Include="Web\MvpUserControl`T.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebAppContainer.cs" />
-    <Compile Include="WebFacility.cs" />
     <Compile Include="Web\MvpWebService.cs">
       <SubType>Component</SubType>
     </Compile>
