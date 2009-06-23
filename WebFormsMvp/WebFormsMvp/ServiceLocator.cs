@@ -7,6 +7,7 @@ using Castle.MicroKernel;
 using System.Reflection;
 using Castle.Windsor;
 using Castle.Core;
+using System.Web;
 
 namespace WebFormsMvp
 {
@@ -15,8 +16,23 @@ namespace WebFormsMvp
     /// </summary>
     public static class ServiceLocator
     {
-        static readonly List<Pair<Type, Type[]>> registeredServices = new List<Pair<Type, Type[]>>();
-        static IWindsorContainer container;
+        static readonly object registeresServicesLocker = new object();
+        
+        private static List<Pair<Type, Type[]>> RegisteredServices
+        {
+            get
+            {
+                var rs = HttpContext.Current.Application["RegisteredServices"] as List<Pair<Type, Type[]>>;
+
+                if (rs == null)
+                {
+                    rs = new List<Pair<Type, Type[]>>();
+                    HttpContext.Current.Application["RegisteredServices"] = rs;
+                }
+                
+                return rs;
+            }
+        }
 
         public static void RegisterServices(Assembly assembly, params Type[] serviceTypes)
         {
@@ -38,22 +54,26 @@ namespace WebFormsMvp
                         matchingServiceTypes //Service types
                     );
 
-            registeredServices.AddRange(servicesToRegister);
+            lock (registeresServicesLocker)
+            {
+                RegisteredServices.AddRange(servicesToRegister);
+            }
         }
 
         internal static void Initialize()
         {
-            EnsureNotInitialized();
+            if (Container != null)
+                return;
 
-            container = new WindsorContainer();
-            container.Kernel.ComponentModelCreated += (m) =>
+            Container = new WindsorContainer();
+            Container.Kernel.ComponentModelCreated += (m) =>
             {
                 // We want a new presenter instance built each time we ask.
                 // We do this here as they aren't registered in the container.
                 m.LifestyleType = LifestyleType.Transient;
             };
 
-            foreach (var serviceDefinition in registeredServices)
+            foreach (var serviceDefinition in RegisteredServices)
             {
                 var classType = serviceDefinition.First;
                 var serviceTypes = serviceDefinition.Second;
@@ -71,18 +91,25 @@ namespace WebFormsMvp
 
         internal static void TearDown()
         {
-            EnsureInitialized();
+            if (Container == null)
+                return;
 
-            container.Dispose();
-            container = null;
+            Container.Dispose();
+            Container = null;
         }
 
         public static IWindsorContainer Container
         {
             get
             {
-                EnsureInitialized();
-                return container;
+                return HttpContext.Current.Application["container"] as IWindsorContainer;
+            }
+            set
+            {
+                if (value == null)
+                    HttpContext.Current.Application.Remove("container");
+                else
+                    HttpContext.Current.Application["container"] = value;
             }
         }
 
@@ -100,13 +127,13 @@ namespace WebFormsMvp
 
         static void EnsureInitialized()
         {
-            if (container == null)
+            if (Container == null)
                 throw new InvalidOperationException("The ServiceLocator has not been initialized, or it has already been torn down. If you are registering services, make sure you are doing it from Application_Start in Global.asax.");
         }
 
         static void EnsureNotInitialized()
         {
-            if (container != null)
+            if (Container != null)
                 throw new InvalidOperationException("The ServiceLocator has already been initialized and the operation you are trying to perform needs to occur before this. If you are registering services, make sure you are doing it from Application_Start in Global.asax.");
         }
     }
