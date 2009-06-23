@@ -15,49 +15,14 @@ namespace WebFormsMvp
     /// </summary>
     public static class ServiceLocator
     {
-        static IWindsorContainer container = new WindsorContainer();
-
-        static ServiceLocator()
-        {
-            container.Kernel.ComponentModelCreated += (m) =>
-                {
-                    // We want a new presenter instance built each time we ask.
-                    // We do this here as they aren't registered in the container.
-                    m.LifestyleType = LifestyleType.Transient;
-                };
-        }
-
-        public static IWindsorContainer Container
-        {
-            get
-            {
-                if (container == null)
-                    throw new InvalidOperationException("The ServiceLocator has been torn down by a call to TearDown.");
-        
-                return container;
-            }
-        }
-
-        public static T Resolve<T>()
-        {
-            return Container.Resolve<T>();
-        }
-
-        public static T ResolvePresenter<T>(IView view)
-        {
-            return (T)ResolvePresenter(typeof(T), view);
-        }
-
-        public static IPresenter ResolvePresenter(Type presenterType, IView view)
-        {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters["view"] = view;
-            return (IPresenter)Container.Kernel.Resolve(presenterType, parameters);
-        }
+        static readonly List<Pair<Type, Type[]>> registeredServices = new List<Pair<Type, Type[]>>();
+        static IWindsorContainer container;
 
         public static void RegisterServices(Assembly assembly, params Type[] serviceTypes)
         {
-            var typesToRegister =
+            EnsureNotInitialized();
+
+            var servicesToRegister =
                 from t in assembly.GetExportedTypes()
                 let matchingServiceTypes =
                     serviceTypes
@@ -67,26 +32,82 @@ namespace WebFormsMvp
                     t.IsPublic &&
                     !t.IsAbstract &&
                     matchingServiceTypes.Any()
-                select new { ClassType = t, ServiceTypes = matchingServiceTypes };
+                select new Pair<Type, Type[]>
+                    (
+                        t, // Class type
+                        matchingServiceTypes //Service types
+                    );
 
-            foreach (var typeToRegister in typesToRegister)
+            registeredServices.AddRange(servicesToRegister);
+        }
+
+        internal static void Initialize()
+        {
+            EnsureNotInitialized();
+
+            container = new WindsorContainer();
+            container.Kernel.ComponentModelCreated += (m) =>
             {
-                foreach (var serviceType in typeToRegister.ServiceTypes)
+                // We want a new presenter instance built each time we ask.
+                // We do this here as they aren't registered in the container.
+                m.LifestyleType = LifestyleType.Transient;
+            };
+
+            foreach (var serviceDefinition in registeredServices)
+            {
+                var classType = serviceDefinition.First;
+                var serviceTypes = serviceDefinition.Second;
+                foreach (var serviceType in serviceTypes)
                 {
                     Container.AddComponentLifeStyle(
-                        typeToRegister.ClassType.FullName.ToLowerInvariant() + "-" + serviceType.FullName.ToLowerInvariant(),
+                        classType.FullName.ToLowerInvariant() + "-" + serviceType.FullName.ToLowerInvariant(),
                         serviceType,
-                        typeToRegister.ClassType,
+                        classType,
                         LifestyleType.Transient
                     );
                 }
             }
         }
 
-        public static void TearDown()
+        internal static void TearDown()
         {
+            EnsureInitialized();
+
             container.Dispose();
             container = null;
+        }
+
+        public static IWindsorContainer Container
+        {
+            get
+            {
+                EnsureInitialized();
+                return container;
+            }
+        }
+
+        public static T Resolve<T>()
+        {
+            return Container.Resolve<T>();
+        }
+
+        internal static IPresenter ResolvePresenter(Type presenterType, IView view)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["view"] = view;
+            return (IPresenter)Container.Kernel.Resolve(presenterType, parameters);
+        }
+
+        static void EnsureInitialized()
+        {
+            if (container == null)
+                throw new InvalidOperationException("The ServiceLocator has not been initialized, or it has already been torn down. If you are registering services, make sure you are doing it from Application_Start in Global.asax.");
+        }
+
+        static void EnsureNotInitialized()
+        {
+            if (container != null)
+                throw new InvalidOperationException("The ServiceLocator has already been initialized and the operation you are trying to perform needs to occur before this. If you are registering services, make sure you are doing it from Application_Start in Global.asax.");
         }
     }
 }

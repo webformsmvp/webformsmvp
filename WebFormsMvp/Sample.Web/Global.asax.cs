@@ -17,7 +17,11 @@ namespace WebFormsMvp.Sample.Web
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            ServiceLocator.RegisterServices(typeof(HelloWorldPresenter).Assembly, typeof(IWidgetRepository));
+            ServiceLocator.RegisterServices
+			(
+				typeof(HelloWorldPresenter).Assembly,
+				typeof(IWidgetRepository)
+			);
         }
 
         protected void Session_Start(object sender, EventArgs e)

@@ -12,13 +12,24 @@ namespace WebFormsMvp.Web
     /// </summary>
     public class WebFormsMvpModule : IHttpModule
     {
+        static bool moduleInitialized;
+
         public void Init(HttpApplication context)
         {
+            if (!moduleInitialized)
+            {
+                ServiceLocator.Initialize();
+                moduleInitialized = true;
+            }
         }
 
         public void Dispose()
         {
-            ServiceLocator.TearDown();
+            if (moduleInitialized)
+            {
+                ServiceLocator.TearDown();
+                moduleInitialized = false;
+            }
         }
     }
 }
