@@ -16,7 +16,7 @@ namespace WebFormsMvp
     /// </summary>
     public static class ServiceLocator
     {
-        static readonly object registeresServicesLocker = new object();
+        static readonly object registeredServicesLocker = new object();
         
         private static List<Pair<Type, Type[]>> RegisteredServices
         {
@@ -54,7 +54,7 @@ namespace WebFormsMvp
                         matchingServiceTypes //Service types
                     );
 
-            lock (registeresServicesLocker)
+            lock (registeredServicesLocker)
             {
                 RegisteredServices.AddRange(servicesToRegister);
             }
