@@ -75,7 +75,7 @@
     <Compile Include="IPresenter`T.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="IViewT.cs" />
-    <Compile Include="Web\AspNetMvpModule.cs" />
+    <Compile Include="Web\WebFormsMvpModule.cs" />
     <Compile Include="Web\PageAsyncTaskManagerWrapper.cs" />
     <Compile Include="Web\MvpPage.cs">
       <SubType>ASPXCodeBehind</SubType>
