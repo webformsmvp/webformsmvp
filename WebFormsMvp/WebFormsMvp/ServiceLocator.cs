@@ -22,12 +22,12 @@ namespace WebFormsMvp
         {
             get
             {
-                var rs = HttpContext.Current.Application["RegisteredServices"] as List<Pair<Type, Type[]>>;
+                var rs = HttpContext.Current.Application["WebFormsMvp_RegisteredServices"] as List<Pair<Type, Type[]>>;
 
                 if (rs == null)
                 {
                     rs = new List<Pair<Type, Type[]>>();
-                    HttpContext.Current.Application["RegisteredServices"] = rs;
+                    HttpContext.Current.Application["WebFormsMvp_RegisteredServices"] = rs;
                 }
                 
                 return rs;
@@ -51,7 +51,7 @@ namespace WebFormsMvp
                 select new Pair<Type, Type[]>
                     (
                         t, // Class type
-                        matchingServiceTypes //Service types
+                        matchingServiceTypes // Service types
                     );
 
             lock (registeredServicesLocker)
@@ -60,7 +60,7 @@ namespace WebFormsMvp
             }
         }
 
-        internal static void Initialize()
+        public static void Initialize()
         {
             if (Container != null)
                 return;
@@ -89,7 +89,7 @@ namespace WebFormsMvp
             }
         }
 
-        internal static void TearDown()
+        public static void TearDown()
         {
             if (Container == null)
                 return;
@@ -102,14 +102,14 @@ namespace WebFormsMvp
         {
             get
             {
-                return HttpContext.Current.Application["container"] as IWindsorContainer;
+                return HttpContext.Current.Application["WebFormsMvp_container"] as IWindsorContainer;
             }
             set
             {
                 if (value == null)
-                    HttpContext.Current.Application.Remove("container");
+                    HttpContext.Current.Application.Remove("WebFormsMvp_container");
                 else
-                    HttpContext.Current.Application["container"] = value;
+                    HttpContext.Current.Application["WebFormsMvp_container"] = value;
             }
         }
 

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncMessagesPresenterTests.cs" />
     <Compile Include="HelloWorldPresenterTests.cs" />
     <Compile Include="LookupWidgetPresenterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

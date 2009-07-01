@@ -17,11 +17,8 @@ namespace WebFormsMvp.Sample.Web
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            ServiceLocator.RegisterServices
-			(
-				typeof(HelloWorldPresenter).Assembly,
-				typeof(IWidgetRepository)
-			);
+            ServiceLocator.RegisterServices(typeof(HelloWorldPresenter).Assembly, typeof(IWidgetRepository));
+            ServiceLocator.Initialize();
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -46,7 +43,7 @@ namespace WebFormsMvp.Sample.Web
             Page page = sender as Page;
             var meta = page.Header.Controls
                 .OfType<HtmlMeta>()
-                .First(m => m.Content.StartsWith("text/html; charset="));
+                .FirstOrDefault(m => m.HttpEquiv == "Content-Type");
             if (meta != null && page.Header.Controls.IndexOf(meta) > 0)
             {
                 page.Header.Controls.Remove(meta);
@@ -83,7 +80,7 @@ namespace WebFormsMvp.Sample.Web
 
         protected void Application_End(object sender, EventArgs e)
         {
-            
+            ServiceLocator.TearDown();
         }
     }
 }
