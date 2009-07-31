@@ -9,6 +9,9 @@ using WebFormsMvp.Sample.Logic.Views;
 using WebFormsMvp.Sample.Logic.Views.Models;
 using WebFormsMvp.Sample.Logic.Data;
 using Domain = WebFormsMvp.Sample.Logic.Domain;
+using WebFormsMvp.Testing;
+using System.Threading;
+using Rhino.Mocks.Interfaces;
 
 namespace WebFormsMvp.Sample.UnitTests
 {
@@ -44,22 +47,27 @@ namespace WebFormsMvp.Sample.UnitTests
         {
             // Arrange
             var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var widgetRepository = MockRepository.GenerateMock<IWidgetRepository>();
-            var widget = new Domain.Widget() { Id = 1, Name = "Test" };
+            var asyncManager = new TestAsyncTaskManager();
+            var widgetRepository = MockRepository.GenerateStub<IWidgetRepository>();
+            var widget = new Widget() { Id = 1, Name = "Test" };
 
-            widgetRepository.Expect(w => w.Find(1)).Return(widget);
+            widgetRepository.Stub(w => w.BeginFind(1, null, null)).IgnoreArguments()
+                .ExecuteAsyncCallback().Return(null);
+            widgetRepository.Stub(w => w.EndFind(null)).IgnoreArguments()
+                .Return(widget);
 
             var presenter = new LookupWidgetPresenter(view);
             presenter.WidgetRepository = widgetRepository;
+            presenter.AsyncManager = asyncManager;
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Id = 1 });
+            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
-            widgetRepository.VerifyAllExpectations();
         }
 
         [TestMethod]
@@ -67,22 +75,27 @@ namespace WebFormsMvp.Sample.UnitTests
         {
             // Arrange
             var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var widgetRepository = MockRepository.GenerateMock<IWidgetRepository>();
-            var widget = new Domain.Widget() { Id = 1, Name = "Test" };
+            var asyncManager = new TestAsyncTaskManager();
+            var widgetRepository = MockRepository.GenerateStub<IWidgetRepository>();
+            var widget = new Widget() { Id = 1, Name = "Test" };
 
-            widgetRepository.Expect(w => w.Find(1)).Return(widget);
+            widgetRepository.Stub(w => w.BeginFind(1, null, null)).IgnoreArguments()
+                .ExecuteAsyncCallback().Return(null);
+            widgetRepository.Stub(w => w.EndFind(null)).IgnoreArguments()
+                .Return(widget);
 
             var presenter = new LookupWidgetPresenter(view);
             presenter.WidgetRepository = widgetRepository;
+            presenter.AsyncManager = asyncManager;
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Id = 1, Name = "Blah" });
+            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
-            widgetRepository.VerifyAllExpectations();
         }
 
         [TestMethod]
@@ -90,22 +103,27 @@ namespace WebFormsMvp.Sample.UnitTests
         {
             // Arrange
             var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var widgetRepository = MockRepository.GenerateMock<IWidgetRepository>();
-            var widget = new Domain.Widget() { Id = 1, Name = "Test" };
+            var asyncManager = new TestAsyncTaskManager();
+            var widgetRepository = MockRepository.GenerateStub<IWidgetRepository>();
+            var widget = new Widget() { Id = 1, Name = "Test" };
 
-            widgetRepository.Expect(w => w.FindByName("Test")).Return(widget);
+            widgetRepository.Stub(w => w.BeginFindByName("Test", null, null)).IgnoreArguments()
+                .ExecuteAsyncCallback().Return(null);
+            widgetRepository.Stub(w => w.EndFindByName(null)).IgnoreArguments()
+                .Return(widget);
 
             var presenter = new LookupWidgetPresenter(view);
             presenter.WidgetRepository = widgetRepository;
+            presenter.AsyncManager = asyncManager;
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Name = "Test" });
+            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
-            widgetRepository.VerifyAllExpectations();
         }
 
         [TestMethod]
@@ -113,22 +131,27 @@ namespace WebFormsMvp.Sample.UnitTests
         {
             // Arrange
             var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var widgetRepository = MockRepository.GenerateMock<IWidgetRepository>();
-            var widget = new Domain.Widget() { Id = 1, Name = "Test" };
+            var asyncManager = new TestAsyncTaskManager();
+            var widgetRepository = MockRepository.GenerateStub<IWidgetRepository>();
+            var widget = new Widget() { Id = 1, Name = "Test" };
 
-            widgetRepository.Expect(w => w.FindByName("Test")).Return(widget);
+            widgetRepository.Stub(w => w.BeginFindByName("Test", null, null)).IgnoreArguments()
+                .ExecuteAsyncCallback().Return(null);
+            widgetRepository.Stub(w => w.EndFindByName(null)).IgnoreArguments()
+                .Return(widget);
 
             var presenter = new LookupWidgetPresenter(view);
             presenter.WidgetRepository = widgetRepository;
+            presenter.AsyncManager = asyncManager;
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Id = -1, Name = "Test" });
+            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
-            widgetRepository.VerifyAllExpectations();
         }
 
         [TestMethod]
@@ -136,7 +159,7 @@ namespace WebFormsMvp.Sample.UnitTests
         {
             // Arrange
             var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var widgetRepository = MockRepository.GenerateMock<IWidgetRepository>();
+            var widgetRepository = MockRepository.GenerateStub<IWidgetRepository>();
 
             var presenter = new LookupWidgetPresenter(view);
             presenter.WidgetRepository = widgetRepository;
@@ -154,13 +177,18 @@ namespace WebFormsMvp.Sample.UnitTests
         {
             // Arrange
             var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var widgetRepository = MockRepository.GenerateMock<IWidgetRepository>();
-            var widget = new Domain.Widget() { Id = 1, Name = "Test" };
+            var asyncManager = new TestAsyncTaskManager();
+            var widgetRepository = MockRepository.GenerateStub<IWidgetRepository>();
+            var widget = new Widget() { Id = 1, Name = "Test" };
 
-            widgetRepository.Expect(w => w.FindByName("Test")).Return(widget);
+            widgetRepository.Stub(w => w.BeginFindByName("Test", null, null)).IgnoreArguments()
+                .ExecuteAsyncCallback().Return(null);
+            widgetRepository.Stub(w => w.EndFindByName(null)).IgnoreArguments()
+                .Return(widget);
 
             var presenter = new LookupWidgetPresenter(view);
             presenter.WidgetRepository = widgetRepository;
+            presenter.AsyncManager = asyncManager;
             
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());

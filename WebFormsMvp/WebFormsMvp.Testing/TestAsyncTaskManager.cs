@@ -34,12 +34,35 @@ namespace WebFormsMvp.Testing
         /// </summary>
         public void ExecuteTasks()
         {
+            ExecuteTasks(false);
+        }
+
+        /// <summary>
+        /// Executes the registered tasks simulating a timeout.
+        /// </summary>
+        public void ExecuteTasks(bool timeoutAll)
+        {
+            int i = 0;
+            int[] indexes = timeoutAll ? tasks.Select(t => i++).ToArray() : new int[0];
+            ExecuteTasks(indexes);
+        }
+
+        /// <summary>
+        /// Executes the registered tasks simulating a timeout for the specified tasks.
+        /// </summary>
+        public void ExecuteTasks(params int[] timeoutIndexes)
+        {
             var resetEvent = new AutoResetEvent(false);
+            int index = 0;
             tasks.ForEach(t =>
             {
                 var beginResult = t.BeginHandler.Invoke(this, new EventArgs(), result => resetEvent.Set(), null);
                 resetEvent.WaitOne(); // Wait here to ensure that end handler is called after begin handler has completed
-                t.EndHandler(beginResult);
+                if (timeoutIndexes.Contains(index))
+                    t.TimeoutHandler(beginResult);
+                else
+                    t.EndHandler(beginResult);
+                index++;
             });
         }
     }

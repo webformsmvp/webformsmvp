@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WebFormsMvp.Sample.Logic.Domain;
+using WebFormsMvp.Sample.Logic.Data;
 
 namespace WebFormsMvp.Sample.Logic.Views.Models
 {

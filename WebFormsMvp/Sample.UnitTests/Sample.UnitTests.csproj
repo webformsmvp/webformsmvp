@@ -59,6 +59,10 @@
     <Compile Include="RedirectPresenterTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WebFormsMvp.Testing\WebFormsMvp.Testing.csproj">
+      <Project>{6C47BBFB-0189-4B11-A14B-B76C248B6685}</Project>
+      <Name>WebFormsMvp.Testing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">
       <Project>{E265BF3E-8CCB-4C22-8C15-263735227A3D}</Project>
       <Name>WebFormsMvp</Name>

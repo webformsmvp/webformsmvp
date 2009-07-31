@@ -7,9 +7,15 @@ namespace WebFormsMvp.Sample.Logic.Data
 {
     public interface IWidgetRepository
     {
-        Domain.Widget Find(int id);
-        IEnumerable<Domain.Widget> FindAll();
-        Domain.Widget FindByName(string name);
-        void Save(Domain.Widget widget);
+        Widget Find(int id);
+        IAsyncResult BeginFind(int id, AsyncCallback callback, Object asyncState);
+        Widget EndFind(IAsyncResult result);
+        IEnumerable<Widget> FindAll();
+        IAsyncResult BeginFindAll(AsyncCallback callback, Object asyncState);
+        IEnumerable<Widget> EndFindAll(IAsyncResult result);
+        Widget FindByName(string name);
+        IAsyncResult BeginFindByName(string name, AsyncCallback callback, Object asyncState);
+        Widget EndFindByName(IAsyncResult result);
+        void Save(Widget widget);
     }
 }

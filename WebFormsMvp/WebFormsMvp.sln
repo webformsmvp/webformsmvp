@@ -31,9 +31,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp", "WebFormsMvp\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Application", "Sample Application", "{392D516C-6A30-4673-A43A-87DEC9340427}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Testing", "WebFormsMvp.Testing\WebFormsMvp.Testing.csproj", "{6C47BBFB-0189-4B11-A14B-B76C248B6685}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs06.codeplex.com/
 		SccLocalPath0 = .
@@ -52,6 +54,9 @@ Global
 		SccProjectUniqueName4 = WebFormsMvp\\WebFormsMvp.csproj
 		SccProjectName4 = WebFormsMvp
 		SccLocalPath4 = WebFormsMvp
+		SccProjectUniqueName5 = WebFormsMvp.Testing\\WebFormsMvp.Testing.csproj
+		SccProjectName5 = WebFormsMvp.Testing
+		SccLocalPath5 = WebFormsMvp.Testing
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = WebFormsMvp.vsmdi
@@ -77,14 +82,18 @@ Global
 		{E265BF3E-8CCB-4C22-8C15-263735227A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E265BF3E-8CCB-4C22-8C15-263735227A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E265BF3E-8CCB-4C22-8C15-263735227A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7AD65369-54B5-4D52-95C7-C9BFD440B327} = {EF165358-8758-45DC-8B74-3B963037E376}
+		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C} = {392D516C-6A30-4673-A43A-87DEC9340427}
-		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8} = {392D516C-6A30-4673-A43A-87DEC9340427}
+		{7AD65369-54B5-4D52-95C7-C9BFD440B327} = {EF165358-8758-45DC-8B74-3B963037E376}
 	EndGlobalSection
 EndGlobal

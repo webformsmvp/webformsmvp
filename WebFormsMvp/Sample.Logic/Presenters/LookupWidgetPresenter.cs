@@ -6,6 +6,7 @@ using WebFormsMvp.Sample.Logic.Domain;
 using WebFormsMvp.Sample.Logic.Data;
 using WebFormsMvp.Sample.Logic.Views;
 using WebFormsMvp.Sample.Logic.Views.Models;
+using System.Web;
 
 namespace WebFormsMvp.Sample.Logic.Presenters
 {
@@ -18,7 +19,7 @@ namespace WebFormsMvp.Sample.Logic.Presenters
             : base(view)
         {
             View.Finding += new EventHandler<FindingWidgetEventArgs>(View_Finding);
-            View.Model.Widgets = new List<Domain.Widget>();
+            View.Model.Widgets = new List<Data.Widget>();
         }
 
         public override void ReleaseView()
@@ -33,12 +34,41 @@ namespace WebFormsMvp.Sample.Logic.Presenters
 
             if (e.Id.HasValue && e.Id > 0)
             {
-                View.Model.Widgets.Add(WidgetRepository.Find(e.Id.Value));
+                AsyncManager.RegisterAsyncTask(
+                    (asyncSender, ea, callback, state) => // Begin
+                    {
+                        return WidgetRepository.BeginFind(e.Id.Value, callback, state);
+                    },
+                    (result) => // End
+                    {
+                        var widget = WidgetRepository.EndFind(result);
+                        if (widget != null)
+                        {
+                            View.Model.Widgets.Add(widget);
+                        }
+                    },
+                    (result) => { } // Timeout
+                    , null, false);
             }
             else
             {
-                View.Model.Widgets.Add(WidgetRepository.FindByName(e.Name));
+                AsyncManager.RegisterAsyncTask(
+                    (asyncSender, ea, callback, state) => // Begin
+                    {
+                        return WidgetRepository.BeginFindByName(e.Name, callback, state);
+                    },
+                    (result) => // End
+                    {
+                        var widget = WidgetRepository.EndFindByName(result);
+                        if (widget != null)
+                        {
+                            View.Model.Widgets.Add(widget);
+                        }
+                    },
+                    (result) => { } // Timeout
+                    , null, false);
             }
+
             View.Model.ShowResults = true;
         }
     }
