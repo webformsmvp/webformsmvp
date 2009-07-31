@@ -24,27 +24,27 @@ namespace WebFormsMvp.Web
             //this.EnablePaging = true;
             //this.SortParameterName = "sortExpression";
 
-            this.Init += new EventHandler(PageDataSource_Init);
-            this.ObjectCreating += new ObjectDataSourceObjectEventHandler(PageDataSource_ObjectCreating);
-            this.ObjectDisposing += new ObjectDataSourceDisposingEventHandler(PageDataSource_ObjectDisposing);
+            this.Init += new EventHandler(OnInit);
+            this.ObjectCreating += new ObjectDataSourceObjectEventHandler(OnObjectCreating);
+            this.ObjectDisposing += new ObjectDataSourceDisposingEventHandler(OnObjectDisposing);
         }
-
-        void PageDataSource_Init(object sender, EventArgs e)
+        
+        protected virtual void OnInit(object sender, EventArgs e)
         {
             FindParentHost(this);
         }
 
-        void PageDataSource_ObjectCreating(object sender, ObjectDataSourceEventArgs e)
+        protected virtual void OnObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
             e.ObjectInstance = _parentHost;
         }
 
-        void PageDataSource_ObjectDisposing(object sender, ObjectDataSourceDisposingEventArgs e)
+        protected virtual void OnObjectDisposing(object sender, ObjectDataSourceDisposingEventArgs e)
         {
             e.Cancel = true;
         }
 
-        Object _parentHost;
+        protected Object _parentHost;
 
         /// <summary>
         /// Walks the control tree to find the hosting parent page or user control
