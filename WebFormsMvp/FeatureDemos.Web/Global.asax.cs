@@ -19,7 +19,7 @@ namespace WebFormsMvp.FeatureDemos.Web
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            PresenterBinder.Factory = new MvpWindsorContainer();
+            //PresenterBinder.Factory = new MvpWindsorContainer();
 
             //ServiceLocator.RegisterServices(typeof(HelloWorldPresenter).Assembly, typeof(IWidgetRepository));
             //ServiceLocator.Initialize();

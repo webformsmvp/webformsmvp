@@ -20,6 +20,13 @@ namespace WebFormsMvp.Web
         protected MvpPage()
         {
             presenterBinder = new PresenterBinder(this);
+            
+            var asyncManager = new PageAsyncTaskManagerWrapper(this);
+            presenterBinder.PresenterCreated += (sender, args) =>
+            {
+                args.Presenter.AsyncManager = asyncManager;
+            };
+
             Unload += new EventHandler(PageBase_Unload);
         }
 

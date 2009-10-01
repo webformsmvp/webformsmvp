@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.Services;
 
 namespace WebFormsMvp.Binder
 {
@@ -40,11 +38,14 @@ namespace WebFormsMvp.Binder
             }
         }
 
+        readonly HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
         readonly IntPtr hostTypeHandle;
         readonly Queue<IView> viewInstancesRequiringBinding = new Queue<IView>();
         readonly IEnumerable<PresenterBindInfo> presenterBindings;
         readonly IList<IPresenter> presenters = new List<IPresenter>();
         bool initialBindingHasBeenPerformed = false;
+
+        public event EventHandler<PresenterCreatedEventArgs> PresenterCreated;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PresenterBinder&lt;THost&gt;"/> class.
@@ -105,9 +106,15 @@ namespace WebFormsMvp.Binder
             {
                 var viewInstance = viewInstancesRequiringBinding.Dequeue();
                 var viewInterfaces = GetViewInterfaces(viewInstance.GetType());
-                var newPresenters =
-                    from viewInterface in viewInterfaces
-                    select CreateAndBindPresenter(presenterBindings, viewInterface, viewInstance);
+                var newPresenters = viewInterfaces
+                    .SelectMany(viewInterface =>
+                        TryCreateAndBindPresenters(
+                            presenterBindings,
+                            viewInterface,
+                            viewInstance,
+                            httpContext,
+                            p => OnPresenterCreated(new PresenterCreatedEventArgs(p))))
+                    .Where(p => p != null);
 
                 presenters.AddRange(newPresenters);
             }
@@ -121,9 +128,18 @@ namespace WebFormsMvp.Binder
             {
                 foreach (var presenter in presenters)
                 {
+                    factory.Release(presenter);
                     presenter.ReleaseView();
-                }             
+                }
                 presenters.Clear();
+            }
+        }
+
+        protected virtual void OnPresenterCreated(PresenterCreatedEventArgs args)
+        {
+            if (PresenterCreated != null)
+            {
+                PresenterCreated(this, args);
             }
         }
 
@@ -158,14 +174,21 @@ namespace WebFormsMvp.Binder
             return viewInterfaces;
         }
 
-        static IPresenter CreateAndBindPresenter(IEnumerable<PresenterBindInfo> presenterBindings, Type viewInterface, IView viewInstance)
+        static IEnumerable<IPresenter> TryCreateAndBindPresenters(IEnumerable<PresenterBindInfo> presenterBindings, Type viewType, IView viewInstance, HttpContextBase httpContext, Action<IPresenter> presenterCreatedCallback)
         {
-            var presenterType = presenterBindings
-                .Where(pbi => pbi.ViewType == viewInterface)
+            return presenterBindings
+                .Where(pbi => pbi.ViewType == viewType)
                 .Select(pbi => pbi.PresenterType)
-                .Single();
-
-            return Factory.Create(presenterType, viewInstance);
+                .Select(presenterType =>
+                {
+                    var presenter = Factory.Create(presenterType, viewType, viewInstance);
+                    presenter.HttpContext = httpContext;
+                    if (presenterCreatedCallback != null)
+                    {
+                        presenterCreatedCallback(presenter);
+                    }
+                    return presenter;
+                });
         }
     }
 }
