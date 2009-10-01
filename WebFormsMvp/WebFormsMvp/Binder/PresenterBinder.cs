@@ -130,8 +130,8 @@ namespace WebFormsMvp.Binder
             {
                 foreach (var presenter in presenters)
                 {
-                    factory.Release(presenter);
                     presenter.ReleaseView();
+                    factory.Release(presenter);
                 }
                 presenters.Clear();
             }
