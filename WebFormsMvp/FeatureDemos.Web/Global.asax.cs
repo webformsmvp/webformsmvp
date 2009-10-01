@@ -6,8 +6,6 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Castle.Core.Resource;
-using Castle.Windsor.Configuration.Interpreters;
 using WebFormsMvp.Binder;
 using WebFormsMvp.Castle;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
@@ -19,10 +17,7 @@ namespace WebFormsMvp.FeatureDemos.Web
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            //PresenterBinder.Factory = new MvpWindsorContainer();
-
-            //ServiceLocator.RegisterServices(typeof(HelloWorldPresenter).Assembly, typeof(IWidgetRepository));
-            //ServiceLocator.Initialize();
+            
         }
 
         protected void Session_Start(object sender, EventArgs e)

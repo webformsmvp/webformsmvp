@@ -13,11 +13,16 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
     public class LookupWidgetPresenter
         : Presenter<ILookupWidgetView, LookupWidgetModel>
     {
-        public IWidgetRepository WidgetRepository { get; set; }
+        private readonly IWidgetRepository widgetRepository;
 
         public LookupWidgetPresenter(ILookupWidgetView view)
+            : this(view, null)
+        { }
+
+        public LookupWidgetPresenter(ILookupWidgetView view, IWidgetRepository widgetRepository)
             : base(view)
         {
+            this.widgetRepository = widgetRepository ?? new WidgetRepository();
             View.Finding += new EventHandler<FindingWidgetEventArgs>(View_Finding);
             View.Model.Widgets = new List<Data.Widget>();
         }
@@ -37,11 +42,11 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
                 AsyncManager.RegisterAsyncTask(
                     (asyncSender, ea, callback, state) => // Begin
                     {
-                        return WidgetRepository.BeginFind(e.Id.Value, callback, state);
+                        return widgetRepository.BeginFind(e.Id.Value, callback, state);
                     },
                     (result) => // End
                     {
-                        var widget = WidgetRepository.EndFind(result);
+                        var widget = widgetRepository.EndFind(result);
                         if (widget != null)
                         {
                             View.Model.Widgets.Add(widget);
@@ -55,11 +60,11 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
                 AsyncManager.RegisterAsyncTask(
                     (asyncSender, ea, callback, state) => // Begin
                     {
-                        return WidgetRepository.BeginFindByName(e.Name, callback, state);
+                        return widgetRepository.BeginFindByName(e.Name, callback, state);
                     },
                     (result) => // End
                     {
-                        var widget = WidgetRepository.EndFindByName(result);
+                        var widget = widgetRepository.EndFindByName(result);
                         if (widget != null)
                         {
                             View.Model.Widgets.Add(widget);

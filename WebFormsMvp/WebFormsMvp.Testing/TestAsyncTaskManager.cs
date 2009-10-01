@@ -43,7 +43,7 @@ namespace WebFormsMvp.Testing
         public void ExecuteRegisteredAsyncTasks(bool timeoutAll)
         {
             var i = 0;
-            var indexes = timeoutAll ? tasks.Select(t => i++).ToArray() : new [] { 0 };
+            var indexes = timeoutAll ? tasks.Select(t => i++).ToArray() : new int[0];
             ExecuteRegisteredAsyncTasks(indexes);
         }
 

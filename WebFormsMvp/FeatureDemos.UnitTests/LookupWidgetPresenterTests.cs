@@ -32,8 +32,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             widgetRepository.Stub(w => w.EndFind(null)).IgnoreArguments()
                 .Return(widget);
 
-            var presenter = new LookupWidgetPresenter(view);
-            presenter.WidgetRepository = widgetRepository;
+            var presenter = new LookupWidgetPresenter(view, widgetRepository);
             presenter.AsyncManager = asyncManager;
 
             // Act
@@ -60,8 +59,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             widgetRepository.Stub(w => w.EndFind(null)).IgnoreArguments()
                 .Return(widget);
 
-            var presenter = new LookupWidgetPresenter(view);
-            presenter.WidgetRepository = widgetRepository;
+            var presenter = new LookupWidgetPresenter(view, widgetRepository);
             presenter.AsyncManager = asyncManager;
 
             // Act
@@ -88,8 +86,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             widgetRepository.Stub(w => w.EndFindByName(null)).IgnoreArguments()
                 .Return(widget);
 
-            var presenter = new LookupWidgetPresenter(view);
-            presenter.WidgetRepository = widgetRepository;
+            var presenter = new LookupWidgetPresenter(view, widgetRepository);
             presenter.AsyncManager = asyncManager;
 
             // Act
@@ -116,8 +113,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             widgetRepository.Stub(w => w.EndFindByName(null)).IgnoreArguments()
                 .Return(widget);
 
-            var presenter = new LookupWidgetPresenter(view);
-            presenter.WidgetRepository = widgetRepository;
+            var presenter = new LookupWidgetPresenter(view, widgetRepository);
             presenter.AsyncManager = asyncManager;
 
             // Act
@@ -137,8 +133,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             var view = MockRepository.GenerateStub<ILookupWidgetView>();
             var widgetRepository = MockRepository.GenerateStub<IWidgetRepository>();
 
-            var presenter = new LookupWidgetPresenter(view);
-            presenter.WidgetRepository = widgetRepository;
+            var presenter = new LookupWidgetPresenter(view, widgetRepository);
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
@@ -162,8 +157,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             widgetRepository.Stub(w => w.EndFindByName(null)).IgnoreArguments()
                 .Return(widget);
 
-            var presenter = new LookupWidgetPresenter(view);
-            presenter.WidgetRepository = widgetRepository;
+            var presenter = new LookupWidgetPresenter(view, widgetRepository);
             presenter.AsyncManager = asyncManager;
             
             // Act
