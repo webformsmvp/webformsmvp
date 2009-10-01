@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.Web
 {
@@ -11,12 +12,12 @@ namespace WebFormsMvp.Web
     /// </summary>
     public abstract class MvpWebService : WebService, IView
     {
-        private readonly PresenterBinder<WebService> presenterBinder;
+        readonly PresenterBinder presenterBinder;
 
         public MvpWebService()
             : base()
         {
-            presenterBinder = new PresenterBinder<WebService>(this);
+            presenterBinder = new PresenterBinder(this);
         }
 
         public event EventHandler Load;
@@ -33,7 +34,7 @@ namespace WebFormsMvp.Web
         /// </summary>
         protected void ReleaseView()
         {
-            presenterBinder.ReleaseViewOnPresenters();
+            presenterBinder.Release();
         }
     }
 }

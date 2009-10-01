@@ -70,6 +70,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\IContainer.cs" />
+    <Compile Include="CollectionExtensions.cs" />
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
@@ -84,9 +86,9 @@
     </Compile>
     <Compile Include="Presenter.cs" />
     <Compile Include="Web\PageDataSource.cs" />
-    <Compile Include="Web\PresenterBinder.cs" />
-    <Compile Include="Web\PresenterBindInfo.cs" />
-    <Compile Include="PresenterHostAttribute.cs" />
+    <Compile Include="Binder\PresenterBinder.cs" />
+    <Compile Include="Binder\PresenterBindInfo.cs" />
+    <Compile Include="PresenterBindingAttribute.cs" />
     <Compile Include="Presenter`T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocator.cs" />

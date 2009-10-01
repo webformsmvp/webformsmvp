@@ -10,7 +10,7 @@ using WebFormsMvp.FeatureDemos.Web.Framework;
 
 namespace WebFormsMvp.FeatureDemos.Web
 {
-    [PresenterHost(typeof(HelloWorldPresenter), typeof(IHelloWorldView))]
+    [PresenterBinding(typeof(IHelloWorldView), typeof(HelloWorldPresenter))]
     public partial class HelloWorld : PageBase
     {
         protected void Page_Load(object sender, EventArgs e)

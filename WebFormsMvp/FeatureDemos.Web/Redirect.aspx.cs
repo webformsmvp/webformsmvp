@@ -10,7 +10,7 @@ using WebFormsMvp.FeatureDemos.Web.Framework;
 
 namespace WebFormsMvp.FeatureDemos.Web
 {
-    [PresenterHost(typeof(RedirectPresenter), typeof(IRedirectView))]
+    [PresenterBinding(typeof(IRedirectView), typeof(RedirectPresenter))]
     public partial class Redirect : PageBase
     {
 

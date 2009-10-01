@@ -10,7 +10,7 @@ using WebFormsMvp.FeatureDemos.Web.Framework;
 
 namespace WebFormsMvp.FeatureDemos.Web
 {
-    [PresenterHost(typeof(AsyncMessagesPresenter), typeof(IAsyncMessagesView))]
+    [PresenterBinding(typeof(IAsyncMessagesView), typeof(AsyncMessagesPresenter))]
     public partial class AsyncMessages : PageBase
     {
 
