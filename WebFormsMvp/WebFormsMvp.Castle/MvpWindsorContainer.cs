@@ -7,12 +7,12 @@ namespace WebFormsMvp.Castle
     {
         #region IPresenterFactory Members
 
-        public T Create<T>()
+        public IPresenter Create(Type presenterType, IView view)
         {
             throw new NotImplementedException();
         }
 
-        public void Release<T>(T instance)
+        public void Release(IPresenter presenter)
         {
             throw new NotImplementedException();
         }

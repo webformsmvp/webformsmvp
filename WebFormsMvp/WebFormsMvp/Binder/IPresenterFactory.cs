@@ -4,7 +4,7 @@ namespace WebFormsMvp.Binder
 {
     public interface IPresenterFactory
     {
-        T Create<T>();
-        void Release<T>(T instance);
+        IPresenter Create(Type presenterType, IView view);
+        void Release(IPresenter presenter);
     }
 }

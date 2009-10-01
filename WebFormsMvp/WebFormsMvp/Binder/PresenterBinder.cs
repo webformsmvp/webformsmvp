@@ -32,6 +32,7 @@ namespace WebFormsMvp.Binder
 
         readonly IntPtr hostTypeHandle;
         readonly Queue<IView> viewInstancesRequiringBinding = new Queue<IView>();
+        readonly IEnumerable<PresenterBindInfo> presenterBindings;
         readonly IList<IPresenter> presenters = new List<IPresenter>();
         bool initialBindingHasBeenPerformed = false;
 
@@ -43,7 +44,7 @@ namespace WebFormsMvp.Binder
         {
             hostTypeHandle = host.GetType().TypeHandle.Value;
 
-            EnsurePresenterBindInfoIsCached(hostTypeToPresenterBindInfoCache, hostTypeHandle, host);
+            presenterBindings = GetPresenterBindings(hostTypeToPresenterBindInfoCache, hostTypeHandle, host);
 
             var selfHostedView = host as IView;
             if (selfHostedView != null)
@@ -53,14 +54,15 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        static void EnsurePresenterBindInfoIsCached(IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> cache, IntPtr hostTypeHandle, object host)
+        static IEnumerable<PresenterBindInfo> GetPresenterBindings(IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> cache, IntPtr hostTypeHandle, object host)
         {
-            if (cache.ContainsKey(hostTypeHandle))
+            IEnumerable<PresenterBindInfo> presenterBindInfo;
+            if (cache.TryGetValue(hostTypeHandle, out presenterBindInfo))
             {
-                return;
+                return presenterBindInfo;
             }
 
-            var presenterBindInfo = host
+            presenterBindInfo = host
                 .GetType()
                 .GetCustomAttributes(typeof(PresenterBindingAttribute), true)
                 .OfType<PresenterBindingAttribute>()
@@ -70,6 +72,8 @@ namespace WebFormsMvp.Binder
             {
                 hostTypeToPresenterBindInfoCache.Add(hostTypeHandle, presenterBindInfo);
             }
+
+            return presenterBindInfo;
         }
 
         public void RegisterView(IView viewInstance)
@@ -92,8 +96,8 @@ namespace WebFormsMvp.Binder
                 var viewInstance = viewInstancesRequiringBinding.Dequeue();
                 var viewInterfaces = GetViewInterfaces(viewInstance.GetType());
                 var newPresenters =
-                    from i in viewInterfaces
-                    select CreateAndBindPresenter(viewInstance, i);
+                    from viewInterface in viewInterfaces
+                    select CreateAndBindPresenter(presenterBindings, viewInterface, viewInstance);
 
                 presenters.AddRange(newPresenters);
             }
@@ -144,96 +148,14 @@ namespace WebFormsMvp.Binder
             return viewInterfaces;
         }
 
-        static IPresenter CreateAndBindPresenter(IView viewInstance, Type viewInterface)
+        static IPresenter CreateAndBindPresenter(IEnumerable<PresenterBindInfo> presenterBindings, Type viewInterface, IView viewInstance)
         {
-            return null;
+            var presenterType = presenterBindings
+                .Where(pbi => pbi.ViewType == viewInterface)
+                .Select(pbi => pbi.PresenterType)
+                .Single();
+
+            return Factory.Create(presenterType, viewInstance);
         }
-
-        //private void WireUpPresenters(THost host)
-        //{
-        //    List<PresenterBindInfo> presentersBindInfo;
-
-        //    if (!presentersForHost.TryGetValue(host.GetType().TypeHandle.Value, out presentersBindInfo))
-        //    {
-        //        // No cache of presenter info for this host type
-        //        // Grab list of presenter constructors & cache for this host type
-        //        presentersBindInfo = CachePresenterInfoForHostType(host);
-        //    }
-
-        //    CreatePresenters(host, presentersBindInfo);
-        //}
-
-        //private void CreatePresenters(THost host, List<PresenterBindInfo> presentersBindInfo)
-        //{
-        //    var pageBase = host as MvpPage;
-        //    if (pageBase != null)
-        //    {
-        //        foreach (PresenterBindInfo presenterBind in presentersBindInfo)
-        //        {
-        //            List<IView> views;
-        //            if (pageBase.Views.TryGetValue(presenterBind.ViewType, out views))
-        //            {
-        //                foreach (var view in views)
-        //                {
-        //                    CreatePresenterAndAddToList(presenterBind, view, pageBase);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        foreach (PresenterBindInfo presenterBind in presentersBindInfo)
-        //        {
-        //            CreatePresenterAndAddToList(presenterBind, (IView)host, null);
-        //        }
-        //    }
-        //}
-
-        //private static List<PresenterBindInfo> CachePresenterInfoForHostType(THost host)
-        //{
-        //    var hostType = host.GetType();
-        //    var presentersBindInfo = new List<PresenterBindInfo>();
-        //    var presenterAttributes = hostType.GetCustomAttributes(typeof(PresenterBindingAttribute), true).Cast<PresenterBindingAttribute>();
-        //    foreach (var attribute in presenterAttributes)
-        //    {
-        //        var presenterBinder = new PresenterBindInfo(attribute.PresenterType, attribute.ViewType);
-        //        presentersBindInfo.Add(presenterBinder);
-        //        lock (registeredPresenters)
-        //        {
-        //            if (!registeredPresenters.ContainsKey(attribute.PresenterType.TypeHandle.Value))
-        //            {
-        //                string key = String.Format("{0}-{1}", hostType.FullName, attribute.PresenterType.FullName);
-        //                ServiceLocator.Container.AddComponent(key, attribute.PresenterType);
-        //                registeredPresenters[attribute.PresenterType.TypeHandle.Value] = true;
-        //            }
-        //        }
-        //    }
-        //    lock (presentersForHost)
-        //    {
-        //        presentersForHost[hostType.TypeHandle.Value] = presentersBindInfo;
-        //    }
-        //    return presentersBindInfo;
-        //}
-
-        //private void CreatePresenterAndAddToList(PresenterBindInfo presenterBind, IView view, MvpPage page)
-        //{
-        //    IPresenter presenter;
-        //    presenter = ServiceLocator.ResolvePresenter(presenterBind.PresenterType, view);
-        //    presenter.HttpContext = httpContextBase;
-        //    presenter.AsyncManager = new PageAsyncTaskManagerWrapper(page);
-        //    presenters.Add(presenter);
-        //}
-
-        ///// <summary>
-        ///// Releases the views from the presenters.
-        ///// </summary>
-        //public void ReleaseViewOnPresenters()
-        //{
-        //    foreach (var presenter in presenters)
-        //    {
-        //        presenter.ReleaseView();
-        //    }
-        //    presenters.Clear();
-        //}
     }
 }
