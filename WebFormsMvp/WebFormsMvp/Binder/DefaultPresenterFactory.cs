@@ -18,6 +18,7 @@ namespace WebFormsMvp.Binder
         {
             if (presenter is IDisposable)
             {
+                ((IDisposable)presenter).Dispose();
             }
         }
 
