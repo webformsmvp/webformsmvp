@@ -3,7 +3,7 @@
   <Description>This is a default test run configuration for a local test run.</Description>
   <CodeCoverage enabled="true">
     <Regular>
-      <CodeCoverageItem binaryFile="Logic\bin\Debug\WebFormsMvp.Sample.Web.Logic.dll" pdbFile="Logic\bin\Debug\WebFormsMvp.Sample.Web.Logic.pdb" instrumentInPlace="true" />
+      <CodeCoverageItem binaryFile="Logic\bin\Debug\WebFormsMvp.FeatureDemos.Web.Logic.dll" pdbFile="Logic\bin\Debug\WebFormsMvp.FeatureDemos.Web.Logic.pdb" instrumentInPlace="true" />
     </Regular>
   </CodeCoverage>
   <TestTypeSpecific>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="SiteDb" Class="SiteDbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=&quot;G:\Documents\Readify\Presentations\ReMIX09\Mesh Folder\Demos\WebFormsMvp\Web\App_Data\SiteDb.mdf&quot;;Integrated Security=True;User Instance=True" SettingsObjectName="WebFormsMvp.FeatureDemos.Logic.Properties.Settings" SettingsPropertyName="SiteDbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Widgets" Member="Widgets">
+    <Type Name="Widget">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(2000)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
