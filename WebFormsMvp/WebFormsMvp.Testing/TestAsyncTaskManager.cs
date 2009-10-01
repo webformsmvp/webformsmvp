@@ -42,8 +42,8 @@ namespace WebFormsMvp.Testing
         /// </summary>
         public void ExecuteRegisteredAsyncTasks(bool timeoutAll)
         {
-            int i = 0;
-            int[] indexes = timeoutAll ? tasks.Select(t => i++).ToArray() : new int[0];
+            var i = 0;
+            var indexes = timeoutAll ? tasks.Select(t => i++).ToArray() : new [] { 0 };
             ExecuteRegisteredAsyncTasks(indexes);
         }
 
@@ -53,7 +53,7 @@ namespace WebFormsMvp.Testing
         public void ExecuteRegisteredAsyncTasks(params int[] timeoutIndexes)
         {
             var resetEvent = new AutoResetEvent(false);
-            int index = 0;
+            var index = 0;
             tasks.ForEach(t =>
             {
                 var beginResult = t.BeginHandler.Invoke(this, new EventArgs(), result => resetEvent.Set(), null);
