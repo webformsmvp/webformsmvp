@@ -19,7 +19,7 @@ namespace WebFormsMvp.Web
         /// </summary>
         protected MvpPage()
         {
-            presenterBinder = new PresenterBinder(this);
+            presenterBinder = new PresenterBinder(this, new HttpContextWrapper(HttpContext.Current));
             
             var asyncManager = new PageAsyncTaskManagerWrapper(this);
             presenterBinder.PresenterCreated += (sender, args) =>

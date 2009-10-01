@@ -38,7 +38,7 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        readonly HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+        readonly HttpContextBase httpContext;
         readonly IntPtr hostTypeHandle;
         readonly Queue<IView> viewInstancesRequiringBinding = new Queue<IView>();
         readonly IEnumerable<PresenterBindInfo> presenterBindings;
@@ -51,8 +51,10 @@ namespace WebFormsMvp.Binder
         /// Initializes a new instance of the <see cref="PresenterBinder&lt;THost&gt;"/> class.
         /// </summary>
         /// <param name="host">The host.</param>
-        public PresenterBinder(object host)
+        public PresenterBinder(object host, HttpContextBase httpContext)
         {
+            this.httpContext = httpContext;
+
             hostTypeHandle = host.GetType().TypeHandle.Value;
 
             presenterBindings = GetPresenterBindings(hostTypeToPresenterBindInfoCache, hostTypeHandle, host);
