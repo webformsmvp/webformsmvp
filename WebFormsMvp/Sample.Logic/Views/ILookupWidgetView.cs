@@ -15,5 +15,15 @@ namespace WebFormsMvp.Sample.Logic.Views
     {
         public int? Id { get; set; }
         public string Name { get; set; }
+
+        public FindingWidgetEventArgs()
+        { }
+
+        public FindingWidgetEventArgs(int id, string name)
+            : this()
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

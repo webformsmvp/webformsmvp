@@ -32,25 +32,25 @@ namespace WebFormsMvp.Testing
         /// <summary>
         /// Executes the registered tasks.
         /// </summary>
-        public void ExecuteTasks()
+        public void ExecuteRegisteredAsyncTasks()
         {
-            ExecuteTasks(false);
+            ExecuteRegisteredAsyncTasks(false);
         }
 
         /// <summary>
         /// Executes the registered tasks simulating a timeout.
         /// </summary>
-        public void ExecuteTasks(bool timeoutAll)
+        public void ExecuteRegisteredAsyncTasks(bool timeoutAll)
         {
             int i = 0;
             int[] indexes = timeoutAll ? tasks.Select(t => i++).ToArray() : new int[0];
-            ExecuteTasks(indexes);
+            ExecuteRegisteredAsyncTasks(indexes);
         }
 
         /// <summary>
         /// Executes the registered tasks simulating a timeout for the specified tasks.
         /// </summary>
-        public void ExecuteTasks(params int[] timeoutIndexes)
+        public void ExecuteRegisteredAsyncTasks(params int[] timeoutIndexes)
         {
             var resetEvent = new AutoResetEvent(false);
             int index = 0;

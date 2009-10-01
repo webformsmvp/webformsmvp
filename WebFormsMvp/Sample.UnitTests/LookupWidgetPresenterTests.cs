@@ -18,30 +18,6 @@ namespace WebFormsMvp.Sample.UnitTests
     [TestClass]
     public class LookupWidgetPresenterTests
     {
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void LookupWidgetPresenterThrowsExceptionIfIdAndNameMissingFromEventArgs()
-        {
-            // Arrange
-            var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var presenter = new LookupWidgetPresenter(view);
-
-            // Act
-            view.Raise(v => v.Load += null, view, new EventArgs());
-            view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs());
-        }
-
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void LookupWidgetPresenterThrowsExceptionIfIdIs0AndNameMissingFromEventArgs()
-        {
-            // Arrange
-            var view = MockRepository.GenerateStub<ILookupWidgetView>();
-            var presenter = new LookupWidgetPresenter(view);
-
-            // Act
-            view.Raise(v => v.Load += null, view, new EventArgs());
-            view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Id = 0 });
-        }
-
         [TestMethod]
         public void LookupWidgetPresenterLoadsWidgetFromId()
         {
@@ -63,7 +39,7 @@ namespace WebFormsMvp.Sample.UnitTests
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Id = 1 });
-            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
+            asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert
@@ -91,7 +67,7 @@ namespace WebFormsMvp.Sample.UnitTests
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Id = 1, Name = "Blah" });
-            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
+            asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert
@@ -119,7 +95,7 @@ namespace WebFormsMvp.Sample.UnitTests
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Name = "Test" });
-            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
+            asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert
@@ -147,7 +123,7 @@ namespace WebFormsMvp.Sample.UnitTests
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs() { Id = -1, Name = "Test" });
-            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
+            asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert

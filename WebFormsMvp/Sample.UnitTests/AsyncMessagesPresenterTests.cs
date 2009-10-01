@@ -26,7 +26,7 @@ namespace WebFormsMvp.Sample.UnitTests
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
-            asyncManager.ExecuteTasks(); // Execute the tasks here as ASP.NET would normally do for us
+            asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
             presenter.ReleaseView();
 
             // Assert that both begin & end handlers were called

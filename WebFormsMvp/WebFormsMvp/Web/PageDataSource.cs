@@ -24,13 +24,13 @@ namespace WebFormsMvp.Web
             //this.EnablePaging = true;
             //this.SortParameterName = "sortExpression";
 
-            this.Init += new EventHandler(OnInit);
             this.ObjectCreating += new ObjectDataSourceObjectEventHandler(OnObjectCreating);
             this.ObjectDisposing += new ObjectDataSourceDisposingEventHandler(OnObjectDisposing);
         }
         
-        protected virtual void OnInit(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
+            base.OnInit(e);
             FindParentHost(this);
         }
 

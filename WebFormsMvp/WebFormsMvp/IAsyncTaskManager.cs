@@ -11,6 +11,7 @@ namespace WebFormsMvp
     /// </summary>
     public interface IAsyncTaskManager
     {
+        void ExecuteRegisteredAsyncTasks();
         void RegisterAsyncTask(BeginEventHandler beginHandler, EndEventHandler endHandler, EndEventHandler timeout, object state, bool executeInParallel);
     }
 }

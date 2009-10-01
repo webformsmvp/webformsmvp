@@ -30,7 +30,7 @@ namespace WebFormsMvp.Sample.Logic.Presenters
         void View_Finding(object sender, FindingWidgetEventArgs e)
         {
             if ((!e.Id.HasValue || e.Id <= 0) && String.IsNullOrEmpty(e.Name))
-                throw new ArgumentException("Need to specify an ID or a name to find a widget");
+                return;
 
             if (e.Id.HasValue && e.Id > 0)
             {
@@ -68,7 +68,7 @@ namespace WebFormsMvp.Sample.Logic.Presenters
                     (result) => { } // Timeout
                     , null, false);
             }
-
+            AsyncManager.ExecuteRegisteredAsyncTasks();
             View.Model.ShowResults = true;
         }
     }

@@ -19,6 +19,11 @@ namespace WebFormsMvp.Web
             this.page = page;
         }
 
+        public void ExecuteRegisteredAsyncTasks()
+        {
+            page.ExecuteRegisteredAsyncTasks();
+        }
+
         /// <summary>
         /// Registers the async task with the page.
         /// </summary>
