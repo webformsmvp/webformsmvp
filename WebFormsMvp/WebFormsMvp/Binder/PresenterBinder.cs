@@ -19,12 +19,22 @@ namespace WebFormsMvp.Binder
         static IPresenterFactory factory;
         public static IPresenterFactory Factory
         {
-            get { return factory; }
+            get
+            {
+                if (factory == null)
+                {
+                    factory = new DefaultPresenterFactory();
+                }
+                return factory;
+            }
             set
             {
                 if (factory != null)
                 {
-                    throw new InvalidOperationException("You can only set your container once, and should really do this in Application_Start.");
+                    throw new InvalidOperationException(
+                        factory is DefaultPresenterFactory
+                        ? "The factory has already been set, and can be not changed at a later time. In this case, it has been set to the default implementation. This happens if the factory is used before being explicitly set. If you wanted to supply your own factory, you need to do this in your Application_Start event."
+                        : "You can only set your factory once, and should really do this in Application_Start.");
                 }
                 factory = value;
             }
