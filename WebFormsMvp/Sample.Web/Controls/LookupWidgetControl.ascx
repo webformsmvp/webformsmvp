@@ -22,19 +22,13 @@
       </li>
     </ol>
     <p>
-      <asp:Button runat="server" Text="Find" ValidationGroup="LookupWidget" />
+      <asp:Button runat="server" Text="Find" ValidationGroup="LookupWidget"
+        OnClick="Find_Click" />
     </p>
   </fieldset>
   <div class="results">
-    <asp:DetailsView ID="results" runat="server" DataSourceID="resultsData"
+    <asp:DetailsView ID="results" runat="server" DataSource="<%# Model.Widgets %>"
       EmptyDataText="No matching results found"
       Visible="<%# Model.ShowResults %>" />
-    <mvp:MvpDataSource ID="resultsData" runat="server"
-        SelectEvent="Finding" SelectResult="Widgets">
-        <SelectParameters>
-            <asp:ControlParameter ControlID="widgetId" Type="Int32" PropertyName="Text" DefaultValue="1" />
-            <asp:ControlParameter ControlID="widgetName" Type="String" PropertyName="Text" /> 
-        </SelectParameters>
-    </mvp:MvpDataSource>
   </div>
 </div>
