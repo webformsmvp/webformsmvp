@@ -205,6 +205,10 @@
     <Content Include="WidgetLookup.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WebFormsMvp.Castle\WebFormsMvp.Castle.csproj">
+      <Project>{D20C328A-5DEC-465B-8A19-662DA2532D88}</Project>
+      <Name>WebFormsMvp.Castle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">
       <Project>{E265BF3E-8CCB-4C22-8C15-263735227A3D}</Project>
       <Name>WebFormsMvp</Name>

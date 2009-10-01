@@ -11,16 +11,16 @@ namespace WebFormsMvp.Binder
     internal class PresenterBindInfo
     {
         /// <summary>
-        /// Gets or sets the type of the presenter.
-        /// </summary>
-        /// <value>The type of the presenter.</value>
-        public Type PresenterType { get; private set; }
-        
-        /// <summary>
         /// Gets or sets the type of the view.
         /// </summary>
         /// <value>The type of the view.</value>
         public Type ViewType { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the type of the presenter.
+        /// </summary>
+        /// <value>The type of the presenter.</value>
+        public Type PresenterType { get; private set; }
 
         DynamicMethod dynamicMethod;
 

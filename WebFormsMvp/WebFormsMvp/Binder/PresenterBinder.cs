@@ -16,6 +16,20 @@ namespace WebFormsMvp.Binder
         static readonly IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> hostTypeToPresenterBindInfoCache
             = new Dictionary<IntPtr, IEnumerable<PresenterBindInfo>>();
 
+        static IPresenterFactory factory;
+        public static IPresenterFactory Factory
+        {
+            get { return factory; }
+            set
+            {
+                if (factory != null)
+                {
+                    throw new InvalidOperationException("You can only set your container once, and should really do this in Application_Start.");
+                }
+                factory = value;
+            }
+        }
+
         readonly IntPtr hostTypeHandle;
         readonly Queue<IView> viewInstancesRequiringBinding = new Queue<IView>();
         readonly IList<IPresenter> presenters = new List<IPresenter>();

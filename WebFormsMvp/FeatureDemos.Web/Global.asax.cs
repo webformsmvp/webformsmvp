@@ -8,6 +8,8 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Castle.Core.Resource;
 using Castle.Windsor.Configuration.Interpreters;
+using WebFormsMvp.Binder;
+using WebFormsMvp.Castle;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Data;
 
@@ -17,8 +19,10 @@ namespace WebFormsMvp.FeatureDemos.Web
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            ServiceLocator.RegisterServices(typeof(HelloWorldPresenter).Assembly, typeof(IWidgetRepository));
-            ServiceLocator.Initialize();
+            PresenterBinder.Factory = new MvpWindsorContainer();
+
+            //ServiceLocator.RegisterServices(typeof(HelloWorldPresenter).Assembly, typeof(IWidgetRepository));
+            //ServiceLocator.Initialize();
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -80,7 +84,6 @@ namespace WebFormsMvp.FeatureDemos.Web
 
         protected void Application_End(object sender, EventArgs e)
         {
-            ServiceLocator.TearDown();
         }
     }
 }
