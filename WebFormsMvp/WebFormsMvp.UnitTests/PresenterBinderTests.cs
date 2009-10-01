@@ -51,6 +51,33 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
+        public void PresenterBinder_Factory_CantSetFactoryAfterItHasBeenUsed()
+        {
+            // Arrange
+            var appDomain = CreateAppDomain(TestContext);
+
+            // Act
+            appDomain.DoCallBack(() =>
+            {
+                try
+                {
+                    var factory = PresenterBinder.Factory;
+                    PresenterBinder.Factory = null;
+                }
+                catch (Exception ex)
+                {
+                    AppDomain.CurrentDomain.SetData("ex", ex);
+                }
+            });
+
+            // Assert
+            var exception = appDomain.GetData("ex");
+            Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+
+            AppDomain.Unload(appDomain);
+        }
+
+        [TestMethod]
         public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsDefaultUsesFreindlyExceptionMessage()
         {
             // Arrange
