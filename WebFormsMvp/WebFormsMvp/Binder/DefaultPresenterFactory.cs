@@ -38,9 +38,9 @@ namespace WebFormsMvp.Binder
 
             // Using DynamicMethod and ILGenerator allows us to hold on to a
             // JIT-ed constructor call, which gives us an insanely fast way
-            // to create type instances on the fly. This makes a provides a
-            // surprising performance increase over basic reflection in
-            // applications that create lots of presenters, which is common.
+            // to create type instances on the fly. This provides a surprising
+            // performance improvement over basic reflection in applications
+            // that create lots of presenters, which is common.
             var dynamicMethod = new DynamicMethod("DynamicConstructor", type, constructorArgumentTypes, type.Module, true);
             var ilGenerator = dynamicMethod.GetILGenerator();
             ilGenerator.Emit(OpCodes.Nop);
