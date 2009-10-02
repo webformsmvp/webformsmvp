@@ -10,7 +10,7 @@ using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web
 {
-    [PresenterBinding(typeof(ILookupWidgetView), typeof(LookupWidgetPresenter))]
+    [PresenterBinding(typeof(LookupWidgetPresenter), ViewType = typeof(ILookupWidgetView))]
     public partial class WidgetLookup : MvpPage
     {
         

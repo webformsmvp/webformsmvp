@@ -62,7 +62,9 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="CompositeView`TView.cs" />
     <Compile Include="IAsyncTaskManager.cs" />
+    <Compile Include="ICompositeView`TView.cs" />
     <Compile Include="IPresenter.cs" />
     <Compile Include="IPresenter`T.cs" />
     <Compile Include="IView.cs" />

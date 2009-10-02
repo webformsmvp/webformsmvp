@@ -10,7 +10,7 @@ using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web
 {
-    [PresenterBinding(typeof(IHelloWorldView), typeof(HelloWorldPresenter))]
+    [PresenterBinding(typeof(HelloWorldPresenter), ViewType = typeof(IHelloWorldView))]
     public partial class HelloWorld : MvpPage
     {
         protected void Page_Load(object sender, EventArgs e)
