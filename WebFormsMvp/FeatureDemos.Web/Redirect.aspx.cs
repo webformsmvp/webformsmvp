@@ -6,12 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Views;
-using WebFormsMvp.FeatureDemos.Web.Framework;
+using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web
 {
     [PresenterBinding(typeof(IRedirectView), typeof(RedirectPresenter))]
-    public partial class Redirect : PageBase
+    public partial class Redirect : MvpPage
     {
 
     }
