@@ -22,6 +22,16 @@ namespace WebFormsMvp
         /// </summary>
         /// <value>The type of the presenter.</value>
         public Type PresenterType { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PresenterHostAttribute"/> class with the specified presenter type.
+        /// </summary>
+        /// <param name="presenterType">Type of the presenter.</param>
+        public PresenterBindingAttribute(Type presenterType)
+            : this(typeof(IView), presenterType)
+        {
+            PresenterType = presenterType;
+        }
         
         /// <summary>
         /// Initializes a new instance of the <see cref="PresenterHostAttribute"/> class with the specified presenter type and view type.
