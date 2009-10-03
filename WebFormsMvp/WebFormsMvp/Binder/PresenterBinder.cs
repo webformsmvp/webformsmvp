@@ -40,7 +40,7 @@ namespace WebFormsMvp.Binder
 
         readonly HttpContextBase httpContext;
         readonly IntPtr hostTypeHandle;
-        readonly Queue<IView> viewInstancesRequiringBinding = new Queue<IView>();
+        readonly IList<IView> viewInstancesRequiringBinding = new List<IView>();
         readonly IEnumerable<PresenterBindInfo> presenterBindings;
         readonly IList<IPresenter> presenters = new List<IPresenter>();
         bool initialBindingHasBeenPerformed = false;
@@ -67,31 +67,9 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        static IEnumerable<PresenterBindInfo> GetPresenterBindings(IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> cache, IntPtr hostTypeHandle, object host)
-        {
-            IEnumerable<PresenterBindInfo> presenterBindInfo;
-            if (cache.TryGetValue(hostTypeHandle, out presenterBindInfo))
-            {
-                return presenterBindInfo;
-            }
-
-            presenterBindInfo = host
-                .GetType()
-                .GetCustomAttributes(typeof(PresenterBindingAttribute), true)
-                .OfType<PresenterBindingAttribute>()
-                .Select(pba => new PresenterBindInfo(pba.ViewType, pba.PresenterType));
-
-            lock (hostTypeToPresenterBindInfoCache)
-            {
-                hostTypeToPresenterBindInfoCache.Add(hostTypeHandle, presenterBindInfo);
-            }
-
-            return presenterBindInfo;
-        }
-
         public void RegisterView(IView viewInstance)
         {
-            viewInstancesRequiringBinding.Enqueue(viewInstance);
+            viewInstancesRequiringBinding.Add(viewInstance);
 
             // If an initial binding has already been performed, go ahead
             // and bind this view straight away. This allows us to bind
@@ -104,21 +82,18 @@ namespace WebFormsMvp.Binder
 
         public void PerformBinding()
         {
-            while (viewInstancesRequiringBinding.Any())
+            if (viewInstancesRequiringBinding.Any())
             {
-                var viewInstance = viewInstancesRequiringBinding.Dequeue();
-                var viewInterfaces = GetViewInterfaces(viewInstance.GetType());
-                var newPresenters = viewInterfaces
-                    .SelectMany(viewInterface =>
-                        TryCreateAndBindPresenters(
-                            presenterBindings,
-                            viewInterface,
-                            viewInstance,
-                            httpContext,
-                            p => OnPresenterCreated(new PresenterCreatedEventArgs(p))))
-                    .Where(p => p != null);
+                var newPresenters = PerformBinding(
+                    viewInstancesRequiringBinding,
+                    presenterBindings,
+                    httpContext,
+                    p => OnPresenterCreated(new PresenterCreatedEventArgs(p)),
+                    Factory);
 
                 presenters.AddRange(newPresenters);
+
+                viewInstancesRequiringBinding.Clear();
             }
 
             initialBindingHasBeenPerformed = true;
@@ -143,6 +118,88 @@ namespace WebFormsMvp.Binder
             {
                 PresenterCreated(this, args);
             }
+        }
+
+        static IEnumerable<PresenterBindInfo> GetPresenterBindings(IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> cache, IntPtr hostTypeHandle, object host)
+        {
+            IEnumerable<PresenterBindInfo> presenterBindInfo;
+            if (cache.TryGetValue(hostTypeHandle, out presenterBindInfo))
+            {
+                return presenterBindInfo;
+            }
+
+            presenterBindInfo = host
+                .GetType()
+                .GetCustomAttributes(typeof(PresenterBindingAttribute), true)
+                .OfType<PresenterBindingAttribute>()
+                .Select(pba => new PresenterBindInfo(
+                    pba.PresenterType,
+                    pba.ViewType,
+                    pba.CompositeViewType));
+
+            lock (cache)
+            {
+                cache.Add(hostTypeHandle, presenterBindInfo);
+            }
+
+            return presenterBindInfo;
+        }
+
+        static IEnumerable<IPresenter> PerformBinding(IEnumerable<IView> candidates, IEnumerable<PresenterBindInfo> presenterBindings, HttpContextBase httpContext, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory)
+        {
+            var instancesToInterfaces = GetViewInterfaces(
+                candidates);
+            
+            var bindingsToInstances = MapBindingsToInstances(
+                presenterBindings,
+                instancesToInterfaces);
+
+            var newPresenters = BuildPresenters(
+                httpContext,
+                presenterCreatedCallback,
+                factory,
+                bindingsToInstances);
+        
+            return newPresenters;
+        }
+
+        static IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(IEnumerable<PresenterBindInfo> presenterBindings, IDictionary<IView, IEnumerable<Type>> instancesToInterfaces)
+        {
+            // Find all of the distinct view interfaces that we potentially need to map.
+            var allInterfaces = instancesToInterfaces
+                .SelectMany(v => v.Value)
+                .Distinct();
+
+            // Build a dictionary of bindings to the view instances that they apply to,
+            // for example:
+            //    Binding 1 -> View 1
+            //    Binding 2 -> View 2
+            //    Binding 3 -> View 1, View 2
+            var bindingsToInstances = presenterBindings
+                .Select
+                (
+                    binding => new KeyValuePair<PresenterBindInfo, IEnumerable<IView>>
+                    (
+                        binding,
+                        instancesToInterfaces
+                            .Where(a => a.Value.Contains(binding.ViewType))
+                            .Select(a => a.Key)
+                    )
+                )
+                .Where(map => map.Value.Any())
+                .ToDictionary(m => m.Key, m => m.Value);
+
+            return bindingsToInstances;
+        }
+
+        static IDictionary<IView, IEnumerable<Type>> GetViewInterfaces(IEnumerable<IView> instances)
+        {
+            return instances
+                .ToDictionary
+                (
+                    instance => instance,
+                    instance => GetViewInterfaces(instance.GetType())
+                );
         }
 
         static readonly IDictionary<IntPtr, IEnumerable<Type>> implementationTypeToViewInterfacesCache = new Dictionary<IntPtr, IEnumerable<Type>>();
@@ -175,21 +232,61 @@ namespace WebFormsMvp.Binder
             return viewInterfaces;
         }
 
-        static IEnumerable<IPresenter> TryCreateAndBindPresenters(IEnumerable<PresenterBindInfo> presenterBindings, Type viewType, IView viewInstance, HttpContextBase httpContext, Action<IPresenter> presenterCreatedCallback)
+        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory, IDictionary<PresenterBindInfo, IEnumerable<IView>> bindingsToInstances)
         {
-            return presenterBindings
-                .Where(pbi => pbi.ViewType == viewType)
-                .Select(pbi => pbi.PresenterType)
-                .Select(presenterType =>
+            return bindingsToInstances
+                .SelectMany(binding =>
                 {
-                    var presenter = Factory.Create(presenterType, viewType, viewInstance);
-                    presenter.HttpContext = httpContext;
-                    if (presenterCreatedCallback != null)
-                    {
-                        presenterCreatedCallback(presenter);
-                    }
-                    return presenter;
+                    return BuildPresenters(
+                        httpContext,
+                        presenterCreatedCallback,
+                        factory,
+                        binding.Key,
+                        binding.Value
+                    );
                 });
+        }
+
+        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory, PresenterBindInfo binding, IEnumerable<IView> viewInstances)
+        {
+            var viewsToCreateFor = viewInstances;
+
+            if (binding.CompositeViewType != null)
+            {
+                viewsToCreateFor = new[]
+                {
+                    CreateCompositeView(binding.CompositeViewType, viewsToCreateFor)
+                };
+            }
+
+            return viewsToCreateFor.Select(viewInstance =>
+                BuildPresenter(
+                    httpContext,
+                    presenterCreatedCallback,
+                    factory,
+                    binding,
+                    viewInstance));
+        }
+
+        static IPresenter BuildPresenter(HttpContextBase httpContext, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory, PresenterBindInfo binding, IView viewInstance)
+        {
+            var presenter = factory.Create(binding.PresenterType, binding.ViewType, viewInstance);
+            presenter.HttpContext = httpContext;
+            if (presenterCreatedCallback != null)
+            {
+                presenterCreatedCallback(presenter);
+            }
+            return presenter;
+        }
+
+        static IView CreateCompositeView(Type compositeViewType, IEnumerable<IView> childViews)
+        {
+            var view = (ICompositeView)Activator.CreateInstance(compositeViewType);
+            foreach (var v in childViews)
+            {
+                view.Add(v);
+            }
+            return view;
         }
     }
 }

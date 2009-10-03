@@ -5,9 +5,8 @@ using System.Text;
 
 namespace WebFormsMvp
 {
-    public interface ICompositeView<TView> : IView
-        where TView : IView
+    public interface ICompositeView : IView
     {
-        void Add(TView view);
+        void Add(IView view);
     }
 }

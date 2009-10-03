@@ -7,13 +7,20 @@ namespace WebFormsMvp.Binder
 {
     internal class PresenterBindInfo
     {
-        readonly Type viewType;
         readonly Type presenterType;
+        readonly Type viewType;
+        readonly Type compositeViewType;
 
-        public PresenterBindInfo(Type viewType, Type presenterType)
+        public PresenterBindInfo(Type presenterType, Type viewType, Type compositeViewType)
         {
             this.presenterType = presenterType;
             this.viewType = viewType;
+            this.compositeViewType = compositeViewType;
+        }
+
+        public Type PresenterType
+        {
+            get { return presenterType; }
         }
 
         public Type ViewType
@@ -21,9 +28,9 @@ namespace WebFormsMvp.Binder
             get { return viewType; }
         }
 
-        public Type PresenterType
+        public Type CompositeViewType
         {
-            get { return presenterType; }
+            get { return compositeViewType; }
         }
     }
 }
