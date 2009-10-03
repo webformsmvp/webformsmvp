@@ -139,7 +139,7 @@ namespace WebFormsMvp.Binder
 
             lock (cache)
             {
-                cache.Add(hostTypeHandle, presenterBindInfo);
+                cache[hostTypeHandle] = presenterBindInfo;
             }
 
             return presenterBindInfo;
