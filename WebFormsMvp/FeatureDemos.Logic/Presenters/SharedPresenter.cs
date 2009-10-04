@@ -23,8 +23,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 
         void View_Load(object sender, EventArgs e)
         {
-            View.Model.Message = string.Format(
-                "This message was set by the presenter. Here's a new guid to demonstrate that all views are sharing the one presenter instance: {0}",
+            View.Model.Message = string.Format(@"Presenter instance: {0}",
                 Guid.NewGuid());
         }
     }
