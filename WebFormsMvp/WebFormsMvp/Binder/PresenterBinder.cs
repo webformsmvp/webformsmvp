@@ -135,7 +135,7 @@ namespace WebFormsMvp.Binder
                 .Select(pba => new PresenterBindInfo(
                     pba.PresenterType,
                     pba.ViewType,
-                    pba.UseCompositeView));
+                    pba.BindingMode));
 
             lock (cache)
             {
@@ -249,14 +249,23 @@ namespace WebFormsMvp.Binder
 
         static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory, PresenterBindInfo binding, IEnumerable<IView> viewInstances)
         {
-            var viewsToCreateFor = viewInstances;
+            IEnumerable<IView> viewsToCreateFor;
 
-            if (binding.UseCompositeView)
+            switch (binding.BindingMode)
             {
-                viewsToCreateFor = new[]
-                {
-                    CreateCompositeView(binding.ViewType, viewsToCreateFor)
-                };
+                case BindingMode.Default:
+                    viewsToCreateFor = viewInstances;
+                    break;
+                case BindingMode.SharedPresenter:
+                    viewsToCreateFor = new[]
+                    {
+                        CreateCompositeView(binding.ViewType, viewInstances)
+                    };
+                    break;
+                default:
+                    throw new NotSupportedException(string.Format(
+                        "Binding mode {0} is not supported by this method.",
+                        binding.BindingMode));
             }
 
             return viewsToCreateFor.Select(viewInstance =>

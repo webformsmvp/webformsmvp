@@ -143,6 +143,144 @@ public class TestViewComposite
                 );
         }
 
+        static MethodBuilder BuildMethod(TypeBuilder type, string methodNamePrefix, string methodName, Type returnType, Type[] parameterTypes)
+        {
+            return type.DefineMethod(
+                methodNamePrefix + "_" + methodName,
+                MethodAttributes.Public |
+                    MethodAttributes.SpecialName |
+                    MethodAttributes.HideBySig |
+                    MethodAttributes.Virtual,
+                returnType,
+                parameterTypes);
+        }
+
+        static void EmitILForEachView(Type viewType, ILGenerator il, Action forEachAction)
+        {
+            // Declare the locals we need
+            var viewLocal = il.DeclareLocal(viewType);
+            var enumeratorLocal = il.DeclareLocal(typeof(IEnumerable<>).MakeGenericType(viewType));
+            var enumeratorContinueLocal = il.DeclareLocal(typeof(bool));
+
+            // Load the view instance on to the evaluation stack
+            il.Emit(OpCodes.Ldarg, viewLocal.LocalIndex);
+
+            // Call CompositeView<IViewType>.get_Views
+            var getViews = typeof(CompositeView<>)
+                .MakeGenericType(viewType)
+                .GetProperties(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic)
+                .First(pi => pi.Name == "Views" &&
+                    pi.PropertyType == typeof(IEnumerable<>).MakeGenericType(viewType))
+                .GetGetMethod(true);
+            il.EmitCall(OpCodes.Call, getViews, null);
+
+            // Call IEnumerable<>.GetEnumerator
+            var getViewsEnumerator = typeof(IEnumerable<>)
+                .MakeGenericType(viewType)
+                .GetMethod("GetEnumerator",
+                    BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+            il.EmitCall(OpCodes.Callvirt, getViewsEnumerator, null);
+
+            // Push the enumerator from the evaluation stack to the local variable
+            il.Emit(OpCodes.Stloc, enumeratorLocal.LocalIndex);
+
+            // Start a new exception block so that we can reliably dispose
+            // the enumerator
+            var exceptionBlockLabel = il.BeginExceptionBlock();
+
+            // Define some of the labels we need
+            var moveNextLabel = il.DefineLabel();
+            var continueLabel = il.DefineLabel();
+            var endFinallyLabel = il.DefineLabel();
+            var exitLabel = il.DefineLabel();
+
+            // Skip straight ahead to moveNextLabel
+            il.Emit(OpCodes.Br_S, moveNextLabel);
+
+            // Mark this point with with continueLabel
+            il.MarkLabel(continueLabel);
+
+            // Push the enumerator on to the evaluation stack
+            il.Emit(OpCodes.Ldloc, enumeratorLocal);
+
+            // Call IEnumerator<>.get_Current on the enumerator
+            var getCurrent =
+                typeof(IEnumerator<>)
+                .MakeGenericType(viewType)
+                .GetProperty("Current")
+                .GetGetMethod();
+            il.EmitCall(OpCodes.Callvirt, getCurrent, null);
+
+            // Store the output from IEnumerator<>.get_Current into a local
+            il.Emit(OpCodes.Stloc, viewLocal);
+
+            // Push the view local back onto the evaluation stack
+            il.Emit(OpCodes.Ldloc, viewLocal);
+
+            // Push the incoming set value onto the evaluation stack
+            il.Emit(OpCodes.Ldarg, 1);
+
+            // Let the calling method inject some IL here
+            forEachAction();
+
+            // Mark this point with the moveNextLabel
+            il.MarkLabel(moveNextLabel);
+
+            // Push the enumerator local back onto the evaluation stack
+            il.Emit(OpCodes.Ldloc, enumeratorLocal);
+
+            // Call IEnumerator.MoveNext on the enumerator
+            var moveNext =
+                typeof(IEnumerator)
+                .GetMethod("MoveNext");
+            il.EmitCall(OpCodes.Callvirt, moveNext, null);
+
+            // Push the result of MoveNext from the evaluation stack to the local variable
+            il.Emit(OpCodes.Stloc, enumeratorContinueLocal.LocalIndex);
+
+            // Pull the result of MoveNext from the evaluation stack back onto the evaluation stack
+            il.Emit(OpCodes.Ldloc, enumeratorContinueLocal.LocalIndex);
+
+            // If MoveNext returned true, jump back to the continue label
+            il.Emit(OpCodes.Brtrue_S, continueLabel);
+
+            // Jump out of the try block
+            il.Emit(OpCodes.Leave_S, exitLabel);
+
+            // Start the finally block
+            il.BeginFinallyBlock();
+
+            // Push the enumerator onto the evaluation stack, then compare against null
+            il.Emit(OpCodes.Ldloc, enumeratorLocal);
+            il.Emit(OpCodes.Ldnull);
+            il.Emit(OpCodes.Ceq);
+
+            // Pop the comparison result into our local
+            il.Emit(OpCodes.Stloc, enumeratorContinueLocal);
+
+            // If the comparison result was true, jump to the end of the finally block
+            il.Emit(OpCodes.Ldloc, enumeratorContinueLocal);
+            il.Emit(OpCodes.Brtrue_S, endFinallyLabel);
+
+            // Push the enumerator onto the evaluation stack
+            il.Emit(OpCodes.Ldloc, enumeratorLocal);
+
+            // Call IDisposable.Dispose
+            var dispose =
+                typeof(IDisposable)
+                .GetMethod("Dispose");
+            il.Emit(OpCodes.Callvirt, dispose);
+
+            // Mark this point as exit point for our finally block
+            il.MarkLabel(endFinallyLabel);
+
+            // Close the try block
+            il.EndExceptionBlock();
+
+            // Mark this point as our exit point (used to get out of the try block)
+            il.MarkLabel(exitLabel);
+        }
+
         static void BuildProperties(TypeBuilder type, Type viewType, IEnumerable<PropertyInfo> properties)
         {
             foreach (var propertyInfo in properties)
@@ -156,13 +294,13 @@ public class TestViewComposite
             MethodBuilder getMethod =  null;
             if (propertyInfo.CanRead)
             {
-                getMethod = BuildPropertyGetter(type, viewType, propertyInfo);
+                getMethod = BuildPropertyGetMethod(type, viewType, propertyInfo);
             }
 
             MethodBuilder setMethod = null;
             if (propertyInfo.CanWrite)
             {
-                setMethod = BuildPropertySetter(type, viewType, propertyInfo);
+                setMethod = BuildPropertySetMethod(type, viewType, propertyInfo);
             }
 
             var property = type.DefineProperty(
@@ -181,7 +319,7 @@ public class TestViewComposite
             }
         }
 
-        static MethodBuilder BuildPropertyGetter(TypeBuilder type, Type viewType, PropertyInfo propertyInfo)
+        static MethodBuilder BuildPropertyGetMethod(TypeBuilder type, Type viewType, PropertyInfo propertyInfo)
         {
             /*
              * Produces something functionally equivalent to this:
@@ -217,12 +355,10 @@ get
              * 
              */
 
-            var getBuilder = type.DefineMethod(
-                "get_" + propertyInfo.Name,
-                MethodAttributes.Public |
-                    MethodAttributes.SpecialName |
-                    MethodAttributes.HideBySig |
-                    MethodAttributes.Virtual,
+            var getBuilder = BuildMethod(
+                type,
+                "get",
+                propertyInfo.Name,
                 propertyInfo.PropertyType,
                 Type.EmptyTypes);
 
@@ -272,7 +408,7 @@ get
             return getBuilder;
         }
 
-        static MethodBuilder BuildPropertySetter(TypeBuilder type, Type viewType, PropertyInfo propertyInfo)
+        static MethodBuilder BuildPropertySetMethod(TypeBuilder type, Type viewType, PropertyInfo propertyInfo)
         {
             /*
              * Produces something functionally equivalent to this:
@@ -342,140 +478,22 @@ set
 
              */
 
-            var setBuilder = type.DefineMethod(
-                "set_" + propertyInfo.Name,
-                MethodAttributes.Public |
-                    MethodAttributes.SpecialName |
-                    MethodAttributes.HideBySig |
-                    MethodAttributes.Virtual,
+            var setBuilder = BuildMethod(
+                type,
+                "set",
+                propertyInfo.Name,
                 typeof(void),
                 new Type[] { propertyInfo.PropertyType });
 
             var il = setBuilder.GetILGenerator();
 
-            // Declare the locals we need
-            var viewLocal = il.DeclareLocal(viewType);
-            var enumeratorLocal = il.DeclareLocal(typeof(IEnumerable<>).MakeGenericType(viewType));
-            var enumeratorContinueLocal = il.DeclareLocal(typeof(bool));
-
-            // Load the view instance on to the evaluation stack
-            il.Emit(OpCodes.Ldarg, viewLocal.LocalIndex);
-
-            // Call CompositeView<IViewType>.get_Views
-            var getViews = typeof(CompositeView<>)
-                .MakeGenericType(viewType)
-                .GetProperties(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic)
-                .First(pi => pi.Name == "Views" &&
-                    pi.PropertyType == typeof(IEnumerable<>).MakeGenericType(viewType))
-                .GetGetMethod(true);
-            il.EmitCall(OpCodes.Call, getViews, null);
-
-            // Call IEnumerable<>.GetEnumerator
-            var getViewsEnumerator = typeof(IEnumerable<>)
-                .MakeGenericType(viewType)
-                .GetMethod("GetEnumerator",
-                    BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
-            il.EmitCall(OpCodes.Callvirt, getViewsEnumerator, null);
-
-            // Push the enumerator from the evaluation stack to the local variable
-            il.Emit(OpCodes.Stloc, enumeratorLocal.LocalIndex);
-
-            // Start a new exception block so that we can reliably dispose
-            // the enumerator
-            var exceptionBlockLabel = il.BeginExceptionBlock();
-            
-            // Define some of the labels we need
-            var moveNextLabel = il.DefineLabel();
-            var continueLabel = il.DefineLabel();
-            var endFinallyLabel = il.DefineLabel();
-            var exitLabel = il.DefineLabel();
-
-            // Skip straight ahead to moveNextLabel
-            il.Emit(OpCodes.Br_S, moveNextLabel);
-
-            // Mark this point with with continueLabel
-            il.MarkLabel(continueLabel);
-
-            // Push the enumerator on to the evaluation stack
-            il.Emit(OpCodes.Ldloc, enumeratorLocal);
-
-            // Call IEnumerator<>.get_Current on the enumerator
-            var getCurrent =
-                typeof(IEnumerator<>)
-                .MakeGenericType(viewType)
-                .GetProperty("Current")
-                .GetGetMethod();
-            il.EmitCall(OpCodes.Callvirt, getCurrent, null);
-
-            // Store the output from IEnumerator<>.get_Current into a local
-            il.Emit(OpCodes.Stloc, viewLocal);
-
-            // Push the view local back onto the evaluation stack
-            il.Emit(OpCodes.Ldloc, viewLocal);
-
-            // Push the incoming set value onto the evaluation stack
-            il.Emit(OpCodes.Ldarg, 1);
-
-            // Call the original setter
-            var originalSetter = propertyInfo.GetSetMethod();
-            il.EmitCall(OpCodes.Callvirt, originalSetter, null);
-
-            // Mark this point with the moveNextLabel
-            il.MarkLabel(moveNextLabel);
-
-            // Push the enumerator local back onto the evaluation stack
-            il.Emit(OpCodes.Ldloc, enumeratorLocal);
-
-            // Call IEnumerator.MoveNext on the enumerator
-            var moveNext =
-                typeof(IEnumerator)
-                .GetMethod("MoveNext");
-            il.EmitCall(OpCodes.Callvirt, moveNext, null);
-
-            // Push the result of MoveNext from the evaluation stack to the local variable
-            il.Emit(OpCodes.Stloc, enumeratorContinueLocal.LocalIndex);
-            
-            // Pull the result of MoveNext from the evaluation stack back onto the evaluation stack
-            il.Emit(OpCodes.Ldloc, enumeratorContinueLocal.LocalIndex);
-
-            // If MoveNext returned true, jump back to the continue label
-            il.Emit(OpCodes.Brtrue_S, continueLabel);
-
-            // Jump out of the try block
-            il.Emit(OpCodes.Leave_S, exitLabel);
-
-            // Start the finally block
-            il.BeginFinallyBlock();
-
-            // Push the enumerator onto the evaluation stack, then compare against null
-            il.Emit(OpCodes.Ldloc, enumeratorLocal);
-            il.Emit(OpCodes.Ldnull);
-            il.Emit(OpCodes.Ceq);
-
-            // Pop the comparison result into our local
-            il.Emit(OpCodes.Stloc, enumeratorContinueLocal);
-
-            // If the comparison result was true, jump to the end of the finally block
-            il.Emit(OpCodes.Ldloc, enumeratorContinueLocal);
-            il.Emit(OpCodes.Brtrue_S, endFinallyLabel);
-
-            // Push the enumerator onto the evaluation stack
-            il.Emit(OpCodes.Ldloc, enumeratorLocal);
-
-            // Call IDisposable.Dispose
-            var dispose =
-                typeof(IDisposable)
-                .GetMethod("Dispose");
-            il.Emit(OpCodes.Callvirt, dispose);
-            
-            // Mark this point as exit point for our finally block
-            il.MarkLabel(endFinallyLabel);
-
-            // Close the try block
-            il.EndExceptionBlock();
-
-            // Mark this point as our exit point (used to get out of the try block)
-            il.MarkLabel(exitLabel);
+            EmitILForEachView(viewType, il,
+                () =>
+                {
+                    // Call the original setter
+                    var originalSetter = propertyInfo.GetSetMethod();
+                    il.EmitCall(OpCodes.Callvirt, originalSetter, null);
+                });
 
             // Return control
             il.Emit(OpCodes.Ret);
@@ -504,7 +522,66 @@ set
 
         static void BuildEvent(TypeBuilder type, Type viewType, EventInfo eventInfo)
         {
-            //throw new NotImplementedException("Event proxies aren't implemented yet. Stay tuned.");
+            var addMethod = BuildEventAddMethod(type, viewType, eventInfo);
+            var removeMethod = BuildEventRemoveMethod(type, viewType, eventInfo);
+
+            var @event = type.DefineEvent(
+                eventInfo.Name,
+                eventInfo.Attributes,
+                eventInfo.EventHandlerType);
+
+            @event.SetAddOnMethod(addMethod);
+            @event.SetRemoveOnMethod(removeMethod);
+        }
+
+        static MethodBuilder BuildEventAddMethod(TypeBuilder type, Type viewType, EventInfo eventInfo)
+        {
+            var addBuilder = BuildMethod(
+                type,
+                "add",
+                eventInfo.Name,
+                typeof(void),
+                new Type[] { eventInfo.EventHandlerType });
+            
+            var il = addBuilder.GetILGenerator();
+
+            EmitILForEachView(viewType, il,
+                () =>
+                {
+                    // Call the original add method
+                    var originalAddMethod = eventInfo.GetAddMethod();
+                    il.EmitCall(OpCodes.Callvirt, originalAddMethod, null);
+                });
+
+            // Return control
+            il.Emit(OpCodes.Ret);
+
+            return addBuilder;
+        }
+
+        static MethodBuilder BuildEventRemoveMethod(TypeBuilder type, Type viewType, EventInfo eventInfo)
+        {
+            var removeBuilder =  BuildMethod(
+                type,
+                "remove",
+                eventInfo.Name,
+                typeof(void),
+                new Type[] { eventInfo.EventHandlerType });
+
+            var il = removeBuilder.GetILGenerator();
+
+            EmitILForEachView(viewType, il,
+                () =>
+                {
+                    // Call the original remove method
+                    var originalRemoveMethod = eventInfo.GetRemoveMethod();
+                    il.EmitCall(OpCodes.Callvirt, originalRemoveMethod, null);
+                });
+
+            // Return control
+            il.Emit(OpCodes.Ret);
+
+            return removeBuilder;
         }
     }
 }

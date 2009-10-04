@@ -12,10 +12,11 @@ namespace WebFormsMvp
         {
             PresenterType = presenterType;
             ViewType = typeof(IView);
+            BindingMode = BindingMode.Default;
         }
 
         public Type PresenterType { get; private set; }
         public Type ViewType { get; set; }
-        public bool UseCompositeView { get; set; }
+        public BindingMode BindingMode { get; set; }
     }
 }

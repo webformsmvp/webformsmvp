@@ -59,6 +59,7 @@
     <Compile Include="Binder\IPresenterFactory.cs" />
     <Compile Include="Binder\PresenterBindInfo.cs" />
     <Compile Include="Binder\PresenterCreatedEventArgs.cs" />
+    <Compile Include="BindingMode.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>

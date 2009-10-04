@@ -9,13 +9,13 @@ namespace WebFormsMvp.Binder
     {
         readonly Type presenterType;
         readonly Type viewType;
-        readonly bool useCompositeView;
+        readonly BindingMode bindingMode;
 
-        public PresenterBindInfo(Type presenterType, Type viewType, bool useCompositeView)
+        public PresenterBindInfo(Type presenterType, Type viewType, BindingMode bindingMode)
         {
             this.presenterType = presenterType;
             this.viewType = viewType;
-            this.useCompositeView = useCompositeView;
+            this.bindingMode = bindingMode;
         }
 
         public Type PresenterType
@@ -28,9 +28,9 @@ namespace WebFormsMvp.Binder
             get { return viewType; }
         }
 
-        public bool UseCompositeView
+        public BindingMode BindingMode
         {
-            get { return useCompositeView; }
+            get { return bindingMode; }
         }
     }
 }
