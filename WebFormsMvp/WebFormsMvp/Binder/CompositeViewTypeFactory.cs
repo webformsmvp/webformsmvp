@@ -69,8 +69,6 @@ public class TestViewComposite
 
             var compositeViewType = type.CreateType();
 
-            assembly.Save(@"WebFormsMvp.CompositeViewTypes");
-
             return compositeViewType;
         }
 
@@ -100,8 +98,7 @@ public class TestViewComposite
         static AssemblyBuilder BuildAssembly(AssemblyName assemblyName, AppDomain appDomain)
         {
             var assembly = appDomain.DefineDynamicAssembly(assemblyName,
-                AssemblyBuilderAccess.RunAndSave,
-                @"c:\temp\");
+                AssemblyBuilderAccess.Run);
             return assembly;
         }
 
