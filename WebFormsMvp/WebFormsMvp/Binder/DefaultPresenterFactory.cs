@@ -46,7 +46,9 @@ namespace WebFormsMvp.Binder
             var constructor = type.GetConstructor(constructorArgumentTypes);
             if (constructor == null)
             {
-                throw new InvalidOperationException(string.Format("{0} is missing expected constructor.", type.FullName));
+                throw new InvalidOperationException(string.Format("{0} is missing expected constructor. We looked for a custructor that took parameters of: ({1}).",
+                    type.FullName,
+                    string.Join(", ", constructorArgumentTypes.Select(t => t.FullName).ToArray())));
             }
 
             // Using DynamicMethod and ILGenerator allows us to hold on to a
