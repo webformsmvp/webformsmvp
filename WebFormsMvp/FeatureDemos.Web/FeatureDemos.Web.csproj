@@ -77,12 +77,12 @@
     <Compile Include="AsyncMessages.aspx.designer.cs">
       <DependentUpon>AsyncMessages.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CompositeView.aspx.cs">
-      <DependentUpon>CompositeView.aspx</DependentUpon>
+    <Compile Include="SharedPresenter.aspx.cs">
+      <DependentUpon>SharedPresenter.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CompositeView.aspx.designer.cs">
-      <DependentUpon>CompositeView.aspx</DependentUpon>
+    <Compile Include="SharedPresenter.aspx.designer.cs">
+      <DependentUpon>SharedPresenter.aspx</DependentUpon>
     </Compile>
     <Compile Include="Controls\AsyncMessagesControl.ascx.cs">
       <DependentUpon>AsyncMessagesControl.ascx</DependentUpon>
@@ -91,12 +91,12 @@
     <Compile Include="Controls\AsyncMessagesControl.ascx.designer.cs">
       <DependentUpon>AsyncMessagesControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CompositeControl.ascx.cs">
-      <DependentUpon>CompositeControl.ascx</DependentUpon>
+    <Compile Include="Controls\SharedPresenterControl.ascx.cs">
+      <DependentUpon>SharedPresenterControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\CompositeControl.ascx.designer.cs">
-      <DependentUpon>CompositeControl.ascx</DependentUpon>
+    <Compile Include="Controls\SharedPresenterControl.ascx.designer.cs">
+      <DependentUpon>SharedPresenterControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\HelloWorldControl.ascx.cs">
       <DependentUpon>HelloWorldControl.ascx</DependentUpon>
@@ -215,8 +215,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CompositeView.aspx" />
-    <Content Include="Controls\CompositeControl.ascx" />
+    <Content Include="SharedPresenter.aspx" />
+    <Content Include="Controls\SharedPresenterControl.ascx" />
     <Content Include="Handlers\TimeHandler.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
