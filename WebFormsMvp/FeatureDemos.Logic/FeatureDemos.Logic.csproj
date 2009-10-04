@@ -80,7 +80,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompositeDemoViewComposite.cs" />
     <Compile Include="Views\IAsyncMessagesView.cs" />
     <Compile Include="Views\ICompositeDemoView.cs" />
     <Compile Include="Views\IHelloWorldView.cs" />

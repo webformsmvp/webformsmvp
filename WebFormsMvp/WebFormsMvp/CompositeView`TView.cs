@@ -29,18 +29,6 @@ namespace WebFormsMvp
             views.Add(viewOfT);
         }
 
-        public event EventHandler Load
-        {
-            add
-            {
-                foreach (var view in Views)
-                    view.Load += value;
-            }
-            remove
-            {
-                foreach (var view in Views)
-                    view.Load -= value;
-            }
-        }
+        public abstract event EventHandler Load;
     }
 }

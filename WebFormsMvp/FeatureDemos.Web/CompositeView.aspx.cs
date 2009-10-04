@@ -12,7 +12,7 @@ namespace WebFormsMvp.FeatureDemos.Web
 {
     [PresenterBinding(typeof(CompositeDemoPresenter),
         ViewType = typeof(ICompositeDemoView),
-        CompositeViewType = typeof(CompositeDemoViewComposite))]
+        UseCompositeView = true)]
     public partial class CompositeView : MvpPage
     {
     }

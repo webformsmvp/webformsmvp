@@ -16,6 +16,6 @@ namespace WebFormsMvp
 
         public Type PresenterType { get; private set; }
         public Type ViewType { get; set; }
-        public Type CompositeViewType { get; set; }
+        public bool UseCompositeView { get; set; }
     }
 }

@@ -135,7 +135,7 @@ namespace WebFormsMvp.Binder
                 .Select(pba => new PresenterBindInfo(
                     pba.PresenterType,
                     pba.ViewType,
-                    pba.CompositeViewType));
+                    pba.UseCompositeView));
 
             lock (cache)
             {
@@ -251,11 +251,11 @@ namespace WebFormsMvp.Binder
         {
             var viewsToCreateFor = viewInstances;
 
-            if (binding.CompositeViewType != null)
+            if (binding.UseCompositeView)
             {
                 viewsToCreateFor = new[]
                 {
-                    CreateCompositeView(binding.CompositeViewType, viewsToCreateFor)
+                    CreateCompositeView(binding.ViewType, viewsToCreateFor)
                 };
             }
 
@@ -279,8 +279,10 @@ namespace WebFormsMvp.Binder
             return presenter;
         }
 
-        static IView CreateCompositeView(Type compositeViewType, IEnumerable<IView> childViews)
+        static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews)
         {
+            var factory = new CompositeViewTypeFactory();
+            var compositeViewType = factory.BuildCompositeViewType(viewType);
             var view = (ICompositeView)Activator.CreateInstance(compositeViewType);
             foreach (var v in childViews)
             {

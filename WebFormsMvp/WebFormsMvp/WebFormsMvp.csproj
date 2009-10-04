@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\CompositeViewTypeFactory.cs" />
     <Compile Include="Binder\DefaultPresenterFactory.cs" />
     <Compile Include="Binder\IPresenterFactory.cs" />
     <Compile Include="Binder\PresenterBindInfo.cs" />
@@ -64,7 +65,7 @@
     </Compile>
     <Compile Include="CompositeView`TView.cs" />
     <Compile Include="IAsyncTaskManager.cs" />
-    <Compile Include="ICompositeView`TView.cs" />
+    <Compile Include="ICompositeView.cs" />
     <Compile Include="IPresenter.cs" />
     <Compile Include="IPresenter`T.cs" />
     <Compile Include="IView.cs" />

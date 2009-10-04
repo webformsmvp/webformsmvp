@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Reflection;
 
 namespace WebFormsMvp.Binder
 {
@@ -10,8 +11,20 @@ namespace WebFormsMvp.Binder
         public IPresenter Create(Type presenterType, Type viewType, IView viewInstance)
         {
             var buildMethod = GetBuildMethod(presenterType, viewType);
-            var presenter = (IPresenter)buildMethod.Invoke(null, new[] { viewInstance });
-            return presenter;
+            try
+            {
+                var presenter = (IPresenter)buildMethod.Invoke(null, new[] { viewInstance });
+                return presenter;
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw new InvalidOperationException
+                (
+                    string.Format("An exception was thrown whilst trying to create an instance of {0}. Check the InnerException for more information.",
+                        presenterType.FullName),
+                    ex.InnerException
+                );
+            }
         }
 
         public void Release(IPresenter presenter)
