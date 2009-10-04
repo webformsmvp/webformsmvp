@@ -7,9 +7,30 @@ using System.Collections;
 
 namespace WebFormsMvp.Binder
 {
-    public class CompositeViewTypeFactory
+    internal class CompositeViewTypeFactory
     {
+        IDictionary<IntPtr, Type> compositeViewTypeCache = new Dictionary<IntPtr, Type>();
+
         public Type BuildCompositeViewType(Type viewType)
+        {
+            var viewTypeHandle = viewType.TypeHandle.Value;
+
+            Type compositeViewType;
+            if (compositeViewTypeCache.TryGetValue(viewTypeHandle, out compositeViewType))
+            {
+                return compositeViewType;
+            }
+
+            lock (compositeViewTypeCache)
+            {
+                compositeViewType = BuildCompositeViewTypeInternal(viewType);
+                compositeViewTypeCache[viewTypeHandle] = compositeViewType;
+            }
+
+            return compositeViewType;
+        }
+
+        static Type BuildCompositeViewTypeInternal(Type viewType)
         {
             /*
              * To support composite views, we dynamically emit a type which
@@ -117,7 +138,7 @@ public class TestViewComposite
             var interfaces = new[] { viewType };
 
             var type = module.DefineType(
-                "CompositeTest",
+                viewType.FullName + "__@CompositeView",
                 typeAttributes,
                 parentType,
                 interfaces);
