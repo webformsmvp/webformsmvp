@@ -4,6 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.ProjectSite", "WebFormsMvp.ProjectSite\WebFormsMvp.ProjectSite.csproj", "{BC36981C-F034-4F80-8957-1284906D2694}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs06.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WebFormsMvp.ProjectSite\\WebFormsMvp.ProjectSite.csproj
+		SccProjectName1 = WebFormsMvp.ProjectSite
+		SccLocalPath1 = WebFormsMvp.ProjectSite
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
