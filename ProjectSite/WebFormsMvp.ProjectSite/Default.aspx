@@ -20,7 +20,7 @@
             <li class="first"><a href="/Why">Why MVP? Find out in 3 mins.</a></li>
             <li class="second"><a href="/Download">Download today.</a></li>
             <li class="third"><a href="http://wiki.webformsmvp.com">Learn more.</a></li>
-            <li class="fourth"><a href="http://wiki.webformsmvp.com/SpreadTheWord">Spread the word.</a></li>
+            <li class="fourth"><a href="http://wiki.webformsmvp.com/index.php?title=Spread_the_Word">Spread the word.</a></li>
         </ul>
     </div>
 </asp:Content>
