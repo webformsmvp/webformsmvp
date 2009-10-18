@@ -12,27 +12,49 @@ namespace WebFormsMvp.Web
     /// </summary>
     public abstract class MvpPage : Page
     {
-        readonly PresenterBinder presenterBinder;
+        PresenterBinder presenterBinder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MvpPage"/> class.
         /// </summary>
         protected MvpPage()
         {
-            presenterBinder = new PresenterBinder(this, new HttpContextWrapper(HttpContext.Current));
-            
-            var asyncManager = new PageAsyncTaskManagerWrapper(this);
-            presenterBinder.PresenterCreated += (sender, args) =>
-            {
-                args.Presenter.AsyncManager = asyncManager;
-            };
-
             Unload += new EventHandler(PageBase_Unload);
         }
 
         internal void RegisterView(IView view)
         {
             presenterBinder.RegisterView(view);
+        }
+
+        protected override void OnPreInit(EventArgs e)
+        {
+            presenterBinder = new PresenterBinder(
+                FindHosts(),
+                new HttpContextWrapper(Context));
+
+            var asyncManager = new PageAsyncTaskManagerWrapper(this);
+            presenterBinder.PresenterCreated += (sender, args) =>
+            {
+                args.Presenter.AsyncManager = asyncManager;
+            };
+
+            base.OnPreInit(e);
+        }
+
+        IEnumerable<object> FindHosts()
+        {
+            var hosts = new List<object>();
+            hosts.Add(this);
+
+            var masterHost = this.Master;
+            while (masterHost != null)
+            {
+                hosts.Add(masterHost);
+                masterHost = masterHost.Master;
+            }
+
+            return hosts;
         }
 
         protected override void OnInit(EventArgs e)

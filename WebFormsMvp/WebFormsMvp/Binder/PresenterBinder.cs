@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Collections;
 
 namespace WebFormsMvp.Binder
 {
@@ -53,15 +54,28 @@ namespace WebFormsMvp.Binder
         /// </summary>
         /// <param name="host">The host.</param>
         public PresenterBinder(object host, HttpContextBase httpContext)
+            : this(new[] { host }, httpContext)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PresenterBinder&lt;THost&gt;"/> class.
+        /// </summary>
+        /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
+        public PresenterBinder(IEnumerable<object> hosts, HttpContextBase httpContext)
         {
             this.httpContext = httpContext;
 
-            hostTypeHandle = host.GetType().TypeHandle.Value;
+            presenterBindings = hosts
+                .SelectMany(host =>
+                {
+                    return GetPresenterBindings(
+                        hostTypeToPresenterBindInfoCache,
+                        host.GetType().TypeHandle.Value,
+                        host);
+                });
 
-            presenterBindings = GetPresenterBindings(hostTypeToPresenterBindInfoCache, hostTypeHandle, host);
-
-            var selfHostedView = host as IView;
-            if (selfHostedView != null)
+            foreach (var selfHostedView in hosts.OfType<IView>())
             {
                 RegisterView(selfHostedView);
                 PerformBinding();
