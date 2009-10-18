@@ -58,7 +58,7 @@ namespace WebFormsMvp.Web
         {
             base.OnInit(e);
 
-            if (!(_parentHost is IView))
+            if (!(parentHost is IView))
             {
                 throw new NotSupportedException("MvpDataSource can only be used on pages or user controls that implement IView");
             }
@@ -115,7 +115,7 @@ namespace WebFormsMvp.Web
 
         public IEnumerable RaiseSelectEventOnHost()
         {
-            var eventType = _parentHost.GetType().GetEvent(SelectEvent).EventHandlerType;
+            var eventType = parentHost.GetType().GetEvent(SelectEvent).EventHandlerType;
             var eventArgsTypes = eventType.GetGenericArguments();
             var eventArgsType = eventArgsTypes.Length == 0 ? null : eventArgsTypes[0];
 
@@ -129,9 +129,9 @@ namespace WebFormsMvp.Web
 
             RaiseEventOnHost(SelectEvent, eventArgs);
 
-            var model = _parentHost.GetType()
+            var model = parentHost.GetType()
                 .GetProperty("Model")
-                .GetValue(_parentHost, null);
+                .GetValue(parentHost, null);
 
             var result = model.GetType()
                 .GetProperty(SelectResult)
@@ -161,15 +161,15 @@ namespace WebFormsMvp.Web
 
         private void RaiseEventOnHost(string eventName, EventArgs e)
         {
-            var eventDelegate = _parentHost.GetType().BaseType
+            var eventDelegate = parentHost.GetType().BaseType
                 .GetField(eventName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                .GetValue(_parentHost) as MulticastDelegate;
+                .GetValue(parentHost) as MulticastDelegate;
 
             if (eventDelegate != null)
             {
                 foreach (var handler in eventDelegate.GetInvocationList())
                 {
-                    handler.Method.Invoke(handler.Target, new object[] { _parentHost, e });
+                    handler.Method.Invoke(handler.Target, new object[] { parentHost, e });
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Collections;
+using System.Globalization;
 
 namespace WebFormsMvp.Binder
 {
@@ -41,11 +42,10 @@ namespace WebFormsMvp.Binder
 
         readonly HttpContextBase httpContext;
         readonly IMessageCoordinator messageCoordinator = new MessageCoordinator();
-        readonly IntPtr hostTypeHandle;
         readonly IList<IView> viewInstancesRequiringBinding = new List<IView>();
         readonly IEnumerable<PresenterBindInfo> presenterBindings;
         readonly IList<IPresenter> presenters = new List<IPresenter>();
-        bool initialBindingHasBeenPerformed = false;
+        bool initialBindingHasBeenPerformed;
 
         public event EventHandler<PresenterCreatedEventArgs> PresenterCreated;
 
@@ -191,11 +191,6 @@ namespace WebFormsMvp.Binder
 
         static IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(IEnumerable<PresenterBindInfo> presenterBindings, IDictionary<IView, IEnumerable<Type>> instancesToInterfaces)
         {
-            // Find all of the distinct view interfaces that we potentially need to map.
-            var allInterfaces = instancesToInterfaces
-                .SelectMany(v => v.Value)
-                .Distinct();
-
             // Build a dictionary of bindings to the view instances that they apply to,
             // for example:
             //    Binding 1 -> View 1
@@ -291,6 +286,7 @@ namespace WebFormsMvp.Binder
                     break;
                 default:
                     throw new NotSupportedException(string.Format(
+                        CultureInfo.InvariantCulture,
                         "Binding mode {0} is not supported by this method.",
                         binding.BindingMode));
             }

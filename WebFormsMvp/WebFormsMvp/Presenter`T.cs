@@ -18,7 +18,7 @@ namespace WebFormsMvp
         /// Initializes a new instance of the <see cref="Presenter&lt;TView, TModel&gt;"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
-        public Presenter(TView view)
+        protected Presenter(TView view)
             : base(view)
         {
             View.Model = new TModel();

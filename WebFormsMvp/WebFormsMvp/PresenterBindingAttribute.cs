@@ -6,7 +6,7 @@ using System.Web;
 namespace WebFormsMvp
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class PresenterBindingAttribute : Attribute
+    public sealed class PresenterBindingAttribute : Attribute
     {
         public PresenterBindingAttribute(Type presenterType)
         {

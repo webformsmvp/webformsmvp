@@ -36,7 +36,7 @@ namespace WebFormsMvp.Web
 
         protected virtual void OnObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
-            e.ObjectInstance = _parentHost;
+            e.ObjectInstance = parentHost;
         }
 
         protected virtual void OnObjectDisposing(object sender, ObjectDataSourceDisposingEventArgs e)
@@ -44,7 +44,7 @@ namespace WebFormsMvp.Web
             e.Cancel = true;
         }
 
-        protected Object _parentHost;
+        protected Object parentHost;
 
         /// <summary>
         /// Walks the control tree to find the hosting parent page or user control
@@ -58,7 +58,7 @@ namespace WebFormsMvp.Web
                 this.TypeName = Assembly.CreateQualifiedName(
                     this.Page.GetType().Assembly.FullName,
                     this.Page.GetType().BaseType.FullName);
-                _parentHost = this.Page;
+                parentHost = this.Page;
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace WebFormsMvp.Web
             {
                 Type parentBaseType = ctl.Parent.GetType().BaseType;
                 this.TypeName = parentBaseType.FullName;
-                _parentHost = ctl.Parent;
+                parentHost = ctl.Parent;
                 return;
             }
             else

@@ -14,7 +14,7 @@ namespace WebFormsMvp.Web
     {
         readonly PresenterBinder presenterBinder;
 
-        public MvpWebService()
+        protected MvpWebService()
             : base()
         {
             presenterBinder = new PresenterBinder(this, new HttpContextWrapper(HttpContext.Current));

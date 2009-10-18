@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Reflection;
 using System.Collections;
+using System.Globalization;
 
 namespace WebFormsMvp.Binder
 {
@@ -98,12 +99,14 @@ public class TestViewComposite
             if (!viewType.IsInterface)
             {
                 throw new ArgumentException(string.Format(
+                    CultureInfo.InvariantCulture,
                     "The supplied view type must be an interface, but {0} was supplied instead.",
                     viewType.FullName));
             }
             if (!typeof(IView).IsAssignableFrom(viewType))
             {
                 throw new ArgumentException(string.Format(
+                    CultureInfo.InvariantCulture,
                     "The view type must inherit from {0}. The supplied type ({1}) does not.",
                     typeof(IView).FullName,
                     viewType.FullName));
@@ -204,7 +207,7 @@ public class TestViewComposite
 
             // Start a new exception block so that we can reliably dispose
             // the enumerator
-            var exceptionBlockLabel = il.BeginExceptionBlock();
+            il.BeginExceptionBlock();
 
             // Define some of the labels we need
             var moveNextLabel = il.DefineLabel();

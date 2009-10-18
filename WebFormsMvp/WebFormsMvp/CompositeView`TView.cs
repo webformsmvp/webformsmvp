@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace WebFormsMvp
 {
@@ -21,6 +22,7 @@ namespace WebFormsMvp
             if (viewOfT == null)
             {
                 throw new ArgumentException(string.Format(
+                    CultureInfo.InvariantCulture,
                     "Expected a view of type {0} but {1} was supplied.",
                     typeof(TView).FullName,
                     view.GetType().FullName
