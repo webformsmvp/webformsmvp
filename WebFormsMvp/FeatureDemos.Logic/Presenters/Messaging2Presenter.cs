@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
+using WebFormsMvp.FeatureDemos.Logic.Domain;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
@@ -22,10 +23,12 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 
         void view_Load(object sender, EventArgs e)
         {
-            Messages.Subscribe<Guid>(m =>
-            {
-                View.Model.DisplayText = string.Format("Presenter B received the message: {0}", m);
-            });
+            Messages.Subscribe<Widget>(w =>
+                {
+                    View.Model.DisplayText =
+                        string.Format("Received widget {0}",
+                            w.Id);
+                });
         }
     }
 }

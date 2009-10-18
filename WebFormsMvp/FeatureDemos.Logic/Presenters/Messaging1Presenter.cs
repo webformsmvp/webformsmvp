@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WebFormsMvp.FeatureDemos.Logic.Domain;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
-    public class Messaging1Presenter : Presenter<IMessaging1View, MessagingModel>
+    public class Messaging1Presenter
+        : Presenter<IMessaging1View, MessagingModel>
     {
         public Messaging1Presenter(IMessaging1View view)
             : base(view)
@@ -22,9 +24,17 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 
         void view_Load(object sender, EventArgs e)
         {
-            var message = Guid.NewGuid();
-            Messages.Publish(message);
-            View.Model.DisplayText = string.Format("Presenter A published the message: {0}", message);
+            var widget = new Widget
+            {
+                Id = 123,
+                Name = "Awesome widget!"
+            };
+
+            View.Model.DisplayText =
+                string.Format("Published widget {0}",
+                    widget.Id);
+
+            Messages.Publish(widget);
         }
     }
 }
