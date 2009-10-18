@@ -32,6 +32,12 @@ namespace WebFormsMvp
         public IAsyncTaskManager AsyncManager { get; set; }
 
         /// <summary>
+        /// Gets or sets the message coordinator for cross presenter messaging.
+        /// </summary>
+        /// <value>The message coordinator.</value>
+        public IMessageCoordinator Messages { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Presenter&lt;TView&gt;"/> class.
         /// </summary>
         /// <param name="view">The view.</param>

@@ -58,6 +58,8 @@
     <Compile Include="AsyncMessagesPresenterTests.cs" />
     <Compile Include="HelloWorldPresenterTests.cs" />
     <Compile Include="LookupWidgetPresenterTests.cs" />
+    <Compile Include="Messaging1PresenterTests.cs" />
+    <Compile Include="Messaging2PresenterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedirectPresenterTests.cs" />
   </ItemGroup>

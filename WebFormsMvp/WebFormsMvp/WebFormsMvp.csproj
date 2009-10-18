@@ -65,12 +65,15 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="CompositeView`TView.cs" />
+    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="IAsyncTaskManager.cs" />
     <Compile Include="ICompositeView.cs" />
+    <Compile Include="IMessageCoordinator.cs" />
     <Compile Include="IPresenter.cs" />
     <Compile Include="IPresenter`T.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="IView`T.cs" />
+    <Compile Include="MessageCoordinator.cs" />
     <Compile Include="Web\MvpHttpHandler.cs" />
     <Compile Include="Web\PageAsyncTaskManagerWrapper.cs" />
     <Compile Include="Web\MvpPage.cs">

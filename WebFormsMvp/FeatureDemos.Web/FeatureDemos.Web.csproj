@@ -77,6 +77,27 @@
     <Compile Include="AsyncMessages.aspx.designer.cs">
       <DependentUpon>AsyncMessages.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Messaging1Control.ascx.cs">
+      <DependentUpon>Messaging1Control.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Messaging1Control.ascx.designer.cs">
+      <DependentUpon>Messaging1Control.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Messaging2Control.ascx.cs">
+      <DependentUpon>Messaging2Control.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Messaging2Control.ascx.designer.cs">
+      <DependentUpon>Messaging2Control.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Messaging.aspx.cs">
+      <DependentUpon>Messaging.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Messaging.aspx.designer.cs">
+      <DependentUpon>Messaging.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SharedPresenter.aspx.cs">
       <DependentUpon>SharedPresenter.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -215,6 +236,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\Messaging1Control.ascx" />
+    <Content Include="Controls\Messaging2Control.ascx" />
+    <Content Include="Messaging.aspx" />
     <Content Include="SharedPresenter.aspx" />
     <Content Include="Controls\SharedPresenterControl.ascx" />
     <Content Include="Handlers\TimeHandler.ashx" />
