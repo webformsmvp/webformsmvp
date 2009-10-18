@@ -41,6 +41,12 @@ namespace WebFormsMvp.Web
             base.OnInit(e);
         }
 
+        protected override void OnPreRenderComplete(EventArgs e)
+        {
+            presenterBinder.MessageCoordinator.Close();
+            base.OnPreRenderComplete(e);
+        }
+
         private void PageBase_Unload(object sender, EventArgs e)
         {
             presenterBinder.Release();

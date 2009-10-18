@@ -2,10 +2,23 @@
 
 namespace WebFormsMvp
 {
-    public interface IMessageCoordinator : IDisposable
+    public interface IMessageCoordinator : IMessageBus
     {
-        void Publish<TMessage>(TMessage message);
-        void Subscribe<TMessage>(Action<TMessage> messageReceivedCallback);
-        void Subscribe<TMessage>(Action<TMessage> messageReceivedCallback, Action neverReceivedCallback);
+        /// <summary>
+        /// <para>
+        ///     Closes the message bus, causing any subscribers that have not yet received
+        ///     a message to have their "never received" callback fired.
+        /// </para>
+        /// <para>
+        ///     After this method is called, any further calls to <see cref="Publish"/> or
+        ///     <see cref="Subscribe"/> will result in a
+        ///     <see cref="InvalidOperationException"/>.
+        /// </para>
+        /// <para>
+        ///     The <see cref="Close"/> method may be called multiple times and must not
+        ///     fail in this scenario.
+        /// </para>
+        /// </summary>
+        void Close();
     }
 }

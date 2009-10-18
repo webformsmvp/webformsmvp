@@ -31,9 +31,10 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
             };
 
             View.Model.DisplayText =
-                string.Format("Published widget {0}",
+                string.Format("Presenter A published widget {0}.",
                     widget.Id);
 
+            // This publishes the widget to the bus.
             Messages.Publish(widget);
         }
     }

@@ -68,6 +68,14 @@ namespace WebFormsMvp.Binder
             }
         }
 
+        public IMessageCoordinator MessageCoordinator
+        {
+            get
+            {
+                return messageCoordinator;
+            }
+        }
+
         public void RegisterView(IView viewInstance)
         {
             viewInstancesRequiringBinding.Add(viewInstance);
@@ -103,6 +111,7 @@ namespace WebFormsMvp.Binder
 
         public void Release()
         {
+            MessageCoordinator.Close();
             lock (presenters)
             {
                 foreach (var presenter in presenters)

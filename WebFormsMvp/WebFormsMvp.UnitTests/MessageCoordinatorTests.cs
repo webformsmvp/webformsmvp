@@ -147,14 +147,14 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ObjectDisposedException))]
-        public void MessageCoordinator_Publish_ShouldThrowObjectDisposedExceptionIfCalledAfterDispose()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void MessageCoordinator_Publish_ShouldThrowInvalidOperationExceptionIfCalledAfterClose()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
 
             // Act
-            coordinator.Dispose();
+            coordinator.Close();
             coordinator.Publish("message");
 
             // Assert
@@ -203,14 +203,14 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ObjectDisposedException))]
-        public void MessageCoordinator_Subscribe_ShouldThrowObjectDisposedExceptionIfCalledAfterDispose()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void MessageCoordinator_Subscribe_ShouldThrowInvalidOperationExceptionIfCalledAfterClose()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
 
             // Act
-            coordinator.Dispose();
+            coordinator.Close();
             coordinator.Subscribe((string message) =>
             {
                 Assert.Fail();
@@ -245,7 +245,7 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
-        public void MessageCoordinator_Dispose_ShouldFireNeverReceivedCallback()
+        public void MessageCoordinator_Close_ShouldFireNeverReceivedCallback()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
@@ -262,14 +262,14 @@ namespace WebFormsMvp.UnitTests
 
             // Act
             coordinator.Publish("hello");
-            coordinator.Dispose();
+            coordinator.Close();
 
             // Assert
             Assert.IsTrue(neverReceivedCallbackFired);
         }
 
         [TestMethod]
-        public void MessageCoordinator_Dispose_ShouldFireNeverReceivedCallbackInOrderOfSubscription()
+        public void MessageCoordinator_Close_ShouldFireNeverReceivedCallbackInOrderOfSubscription()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
@@ -289,7 +289,7 @@ namespace WebFormsMvp.UnitTests
             }
 
             // Act
-            coordinator.Dispose();
+            coordinator.Close();
 
             // Assert
             var expectedFiringOrder = Enumerable.Range(0, subscriberCount).ToArray();
@@ -297,7 +297,7 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
-        public void MessageCoordinator_Dispose_ShouldNotFireNeverReceivedCallbackForMessagesThatHaveBeenReceived()
+        public void MessageCoordinator_Close_ShouldNotFireNeverReceivedCallbackForMessagesThatHaveBeenReceived()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
@@ -314,22 +314,21 @@ namespace WebFormsMvp.UnitTests
 
             // Act
             coordinator.Publish("hello");
-            coordinator.Dispose();
+            coordinator.Close();
 
             // Assert
             Assert.IsTrue(messageReceivedCallbackFired);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ObjectDisposedException))]
-        public void MessageCoordinator_Dispose_ShouldThrowObjectDisposedExceptionIfCalledTwice()
+        public void MessageCoordinator_Close_ShouldSupportBeingCalledMultipleTimes()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
             
             // Act
-            coordinator.Dispose();
-            coordinator.Dispose();
+            coordinator.Close();
+            coordinator.Close();
 
             // Assert
         }

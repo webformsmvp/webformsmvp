@@ -68,6 +68,7 @@
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="IAsyncTaskManager.cs" />
     <Compile Include="ICompositeView.cs" />
+    <Compile Include="IMessageBus.cs" />
     <Compile Include="IMessageCoordinator.cs" />
     <Compile Include="IPresenter.cs" />
     <Compile Include="IPresenter`T.cs" />

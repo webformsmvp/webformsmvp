@@ -7,7 +7,6 @@ namespace WebFormsMvp
 {
     public class MessageCoordinator : IMessageCoordinator
     {
-        bool disposed;
         readonly IDictionary<Type, IList> messages;
         readonly IDictionary<Type, IList<Action<object>>> messageReceivedCallbacks;
         readonly IDictionary<Type, IList<Action>> neverReceivedCallbacks;
@@ -21,9 +20,9 @@ namespace WebFormsMvp
 
         public void Publish<TMessage>(TMessage message)
         {
-            if (disposed)
+            if (closed)
             {
-                throw new ObjectDisposedException(GetType().Name);
+                throw new InvalidOperationException("Messages can't be published or subscribed to after the message bus has been closed. In a typical page lifecycle, this happens during PreRenderComplete.");
             }
 
             AddMessage<TMessage>(message);
@@ -64,9 +63,9 @@ namespace WebFormsMvp
 
         public void Subscribe<TMessage>(Action<TMessage> messageReceivedCallback, Action neverReceivedCallback)
         {
-            if (disposed)
+            if (closed)
             {
-                throw new ObjectDisposedException(GetType().Name);
+                throw new InvalidOperationException("Messages can't be published or subscribed to after the message bus has been closed. In a typical page lifecycle, this happens during PreRenderComplete.");
             }
             if (messageReceivedCallback == null)
             {
@@ -121,18 +120,24 @@ namespace WebFormsMvp
             }
         }
 
-        object disposeLock = new object();
-        public void Dispose()
+        bool closed;
+        object closeLock = new object();
+        public void Close()
         {
-            lock (disposeLock)
+            lock (closeLock)
             {
-                if (disposed)
+                if (closed)
                 {
-                    throw new ObjectDisposedException(GetType().Name);
+                    return;
                 }
-                disposed = true;
+                closed = true;
             }
 
+            FireNeverReceivedCallbacks();
+        }
+
+        void FireNeverReceivedCallbacks()
+        {
             var neverReceivedMessageTypes = neverReceivedCallbacks
                 .Keys
                 .Where(neverReceivedMessageType =>

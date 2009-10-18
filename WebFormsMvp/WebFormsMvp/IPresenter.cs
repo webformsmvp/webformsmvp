@@ -14,6 +14,6 @@ namespace WebFormsMvp
         HttpContextBase HttpContext { get; set; }
         void ReleaseView();
         IAsyncTaskManager AsyncManager { get; set; }
-        IMessageCoordinator Messages { get; set; }
+        IMessageBus Messages { get; set; }
     }
 }
