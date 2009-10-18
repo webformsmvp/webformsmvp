@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Routing;
+using System.Web.Caching;
 
 namespace WebFormsMvp
 {
@@ -12,6 +14,12 @@ namespace WebFormsMvp
     public interface IPresenter
     {
         HttpContextBase HttpContext { get; set; }
+        HttpRequestBase Request { get; }
+        HttpResponseBase Response { get; }
+        HttpServerUtilityBase Server { get; }
+        Cache Cache { get; }
+        RouteData RouteData { get; }
+
         void ReleaseView();
         IAsyncTaskManager AsyncManager { get; set; }
         IMessageBus Messages { get; set; }

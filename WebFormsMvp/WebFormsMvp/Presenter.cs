@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Routing;
+using System.Web.Caching;
 
 namespace WebFormsMvp
 {
@@ -14,10 +16,34 @@ namespace WebFormsMvp
         where TView : class, IView
     {
         /// <summary>
-        /// Gets or sets the HTTP context.
+        /// Gets or sets HTTP-specific information about an individual HTTP request.
         /// </summary>
-        /// <value>The HTTP context.</value>
         public HttpContextBase HttpContext { get; set; }
+
+        /// <summary>
+        /// Gets the System.Web.HttpRequestBase object for the current HTTP request.
+        /// </summary>
+        public HttpRequestBase Request { get { return HttpContext.Request; } }
+
+        /// <summary>
+        /// Gets the System.Web.HttpResponseBase object for the current HTTP request.
+        /// </summary>
+        public HttpResponseBase Response { get { return HttpContext.Response; } }
+
+        /// <summary>
+        /// Gets the HttpServerUtilityBase object that provides methods that are used during Web request processing.
+        /// </summary>
+        public HttpServerUtilityBase Server { get { return HttpContext.Server; } }
+
+        /// <summary>
+        /// Gets the cache object for the current web application domain.
+        /// </summary>
+        public Cache Cache { get { return HttpContext.Cache; } }
+
+        /// <summary>
+        /// Gets the route data for the current request.
+        /// </summary>
+        public RouteData RouteData { get { return RouteTable.Routes.GetRouteData(HttpContext); } }
 
         /// <summary>
         /// Gets or sets the view.
