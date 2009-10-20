@@ -10,8 +10,8 @@ namespace WebFormsMvp
         ///     a message to have their "never received" callback fired.
         /// </para>
         /// <para>
-        ///     After this method is called, any further calls to <see cref="Publish"/> or
-        ///     <see cref="Subscribe"/> will result in a
+        ///     After this method is called, any further calls to <see cref="IMessageBus.Publish"/> or
+        ///     <see cref="IMessageBus.Subscribe"/> will result in a
         ///     <see cref="InvalidOperationException"/>.
         /// </para>
         /// <para>

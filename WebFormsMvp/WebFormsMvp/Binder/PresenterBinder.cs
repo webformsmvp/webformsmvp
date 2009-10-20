@@ -53,6 +53,7 @@ namespace WebFormsMvp.Binder
         /// Initializes a new instance of the <see cref="PresenterBinder&lt;THost&gt;"/> class.
         /// </summary>
         /// <param name="host">The host.</param>
+        /// <param name="httpContext">The owning HTTP context.</param>
         public PresenterBinder(object host, HttpContextBase httpContext)
             : this(new[] { host }, httpContext)
         {
@@ -62,6 +63,7 @@ namespace WebFormsMvp.Binder
         /// Initializes a new instance of the <see cref="PresenterBinder&lt;THost&gt;"/> class.
         /// </summary>
         /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
+        /// <param name="httpContext">The owning HTTP context.</param>
         public PresenterBinder(IEnumerable<object> hosts, HttpContextBase httpContext)
         {
             this.httpContext = httpContext;
