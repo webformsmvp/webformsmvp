@@ -7,7 +7,7 @@ using System.Web.Caching;
 namespace WebFormsMvp
 {
     /// <summary>
-    /// Represents a presenter in a Web Forms Model-View-Presenter application
+    /// Represents a presenter in a Web Forms Model-View-Presenter application.
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     public abstract class Presenter<TView> : IPresenter<TView>
