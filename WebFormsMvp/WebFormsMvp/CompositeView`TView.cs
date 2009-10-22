@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace WebFormsMvp
 {
-    public abstract class CompositeView<TView> : IView
+    public abstract class CompositeView<TView> : ICompositeView
         where TView : class, IView
     {
         readonly ICollection<TView> views = new List<TView>();

@@ -31,7 +31,7 @@ namespace WebFormsMvp.Binder
             return compositeViewType;
         }
 
-        static Type BuildCompositeViewTypeInternal(Type viewType)
+        internal static Type BuildCompositeViewTypeInternal(Type viewType)
         {
             /*
              * To support composite views, we dynamically emit a type which
@@ -94,21 +94,28 @@ public class TestViewComposite
             return compositeViewType;
         }
 
-        static void ValidateViewType(Type viewType)
+        internal static void ValidateViewType(Type viewType)
         {
             if (!viewType.IsInterface)
             {
                 throw new ArgumentException(string.Format(
                     CultureInfo.InvariantCulture,
-                    "The supplied view type must be an interface, but {0} was supplied instead.",
+                    "To be used with shared presenters, the view type must be an interface, but {0} was supplied instead.",
                     viewType.FullName));
             }
             if (!typeof(IView).IsAssignableFrom(viewType))
             {
                 throw new ArgumentException(string.Format(
                     CultureInfo.InvariantCulture,
-                    "The view type must inherit from {0}. The supplied type ({1}) does not.",
+                    "To be used with shared presenters, the view type must inherit from {0}. The supplied type ({1}) does not.",
                     typeof(IView).FullName,
+                    viewType.FullName));
+            }
+            if (!viewType.IsPublic && !viewType.IsNestedPublic)
+            {
+                throw new ArgumentException(string.Format(
+                    CultureInfo.InvariantCulture,
+                    "To be used with shared presenters, the view type must be public. The supplied type ({0}) is not.",
                     viewType.FullName));
             }
         }
@@ -144,7 +151,7 @@ public class TestViewComposite
             return type;
         }
 
-        static Type GetCompositeViewParentType(Type viewType)
+        internal static Type GetCompositeViewParentType(Type viewType)
         {
             return typeof(CompositeView<>).MakeGenericType(viewType);
         }

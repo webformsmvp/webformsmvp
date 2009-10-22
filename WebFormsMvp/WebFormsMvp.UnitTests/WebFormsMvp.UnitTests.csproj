@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\CompositeViewTypeFactoryTests.cs" />
     <Compile Include="MessageCoordinatorTests.cs" />
     <Compile Include="PresenterBinderTests.cs" />
     <Compile Include="Presenter`TView.cs" />
