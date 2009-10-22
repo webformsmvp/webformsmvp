@@ -46,25 +46,21 @@ namespace WebFormsMvp
         /// <summary>
         /// Gets or sets the view.
         /// </summary>
-        /// <value>The view.</value>
         public TView View { get; set; }
 
         /// <summary>
         /// Gets or sets the async task manager.
         /// </summary>
-        /// <value>The async task manager.</value>
         public IAsyncTaskManager AsyncManager { get; set; }
 
         /// <summary>
         /// Gets or sets the message bus used for cross presenter messaging.
         /// </summary>
-        /// <value>The message bus instance.</value>
         public IMessageBus Messages { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Presenter{TView}"/> class.
         /// </summary>
-        /// <param name="view">The view.</param>
         protected Presenter(TView view)
         {
             InitializeDefaultModel(view);
