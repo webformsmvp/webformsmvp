@@ -40,6 +40,8 @@ namespace WebFormsMvp.Binder
         }
 
         static readonly IDictionary<IntPtr, DynamicMethod> buildMethodCache = new Dictionary<IntPtr, DynamicMethod>();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands",
+            Justification = "CAS protected members are not exposed, only used internally")]
         internal static DynamicMethod GetBuildMethod(Type type, params Type[] constructorArgumentTypes)
         {
             return buildMethodCache.GetOrCreateValue(
@@ -47,8 +49,6 @@ namespace WebFormsMvp.Binder
                 () => GetBuildMethodInternal(type, constructorArgumentTypes));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands",
-            Justification = "CAS protected members are not exposed, only used internally")]
         internal static DynamicMethod GetBuildMethodInternal(Type type, params Type[] constructorArgumentTypes)
         {
             var constructor = type.GetConstructor(constructorArgumentTypes);
