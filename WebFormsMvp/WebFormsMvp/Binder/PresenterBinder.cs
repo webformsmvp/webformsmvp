@@ -241,7 +241,7 @@ namespace WebFormsMvp.Binder
             return bindingsToInstances;
         }
 
-        static IDictionary<IView, IEnumerable<Type>> GetViewInterfaces(IEnumerable<IView> instances)
+        internal static IDictionary<IView, IEnumerable<Type>> GetViewInterfaces(IEnumerable<IView> instances)
         {
             return instances
                 .ToDictionary
@@ -252,7 +252,7 @@ namespace WebFormsMvp.Binder
         }
 
         static readonly IDictionary<IntPtr, IEnumerable<Type>> implementationTypeToViewInterfacesCache = new Dictionary<IntPtr, IEnumerable<Type>>();
-        static IEnumerable<Type> GetViewInterfaces(Type implementationType)
+        internal static IEnumerable<Type> GetViewInterfaces(Type implementationType)
         {
             // We use the type handle as the cache key because they're fast
             // to search against in dictionaries.
@@ -338,7 +338,7 @@ namespace WebFormsMvp.Binder
             return presenter;
         }
 
-        static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews)
+        internal static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews)
         {
             var compositeFactory = new CompositeViewTypeFactory();
             var compositeViewType = compositeFactory.BuildCompositeViewType(viewType);

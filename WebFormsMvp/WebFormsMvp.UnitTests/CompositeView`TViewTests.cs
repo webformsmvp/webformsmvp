@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
 
@@ -12,11 +11,6 @@ namespace WebFormsMvp.UnitTests
         public class MyView : CompositeView<IView<object>>
         {
             public override event EventHandler Load;
-
-            public IEnumerable<IView<object>> ExposedViews
-            {
-                get { return Views; }   
-            }
         }
 
         [TestMethod]
@@ -33,7 +27,7 @@ namespace WebFormsMvp.UnitTests
 
             // Assert
             var expected = new[] {view1, view2};            
-            Assert.IsTrue(expected.SequenceEqual(compositeView.ExposedViews));
+            Assert.IsTrue(expected.SequenceEqual(compositeView.Views));
         }
 
         [TestMethod]

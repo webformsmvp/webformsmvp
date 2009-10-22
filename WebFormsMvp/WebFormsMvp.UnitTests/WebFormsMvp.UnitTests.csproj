@@ -45,10 +45,14 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binder\CompositeViewTypeFactoryTests.cs" />
+    <Compile Include="Binder\PresenterBinderTests.cs" />
     <Compile Include="CollectionExtensionsTests.cs" />
     <Compile Include="CompositeView`TViewTests.cs" />
     <Compile Include="MessageCoordinatorTests.cs" />

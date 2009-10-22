@@ -9,7 +9,7 @@ namespace WebFormsMvp
     {
         readonly ICollection<TView> views = new List<TView>();
 
-        protected IEnumerable<TView> Views
+        protected internal IEnumerable<TView> Views
         {
             get { return views; }
         }
