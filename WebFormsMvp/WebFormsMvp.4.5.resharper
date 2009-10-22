@@ -27,6 +27,7 @@
       <UsingsSettings>
         <MandatoryImports IsNull="False">
           <Item>System</Item>
+          <Item>System.Linq</Item>
         </MandatoryImports>
       </UsingsSettings>
       <Naming2>
