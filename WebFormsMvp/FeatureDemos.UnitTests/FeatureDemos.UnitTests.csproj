@@ -7,7 +7,7 @@
     <ProjectGuid>{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebFormsMvp.FeatureDemos.Web</RootNamespace>
+    <RootNamespace>WebFormsMvp.FeatureDemos.UnitTests</RootNamespace>
     <AssemblyName>WebFormsMvp.FeatureDemos.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

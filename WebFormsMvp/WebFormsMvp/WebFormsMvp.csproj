@@ -83,7 +83,6 @@
     <Compile Include="IView.cs" />
     <Compile Include="IView`T.cs" />
     <Compile Include="MessageCoordinator.cs" />
-    <Compile Include="Presenter`T.cs" />
     <Compile Include="Web\MvpHttpHandler.cs" />
     <Compile Include="Web\PageAsyncTaskManagerWrapper.cs" />
     <Compile Include="Web\MvpPage.cs">

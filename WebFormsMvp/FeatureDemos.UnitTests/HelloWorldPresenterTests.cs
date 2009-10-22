@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Security.Principal;
+using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
-using WebFormsMvp.FeatureDemos.Logic.Views;
-using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
-using System.Web;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
+using WebFormsMvp.FeatureDemos.Logic.Views;
 
 namespace WebFormsMvp.FeatureDemos.UnitTests
 {
