@@ -10,6 +10,7 @@ namespace WebFormsMvp
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
     /// <typeparam name="TModel">The type of the model.</typeparam>
+    [Obsolete("Just use Presenter<TView> instead. If TView implements IView<TModel> then Presenter<TView> will perform the same behaviour that Presenter<TView,TModel> used to.")]
     public abstract class Presenter<TView, TModel> : Presenter<TView>
         where TView : class, IView<TModel>
         where TModel : class, new()
@@ -21,12 +22,6 @@ namespace WebFormsMvp
         protected Presenter(TView view)
             : base(view)
         {
-            View.Model = new TModel();
         }
-
-        /// <summary>
-        /// Releases the view.
-        /// </summary>
-        public override abstract void ReleaseView();
     }
 }

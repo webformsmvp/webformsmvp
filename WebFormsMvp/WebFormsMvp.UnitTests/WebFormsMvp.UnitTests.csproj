@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="MessageCoordinatorTests.cs" />
     <Compile Include="PresenterBinderTests.cs" />
+    <Compile Include="Presenter`TView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

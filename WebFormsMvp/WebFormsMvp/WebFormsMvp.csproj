@@ -83,6 +83,7 @@
     <Compile Include="IView.cs" />
     <Compile Include="IView`T.cs" />
     <Compile Include="MessageCoordinator.cs" />
+    <Compile Include="Presenter`T.cs" />
     <Compile Include="Web\MvpHttpHandler.cs" />
     <Compile Include="Web\PageAsyncTaskManagerWrapper.cs" />
     <Compile Include="Web\MvpPage.cs">
@@ -92,7 +93,6 @@
     <Compile Include="Web\PageDataSource.cs" />
     <Compile Include="Binder\PresenterBinder.cs" />
     <Compile Include="PresenterBindingAttribute.cs" />
-    <Compile Include="Presenter`T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\MvpUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>

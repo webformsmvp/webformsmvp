@@ -11,7 +11,7 @@ using System.Web;
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class LookupWidgetPresenter
-        : Presenter<ILookupWidgetView, LookupWidgetModel>
+        : Presenter<ILookupWidgetView>
     {
         private readonly IWidgetRepository widgetRepository;
 

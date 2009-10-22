@@ -10,7 +10,7 @@ using System.Web;
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class AsyncMessagesPresenter
-        : Presenter<IAsyncMessagesView, AsyncMessagesModel>
+        : Presenter<IAsyncMessagesView>
     {
         public AsyncMessagesPresenter(IAsyncMessagesView view)
             : base(view)

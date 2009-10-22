@@ -9,7 +9,7 @@ using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class Messaging1Presenter
-        : Presenter<IMessaging1View, MessagingModel>
+        : Presenter<IMessaging1View>
     {
         public Messaging1Presenter(IMessaging1View view)
             : base(view)

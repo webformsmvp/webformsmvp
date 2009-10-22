@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
@@ -13,7 +10,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public HelloWorldPresenter(IHelloWorldView view)
             : base(view)
         {
-            View.Load += new EventHandler(View_Load);
+            View.Load += View_Load;
         }
 
         public override void ReleaseView()
@@ -28,14 +25,9 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 
         private void SetMessage()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                View.Model.Message = String.Format("Hello {0}!", HttpContext.User.Identity.Name);
-            }
-            else
-            {
-                View.Model.Message = "Hello World!";
-            }
+            View.Model.Message = HttpContext.User.Identity.IsAuthenticated
+                ? String.Format("Hello {0}!", HttpContext.User.Identity.Name)
+                : "Hello World!";
         }
     }
 }

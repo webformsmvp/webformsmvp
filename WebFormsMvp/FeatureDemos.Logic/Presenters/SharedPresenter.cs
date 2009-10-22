@@ -8,7 +8,7 @@ using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class SharedPresenter
-        : Presenter<ISharedPresenterView, SharedPresenterViewModel>
+        : Presenter<ISharedPresenterView>
     {
         public SharedPresenter(ISharedPresenterView view)
             : base(view)

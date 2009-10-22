@@ -8,7 +8,7 @@ using WebFormsMvp.FeatureDemos.Logic.Domain;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
-    public class Messaging2Presenter : Presenter<IMessaging2View, MessagingModel>
+    public class Messaging2Presenter : Presenter<IMessaging2View>
     {
         public Messaging2Presenter(IMessaging2View view)
             : base(view)

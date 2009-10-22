@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Routing;
 using System.Web.Caching;
@@ -69,7 +67,27 @@ namespace WebFormsMvp
         /// <param name="view">The view.</param>
         protected Presenter(TView view)
         {
+            InitializeDefaultModel(view);
             View = view;
+        }
+
+        static void InitializeDefaultModel(TView view)
+        {
+            var modelType = view.GetType()
+                .GetInterfaces()
+                .Where(t => t.IsGenericType)
+                .Where(t => t.GetGenericTypeDefinition() == typeof(IView<>))
+                .Select(t => t.GetGenericArguments().Single())
+                .FirstOrDefault();
+
+            if (modelType == null) return;
+            
+            var defaultModel = Activator.CreateInstance(modelType);
+            
+            typeof(IView<>)
+                .MakeGenericType(modelType)
+                .GetProperty("Model")
+                .SetValue(view, defaultModel, null);
         }
 
         /// <summary>
