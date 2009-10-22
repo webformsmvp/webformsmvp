@@ -9,6 +9,10 @@ namespace WebFormsMvp
     public interface IView<TModel> : IView
         where TModel : class, new()
     {
+        /// <summary>
+        /// Gets or sets the model instance. The default presenter base class
+        /// (<see cref="Presenter{TView}"/>) initializes this automatically.
+        /// </summary>
         TModel Model { get; set; }
     }
 }

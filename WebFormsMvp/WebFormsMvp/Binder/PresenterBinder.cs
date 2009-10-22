@@ -16,6 +16,13 @@ namespace WebFormsMvp.Binder
             = new Dictionary<IntPtr, IEnumerable<PresenterBindInfo>>();
 
         static IPresenterFactory factory;
+        ///<summary>
+        /// Gets or sets the factory that the binder will use to create
+        /// new presenter instances. This is pre-initialized to a
+        /// default implementation but can be overriden if desired.
+        /// This property can only be set once.
+        ///</summary>
+        ///<exception cref="InvalidOperationException"></exception>
         public static IPresenterFactory Factory
         {
             get
@@ -46,6 +53,10 @@ namespace WebFormsMvp.Binder
         readonly IList<IPresenter> presenters = new List<IPresenter>();
         bool initialBindingHasBeenPerformed;
 
+        /// <summary>
+        /// Occurs when the binder creates a new presenter instance. Useful for
+        /// populating extra information into presenters.
+        /// </summary>
         public event EventHandler<PresenterCreatedEventArgs> PresenterCreated;
 
         /// <summary>
@@ -81,6 +92,10 @@ namespace WebFormsMvp.Binder
             }
         }
 
+        /// <summary>
+        /// Returns the message coordinator instance that is being shared with
+        /// each of the presenters.
+        /// </summary>
         public IMessageCoordinator MessageCoordinator
         {
             get
@@ -89,6 +104,12 @@ namespace WebFormsMvp.Binder
             }
         }
 
+        /// <summary>
+        /// Registers a view instance as being a candidate for binding. If
+        /// <see cref="PerformBinding"/> has not been called, the view will
+        /// be queued until that time. If <see cref="PerformBinding"/> has
+        /// already been called, binding is attempted instantly.
+        /// </summary>
         public void RegisterView(IView viewInstance)
         {
             viewInstancesRequiringBinding.Add(viewInstance);
@@ -102,6 +123,9 @@ namespace WebFormsMvp.Binder
             }
         }
 
+        /// <summary>
+        /// Attempts to bind any already registered views.
+        /// </summary>
         public void PerformBinding()
         {
             if (viewInstancesRequiringBinding.Any())
@@ -122,6 +146,11 @@ namespace WebFormsMvp.Binder
             initialBindingHasBeenPerformed = true;
         }
 
+        /// <summary>
+        /// Closes the message bus, releases each of the views from the
+        /// presenters then releases each of the presenters from the factory
+        /// (useful in IoC scenarios).
+        /// </summary>
         public void Release()
         {
             MessageCoordinator.Close();
@@ -173,7 +202,7 @@ namespace WebFormsMvp.Binder
         {
             var instancesToInterfaces = GetViewInterfaces(
                 candidates);
-            
+
             var bindingsToInstances = MapBindingsToInstances(
                 presenterBindings,
                 instancesToInterfaces);
@@ -184,7 +213,7 @@ namespace WebFormsMvp.Binder
                 presenterCreatedCallback,
                 presenterFactory,
                 bindingsToInstances);
-        
+
             return newPresenters;
         }
 

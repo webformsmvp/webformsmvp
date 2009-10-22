@@ -5,12 +5,18 @@ using System.Linq;
 
 namespace WebFormsMvp
 {
+    /// <summary>
+    /// A default implementation for cross presenter messaging.
+    /// </summary>
     public class MessageCoordinator : IMessageCoordinator
     {
         readonly IDictionary<Type, IList> messages;
         readonly IDictionary<Type, IList<Action<object>>> messageReceivedCallbacks;
         readonly IDictionary<Type, IList<Action>> neverReceivedCallbacks;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageCoordinator"/> class.
+        /// </summary>
         public MessageCoordinator()
         {
             messages = new Dictionary<Type, IList>();

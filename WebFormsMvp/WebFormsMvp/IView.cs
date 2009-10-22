@@ -1,4 +1,5 @@
 ﻿using System;
+using WebFormsMvp.Web;
 
 namespace WebFormsMvp
 {
@@ -7,6 +8,11 @@ namespace WebFormsMvp
     /// </summary>
     public interface IView
     {
+        /// <summary>
+        /// Occurs at the discretion of the view. For <see cref="MvpUserControl"/>
+        /// implementations (the most commonly used), this is fired duing the ASP.NET
+        /// Load event.
+        /// </summary>
         event EventHandler Load;
     }
 }

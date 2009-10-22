@@ -19,17 +19,17 @@ namespace WebFormsMvp
         public HttpContextBase HttpContext { get; set; }
 
         /// <summary>
-        /// Gets the System.Web.HttpRequestBase object for the current HTTP request.
+        /// Gets the <see cref="HttpRequestBase"/> object for the current HTTP request.
         /// </summary>
         public HttpRequestBase Request { get { return HttpContext.Request; } }
 
         /// <summary>
-        /// Gets the System.Web.HttpResponseBase object for the current HTTP request.
+        /// Gets the <see cref="HttpResponseBase"/> object for the current HTTP request.
         /// </summary>
         public HttpResponseBase Response { get { return HttpContext.Response; } }
 
         /// <summary>
-        /// Gets the HttpServerUtilityBase object that provides methods that are used during Web request processing.
+        /// Gets the <see cref="HttpServerUtilityBase"/> object that provides methods that are used during Web request processing.
         /// </summary>
         public HttpServerUtilityBase Server { get { return HttpContext.Server; } }
 
@@ -62,7 +62,7 @@ namespace WebFormsMvp
         public IMessageBus Messages { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Presenter&lt;TView&gt;"/> class.
+        /// Initializes a new instance of the <see cref="Presenter{TView}"/> class.
         /// </summary>
         /// <param name="view">The view.</param>
         protected Presenter(TView view)
