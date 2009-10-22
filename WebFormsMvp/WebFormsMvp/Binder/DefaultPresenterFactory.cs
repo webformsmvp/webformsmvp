@@ -45,6 +45,8 @@ namespace WebFormsMvp.Binder
         }
 
         static readonly IDictionary<IntPtr, DynamicMethod> buildMethodCache = new Dictionary<IntPtr, DynamicMethod>();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands",
+            Justification = "CAS protected members are not exposed, only used internally")]
         static DynamicMethod GetBuildMethod(Type type, Type[] constructorArgumentTypes)
         {
             return buildMethodCache.GetOrCreateValue(
