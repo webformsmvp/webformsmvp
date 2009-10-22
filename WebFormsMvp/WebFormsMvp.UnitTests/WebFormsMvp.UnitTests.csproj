@@ -49,9 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binder\CompositeViewTypeFactoryTests.cs" />
+    <Compile Include="CompositeView`TViewTests.cs" />
     <Compile Include="MessageCoordinatorTests.cs" />
     <Compile Include="PresenterBinderTests.cs" />
-    <Compile Include="Presenter`TView.cs" />
+    <Compile Include="Presenter`TViewTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
