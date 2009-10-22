@@ -89,7 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\SiteTheme\Controls.skin" />
-    <Content Include="App_Themes\SiteTheme\print.css" />
     <Content Include="App_Themes\SiteTheme\_styles.css" />
     <Content Include="Global.asax" />
   </ItemGroup>
@@ -97,6 +96,29 @@
     <Content Include="App_Browsers\CSSFriendlyAdapters.browser" />
     <Content Include="App_Themes\SiteTheme\HomePageLinks.png" />
     <Content Include="App_Themes\SiteTheme\PageBackground.png" />
+    <Content Include="App_Themes\SiteTheme\Tile.gif" />
+    <Content Include="Web.prod.config" />
+    <None Include="Script\jquery-1.3.2-vsdoc.js" />
+    <None Include="Script\jquery-1.3.2.js" />
+    <Content Include="Script\jquery.fancybox\fancy_closebox.png" />
+    <Content Include="Script\jquery.fancybox\fancy_left.png" />
+    <Content Include="Script\jquery.fancybox\fancy_progress.png" />
+    <Content Include="Script\jquery.fancybox\fancy_right.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_e.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_n.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_ne.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_nw.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_s.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_se.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_sw.png" />
+    <Content Include="Script\jquery.fancybox\fancy_shadow_w.png" />
+    <Content Include="Script\jquery.fancybox\fancy_title_left.png" />
+    <Content Include="Script\jquery.fancybox\fancy_title_main.png" />
+    <Content Include="Script\jquery.fancybox\fancy_title_right.png" />
+    <Content Include="Script\jquery.fancybox\jquery.fancybox-1.2.1.js" />
+    <Content Include="Script\jquery.fancybox\jquery.fancybox-1.2.1.pack.js" />
+    <Content Include="Script\jquery.fancybox\jquery.fancybox.css" />
+    <Content Include="Script\site.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -1,37 +1,33 @@
-﻿*
-{
-	/* Zero-out margins & padding */
-	margin: 0; padding: 0;
+﻿* {
+    /* Zero-out margins & padding */
+    margin: 0;
+    padding: 0;
 }
 
-html
-{
-	overflow: hidden;
-	height: 100%;
+html {
+    overflow: hidden;
+    height: 100%;
 }
 
-body
-{
-	font-family: Sans-Serif;
-	font-size: 1.0em;
-	overflow: hidden;
-	height: 100%;
-	width: 100%;
-	background: transparent url(Tile.gif) repeat-x 50% 50%;
-	position: absolute;
+body {
+    font-family: Sans-Serif;
+    font-size: 1.0em;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    background: transparent url(Tile.gif) repeat-x 50% 50%;
+    position: absolute;
 }
 
-#layout-container
-{
-	position: absolute;
-	top: 50%;
-	left: 0;
-	width: 100%;
-	overflow: visible;
+#layout-container {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    overflow: visible;
 }
 
-#page-container 
-{
+#page-container {
     position: relative;
     top: -275px;
     left: 50%;
@@ -42,20 +38,17 @@ body
     background: transparent url(PageBackground.png) no-repeat 50% top;
 }
 
-#home-page
-{
+#home-page {
     position: relative;
 }
 
-#home-page p
-{
+#home-page p {
     color: #03153f;
     width: 320px;
     margin-bottom: 0.8em;
 }
 
-#home-page ul
-{
+#home-page ul {
     position: absolute;
     top: 3px;
     right: 0;
@@ -66,28 +59,35 @@ body
     list-style-type: none;
 }
 
-#home-page ul li
-{
+#home-page ul li {
     height: 34px;
     margin-bottom: 14px;
 }
 
-#home-page ul li a:link,
-#home-page ul li a:active,
-#home-page ul li a:visited
-{
+#home-page ul li a:link, #home-page ul li a:active, #home-page ul li a:visited {
     display: block;
     height: 34px;
     text-indent: -2000px;
     overflow: hidden;
 }
 
-#home-page ul li a:hover
-{
+#home-page ul li a:hover {
     background: transparent url(HomePageLinks.png) no-repeat;
 }
 
-#home-page ul li.first a:hover { background-position: right -4px; }
-#home-page ul li.second a:hover { background-position: right -52px; }
-#home-page ul li.third a:hover { background-position: right -100px; }
-#home-page ul li.fourth a:hover { background-position: right -148px; }
+#home-page ul li.first a:hover {
+    background-position: right -4px;
+}
+#home-page ul li.second a:hover {
+    background-position: right -52px;
+}
+#home-page ul li.third a:hover {
+    background-position: right -100px;
+}
+#home-page ul li.fourth a:hover {
+    background-position: right -148px;
+}
+
+#whyVideoEmbedded {
+    display: none;
+}
