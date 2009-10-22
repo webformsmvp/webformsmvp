@@ -72,7 +72,6 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="CompositeView`TView.cs" />
-    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IAsyncTaskManager.cs" />
     <Compile Include="ICompositeView.cs" />
