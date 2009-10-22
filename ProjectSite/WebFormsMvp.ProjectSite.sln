@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.ProjectSite", "WebFormsMvp.ProjectSite\WebFormsMvp.ProjectSite.csproj", "{BC36981C-F034-4F80-8957-1284906D2694}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{7C0B0C35-6615-4524-B6C5-351E7EEEB042}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\CSSFriendly.dll = Dependencies\CSSFriendly.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 2
