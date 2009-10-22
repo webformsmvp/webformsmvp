@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
@@ -11,7 +8,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public RedirectPresenter(IRedirectView view)
             : base(view)
         {
-            View.ActionAccepted += new EventHandler(View_ActionAccepted);
+            View.ActionAccepted += View_ActionAccepted;
         }
 
         public override void ReleaseView()

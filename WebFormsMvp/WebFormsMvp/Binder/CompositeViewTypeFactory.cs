@@ -10,7 +10,7 @@ namespace WebFormsMvp.Binder
 {
     internal class CompositeViewTypeFactory
     {
-        IDictionary<IntPtr, Type> compositeViewTypeCache = new Dictionary<IntPtr, Type>();
+        readonly IDictionary<IntPtr, Type> compositeViewTypeCache = new Dictionary<IntPtr, Type>();
 
         public Type BuildCompositeViewType(Type viewType)
         {
@@ -133,16 +133,12 @@ public class TestViewComposite
 
         static TypeBuilder BuildType(Type viewType, ModuleBuilder module)
         {
-            var typeAttributes =
-                TypeAttributes.Public |
-                TypeAttributes.Class |
-                TypeAttributes.Sealed;
             var parentType = GetCompositeViewParentType(viewType);
             var interfaces = new[] { viewType };
 
             var type = module.DefineType(
                 viewType.FullName + "__@CompositeView",
-                typeAttributes,
+                TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class,
                 parentType,
                 interfaces);
             return type;
@@ -401,7 +397,7 @@ get
             il.EmitCall(OpCodes.Call, getViews, null);
 
             // Call IEnumerable.First<IViewType>
-            var firstView = typeof(System.Linq.Enumerable)
+            var firstView = typeof(Enumerable)
                 .GetMethods(BindingFlags.Static | BindingFlags.Public)
                 .Where(mi => mi.Name == "First")
                 .Single(mi =>
@@ -504,7 +500,7 @@ set
                 "set",
                 propertyInfo.Name,
                 typeof(void),
-                new Type[] { propertyInfo.PropertyType });
+                new [] { propertyInfo.PropertyType });
 
             var il = setBuilder.GetILGenerator();
 
@@ -545,7 +541,7 @@ set
         {
             var addMethod = BuildEventAddMethod(type, viewType, eventInfo);
             var removeMethod = BuildEventRemoveMethod(type, viewType, eventInfo);
-
+            
             var @event = type.DefineEvent(
                 eventInfo.Name,
                 eventInfo.Attributes,
@@ -562,7 +558,7 @@ set
                 "add",
                 eventInfo.Name,
                 typeof(void),
-                new Type[] { eventInfo.EventHandlerType });
+                new [] { eventInfo.EventHandlerType });
             
             var il = addBuilder.GetILGenerator();
 
@@ -587,7 +583,7 @@ set
                 "remove",
                 eventInfo.Name,
                 typeof(void),
-                new Type[] { eventInfo.EventHandlerType });
+                new [] { eventInfo.EventHandlerType });
 
             var il = removeBuilder.GetILGenerator();
 

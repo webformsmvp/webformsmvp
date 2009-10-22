@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using WebFormsMvp.Binder;
@@ -19,7 +18,7 @@ namespace WebFormsMvp.Web
         /// </summary>
         protected MvpPage()
         {
-            Unload += new EventHandler(PageBase_Unload);
+            Unload += PageBase_Unload;
         }
 
         internal void RegisterView(IView view)
@@ -44,10 +43,9 @@ namespace WebFormsMvp.Web
 
         IEnumerable<object> FindHosts()
         {
-            var hosts = new List<object>();
-            hosts.Add(this);
+            var hosts = new List<object> {this};
 
-            var masterHost = this.Master;
+            var masterHost = Master;
             while (masterHost != null)
             {
                 hosts.Add(masterHost);

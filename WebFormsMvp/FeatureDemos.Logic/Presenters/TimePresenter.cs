@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
@@ -10,15 +7,15 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public TimePresenter(IView view)
             : base(view)
         {
-            view.Load += new EventHandler(view_Load);
+            view.Load += View_Load;
         }
 
         public override void ReleaseView()
         {
-            View.Load -= new EventHandler(view_Load);
+            View.Load -= View_Load;
         }
 
-        void view_Load(object sender, EventArgs e)
+        void View_Load(object sender, EventArgs e)
         {
             var timeText = DateTimeOffset.Now.ToString();
             HttpContext.Response.Write(timeText);

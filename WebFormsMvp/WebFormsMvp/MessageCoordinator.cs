@@ -25,8 +25,8 @@ namespace WebFormsMvp
                 throw new InvalidOperationException("Messages can't be published or subscribed to after the message bus has been closed. In a typical page lifecycle, this happens during PreRenderComplete.");
             }
 
-            AddMessage<TMessage>(message);
-            PushMessage<TMessage>(message);
+            AddMessage(message);
+            PushMessage(message);
         }
 
         void AddMessage<TMessage>(TMessage message)
@@ -72,17 +72,15 @@ namespace WebFormsMvp
                 throw new ArgumentNullException("messageReceivedCallback");
             }
 
-            AddMessageReceivedCallback<TMessage>(messageReceivedCallback);
+            AddMessageReceivedCallback(messageReceivedCallback);
             AddNeverReceivedCallback<TMessage>(neverReceivedCallback);
-            PushPreviousMessages<TMessage>(messageReceivedCallback);
+            PushPreviousMessages(messageReceivedCallback);
         }
 
         void AddMessageReceivedCallback<TMessage>(Action<TMessage> messageReceivedCallback)
         {
-            var intermediateReceivedCallback = new Action<object>(m =>
-            {
-                messageReceivedCallback((TMessage)m);
-            });
+            var intermediateReceivedCallback = new Action<object>(m => 
+                messageReceivedCallback((TMessage)m));
 
             var receivedList = messageReceivedCallbacks.GetOrCreateValue(typeof(TMessage),
                 () => new List<Action<object>>());
@@ -121,7 +119,7 @@ namespace WebFormsMvp
         }
 
         bool closed;
-        object closeLock = new object();
+        readonly object closeLock = new object();
         public void Close()
         {
             lock (closeLock)

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Reflection;
@@ -24,8 +21,8 @@ namespace WebFormsMvp.Web
             //this.EnablePaging = true;
             //this.SortParameterName = "sortExpression";
 
-            this.ObjectCreating += new ObjectDataSourceObjectEventHandler(OnObjectCreating);
-            this.ObjectDisposing += new ObjectDataSourceDisposingEventHandler(OnObjectDisposing);
+            ObjectCreating += OnObjectCreating;
+            ObjectDisposing += OnObjectDisposing;
         }
         
         protected override void OnInit(EventArgs e)
@@ -36,7 +33,7 @@ namespace WebFormsMvp.Web
 
         protected virtual void OnObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
-            e.ObjectInstance = parentHost;
+            e.ObjectInstance = ParentHost;
         }
 
         protected virtual void OnObjectDisposing(object sender, ObjectDataSourceDisposingEventArgs e)
@@ -44,7 +41,7 @@ namespace WebFormsMvp.Web
             e.Cancel = true;
         }
 
-        protected Object parentHost;
+        protected object ParentHost { get; private set; }
 
         /// <summary>
         /// Walks the control tree to find the hosting parent page or user control
@@ -55,27 +52,25 @@ namespace WebFormsMvp.Web
             if (ctl.Parent == null)
             {
                 // At the top of the control tree and user control was not found, use page base type instead
-                this.TypeName = Assembly.CreateQualifiedName(
-                    this.Page.GetType().Assembly.FullName,
-                    this.Page.GetType().BaseType.FullName);
-                parentHost = this.Page;
+                TypeName = Assembly.CreateQualifiedName(
+                    Page.GetType().Assembly.FullName,
+                    Page.GetType().BaseType.FullName);
+                ParentHost = Page;
                 return;
             }
 
             // Find the user control base type
-            UserControl parentUC = ctl.Parent as UserControl;
-            MasterPage parentMP = ctl.Parent as MasterPage;
-            if (parentUC != null && parentMP == null)
+            var parentUserControl = ctl.Parent as UserControl;
+            var parentMasterPage = ctl.Parent as MasterPage;
+            if (parentUserControl != null && parentMasterPage == null)
             {
-                Type parentBaseType = ctl.Parent.GetType().BaseType;
-                this.TypeName = parentBaseType.FullName;
-                parentHost = ctl.Parent;
+                var parentBaseType = ctl.Parent.GetType().BaseType;
+                TypeName = parentBaseType.FullName;
+                ParentHost = ctl.Parent;
                 return;
             }
-            else
-            {
-                FindParentHost(ctl.Parent);
-            }
+            
+            FindParentHost(ctl.Parent);
         }
     }
 }

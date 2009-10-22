@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Globalization;
 
@@ -37,7 +34,7 @@ namespace WebFormsMvp.Web
             PageBase.RegisterView(this);
             base.OnInit(e);
 
-            Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
+            Page.PreRenderComplete += Page_PreRenderComplete;
         }
 
         void Page_PreRenderComplete(object sender, EventArgs e)

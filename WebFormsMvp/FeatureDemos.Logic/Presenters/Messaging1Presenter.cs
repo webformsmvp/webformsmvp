@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WebFormsMvp.FeatureDemos.Logic.Domain;
 using WebFormsMvp.FeatureDemos.Logic.Views;
-using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
@@ -14,15 +10,15 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public Messaging1Presenter(IMessaging1View view)
             : base(view)
         {
-            View.Load += new EventHandler(view_Load);
+            View.Load += View_Load;
         }
 
         public override void ReleaseView()
         {
-            View.Load -= new EventHandler(view_Load);
+            View.Load -= View_Load;
         }
 
-        void view_Load(object sender, EventArgs e)
+        void View_Load(object sender, EventArgs e)
         {
             var widget = new Widget
             {

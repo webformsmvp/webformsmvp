@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Globalization;
 
 namespace WebFormsMvp
 {
-    public abstract class CompositeView<TView> : ICompositeView, IView
+    public abstract class CompositeView<TView> : IView
         where TView : class, IView
     {
         readonly ICollection<TView> views = new List<TView>();

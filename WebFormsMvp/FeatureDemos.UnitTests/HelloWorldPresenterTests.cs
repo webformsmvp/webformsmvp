@@ -24,8 +24,10 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             user.Expect(u => u.Identity).Return(identity);
             identity.Expect(i => i.IsAuthenticated).Return(false);
 
-            var presenter = new HelloWorldPresenter(view);
-            presenter.HttpContext = httpContext;
+            var presenter = new HelloWorldPresenter(view)
+            {
+                HttpContext = httpContext
+            };
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
@@ -53,8 +55,10 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             var name = "Bob";
             identity.Expect(i => i.Name).Return(name);
 
-            var presenter = new HelloWorldPresenter(view);
-            presenter.HttpContext = httpContext;
+            var presenter = new HelloWorldPresenter(view)
+            {
+                HttpContext = httpContext
+            };
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());

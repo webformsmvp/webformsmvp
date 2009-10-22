@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.Binder;
 using Rhino.Mocks;
-using System.Reflection;
 
 namespace WebFormsMvp.UnitTests
 {
@@ -99,6 +95,7 @@ namespace WebFormsMvp.UnitTests
 
             // Assert
             var exception = appDomain.GetData("ex") as InvalidOperationException;
+            Assert.IsNotNull(exception);
             StringAssert.Contains(exception.Message, "default implementation");
 
             AppDomain.Unload(appDomain);
@@ -127,6 +124,7 @@ namespace WebFormsMvp.UnitTests
 
             // Assert
             var exception = appDomain.GetData("ex") as InvalidOperationException;
+            Assert.IsNotNull(exception);
             StringAssert.StartsWith(exception.Message, "You can only set your factory once");
 
             AppDomain.Unload(appDomain);

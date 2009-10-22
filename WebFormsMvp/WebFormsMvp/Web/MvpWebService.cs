@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
 using WebFormsMvp.Binder;
@@ -15,7 +13,6 @@ namespace WebFormsMvp.Web
         readonly PresenterBinder presenterBinder;
 
         protected MvpWebService()
-            : base()
         {
             presenterBinder = new PresenterBinder(this, new HttpContextWrapper(HttpContext.Current));
         }

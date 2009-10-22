@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Collections;
@@ -58,12 +56,12 @@ namespace WebFormsMvp.Web
         {
             base.OnInit(e);
 
-            if (!(parentHost is IView))
+            if (!(ParentHost is IView))
             {
                 throw new NotSupportedException("MvpDataSource can only be used on pages or user controls that implement IView");
             }
 
-            TypeName = this.GetType().FullName;
+            TypeName = GetType().FullName;
 
             if (!String.IsNullOrEmpty(SelectEvent))
             {
@@ -72,7 +70,7 @@ namespace WebFormsMvp.Web
                     throw new InvalidOperationException("SelectResult must specify the name of the property on the view that contains the result of the SelectEvent action");
                 }
                 base.SelectMethod = "RaiseSelectEventOnHost";
-                moveParameters(SelectParameters, selectEventParameters);
+                MoveParameters(SelectParameters, selectEventParameters);
             }
 
             if (!String.IsNullOrEmpty(SelectCountResult))
@@ -83,23 +81,23 @@ namespace WebFormsMvp.Web
             if (!String.IsNullOrEmpty(UpdateEvent))
             {
                 UpdateMethod = "RaiseUpdateEventOnHost";
-                moveParameters(UpdateParameters, updateEventParameters);
+                MoveParameters(UpdateParameters, updateEventParameters);
             }
 
             if (!String.IsNullOrEmpty(InsertEvent))
             {
                 InsertMethod = "RaiseInsertEventOnHost";
-                moveParameters(InsertParameters, insertEventParameters);
+                MoveParameters(InsertParameters, insertEventParameters);
             }
 
             if (!String.IsNullOrEmpty(DeleteEvent))
             {
                 DeleteMethod = "RaiseDeleteEventOnHost";
-                moveParameters(DeleteParameters, deleteEventParameters);
+                MoveParameters(DeleteParameters, deleteEventParameters);
             }
         }
 
-        private static void moveParameters(ParameterCollection source, ParameterCollection target)
+        private static void MoveParameters(ParameterCollection source, ParameterCollection target)
         {
             foreach (Parameter p in source)
             {
@@ -115,7 +113,7 @@ namespace WebFormsMvp.Web
 
         public IEnumerable RaiseSelectEventOnHost()
         {
-            var eventType = parentHost.GetType().GetEvent(SelectEvent).EventHandlerType;
+            var eventType = ParentHost.GetType().GetEvent(SelectEvent).EventHandlerType;
             var eventArgsTypes = eventType.GetGenericArguments();
             var eventArgsType = eventArgsTypes.Length == 0 ? null : eventArgsTypes[0];
 
@@ -129,9 +127,9 @@ namespace WebFormsMvp.Web
 
             RaiseEventOnHost(SelectEvent, eventArgs);
 
-            var model = parentHost.GetType()
+            var model = ParentHost.GetType()
                 .GetProperty("Model")
-                .GetValue(parentHost, null);
+                .GetValue(ParentHost, null);
 
             var result = model.GetType()
                 .GetProperty(SelectResult)
@@ -140,13 +138,7 @@ namespace WebFormsMvp.Web
             return result;
         }
 
-        private int getSelectCountResult()
-        {
-            // TODO: Get result from the specified property
-            return 0;
-        }
-
-        private Type ConvertToType(TypeCode typeCode)
+        private static Type ConvertToType(TypeCode typeCode)
         {
             switch (typeCode)
             {
@@ -161,15 +153,15 @@ namespace WebFormsMvp.Web
 
         private void RaiseEventOnHost(string eventName, EventArgs e)
         {
-            var eventDelegate = parentHost.GetType().BaseType
+            var eventDelegate = ParentHost.GetType().BaseType
                 .GetField(eventName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                .GetValue(parentHost) as MulticastDelegate;
+                .GetValue(ParentHost) as MulticastDelegate;
 
             if (eventDelegate != null)
             {
                 foreach (var handler in eventDelegate.GetInvocationList())
                 {
-                    handler.Method.Invoke(handler.Target, new object[] { parentHost, e });
+                    handler.Method.Invoke(handler.Target, new[] { ParentHost, e });
                 }
             }
         }

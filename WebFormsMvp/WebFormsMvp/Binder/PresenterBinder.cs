@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Collections;
 using System.Globalization;
 
 namespace WebFormsMvp.Binder
@@ -50,7 +49,7 @@ namespace WebFormsMvp.Binder
         public event EventHandler<PresenterCreatedEventArgs> PresenterCreated;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PresenterBinder&lt;THost&gt;"/> class.
+        /// Initializes a new instance of the <see cref="PresenterBinder"/> class.
         /// </summary>
         /// <param name="host">The host.</param>
         /// <param name="httpContext">The owning HTTP context.</param>
@@ -60,7 +59,7 @@ namespace WebFormsMvp.Binder
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PresenterBinder&lt;THost&gt;"/> class.
+        /// Initializes a new instance of the <see cref="PresenterBinder"/> class.
         /// </summary>
         /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
         /// <param name="httpContext">The owning HTTP context.</param>
@@ -70,12 +69,10 @@ namespace WebFormsMvp.Binder
 
             presenterBindings = hosts
                 .SelectMany(host =>
-                {
-                    return GetPresenterBindings(
+                    GetPresenterBindings(
                         hostTypeToPresenterBindInfoCache,
                         host.GetType().TypeHandle.Value,
-                        host);
-                });
+                        host));
 
             foreach (var selfHostedView in hosts.OfType<IView>())
             {
@@ -172,7 +169,7 @@ namespace WebFormsMvp.Binder
             return presenterBindInfo;
         }
 
-        static IEnumerable<IPresenter> PerformBinding(IEnumerable<IView> candidates, IEnumerable<PresenterBindInfo> presenterBindings, HttpContextBase httpContext, IMessageCoordinator messageCoordinator, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory)
+        static IEnumerable<IPresenter> PerformBinding(IEnumerable<IView> candidates, IEnumerable<PresenterBindInfo> presenterBindings, HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory)
         {
             var instancesToInterfaces = GetViewInterfaces(
                 candidates);
@@ -183,15 +180,15 @@ namespace WebFormsMvp.Binder
 
             var newPresenters = BuildPresenters(
                 httpContext,
-                messageCoordinator,
+                messageBus,
                 presenterCreatedCallback,
-                factory,
+                presenterFactory,
                 bindingsToInstances);
         
             return newPresenters;
         }
 
-        static IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(IEnumerable<PresenterBindInfo> presenterBindings, IDictionary<IView, IEnumerable<Type>> instancesToInterfaces)
+        static IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(IEnumerable<PresenterBindInfo> presenterBindings, IEnumerable<KeyValuePair<IView, IEnumerable<Type>>> instancesToInterfaces)
         {
             // Build a dictionary of bindings to the view instances that they apply to,
             // for example:
@@ -255,23 +252,20 @@ namespace WebFormsMvp.Binder
             return viewInterfaces;
         }
 
-        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, IMessageCoordinator messageCoordinator, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory, IDictionary<PresenterBindInfo, IEnumerable<IView>> bindingsToInstances)
+        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory, IEnumerable<KeyValuePair<PresenterBindInfo, IEnumerable<IView>>> bindingsToInstances)
         {
             return bindingsToInstances
                 .SelectMany(binding =>
-                {
-                    return BuildPresenters(
+                    BuildPresenters(
                         httpContext,
-                        messageCoordinator,
+                        messageBus,
                         presenterCreatedCallback,
-                        factory,
+                        presenterFactory,
                         binding.Key,
-                        binding.Value
-                    );
-                });
+                        binding.Value));
         }
 
-        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, IMessageCoordinator messageCoordinator, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory, PresenterBindInfo binding, IEnumerable<IView> viewInstances)
+        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory, PresenterBindInfo binding, IEnumerable<IView> viewInstances)
         {
             IEnumerable<IView> viewsToCreateFor;
 
@@ -296,18 +290,18 @@ namespace WebFormsMvp.Binder
             return viewsToCreateFor.Select(viewInstance =>
                 BuildPresenter(
                     httpContext,
-                    messageCoordinator,
+                    messageBus,
                     presenterCreatedCallback,
-                    factory,
+                    presenterFactory,
                     binding,
                     viewInstance));
         }
 
-        static IPresenter BuildPresenter(HttpContextBase httpContext, IMessageCoordinator messageCoordinator, Action<IPresenter> presenterCreatedCallback, IPresenterFactory factory, PresenterBindInfo binding, IView viewInstance)
+        static IPresenter BuildPresenter(HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory, PresenterBindInfo binding, IView viewInstance)
         {
-            var presenter = factory.Create(binding.PresenterType, binding.ViewType, viewInstance);
+            var presenter = presenterFactory.Create(binding.PresenterType, binding.ViewType, viewInstance);
             presenter.HttpContext = httpContext;
-            presenter.Messages = messageCoordinator;
+            presenter.Messages = messageBus;
             if (presenterCreatedCallback != null)
             {
                 presenterCreatedCallback(presenter);
@@ -317,8 +311,8 @@ namespace WebFormsMvp.Binder
 
         static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews)
         {
-            var factory = new CompositeViewTypeFactory();
-            var compositeViewType = factory.BuildCompositeViewType(viewType);
+            var compositeFactory = new CompositeViewTypeFactory();
+            var compositeViewType = compositeFactory.BuildCompositeViewType(viewType);
             var view = (ICompositeView)Activator.CreateInstance(compositeViewType);
             foreach (var v in childViews)
             {

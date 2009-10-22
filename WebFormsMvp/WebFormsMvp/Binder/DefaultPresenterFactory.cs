@@ -41,7 +41,7 @@ namespace WebFormsMvp.Binder
 
         static DynamicMethod GetBuildMethod(Type presenterType, Type viewType)
         {
-            return GetBuildMethod(presenterType, new Type[] { viewType });
+            return GetBuildMethod(presenterType, new [] { viewType });
         }
 
         static readonly IDictionary<IntPtr, DynamicMethod> buildMethodCache = new Dictionary<IntPtr, DynamicMethod>();

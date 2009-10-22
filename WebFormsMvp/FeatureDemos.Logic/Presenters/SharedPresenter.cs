@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WebFormsMvp.FeatureDemos.Logic.Views;
-using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
@@ -13,12 +9,12 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public SharedPresenter(ISharedPresenterView view)
             : base(view)
         {
-            View.Load += new EventHandler(View_Load);
+            View.Load += View_Load;
         }
 
         public override void ReleaseView()
         {
-            View.Load -= new EventHandler(View_Load);
+            View.Load -= View_Load;
         }
 
         void View_Load(object sender, EventArgs e)

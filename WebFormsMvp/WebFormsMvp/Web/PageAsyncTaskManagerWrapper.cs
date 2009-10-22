@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.UI;
 using System.Web;
 
@@ -12,7 +9,7 @@ namespace WebFormsMvp.Web
     /// </summary>
     public class PageAsyncTaskManagerWrapper : IAsyncTaskManager
     {
-        Page page;
+        readonly Page page;
 
         public PageAsyncTaskManagerWrapper(Page page)
         {

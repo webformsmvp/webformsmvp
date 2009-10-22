@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using Rhino.Mocks;
 using WebFormsMvp.FeatureDemos.Logic.Views;
-using System.Web;
 using WebFormsMvp.Testing;
 
 namespace WebFormsMvp.FeatureDemos.UnitTests
@@ -21,8 +18,10 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             var view = MockRepository.GenerateStub<IAsyncMessagesView>();
             var asyncManager = new TestAsyncTaskManager();
 
-            var presenter = new AsyncMessagesPresenter(view);
-            presenter.AsyncManager = asyncManager;
+            var presenter = new AsyncMessagesPresenter(view)
+            {
+                AsyncManager = asyncManager
+            };
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());

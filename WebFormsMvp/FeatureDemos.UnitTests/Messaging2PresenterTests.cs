@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 using Rhino.Mocks;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Domain;
 
-namespace WebFormsMvp.FeatureDemos.Web
+namespace WebFormsMvp.FeatureDemos.UnitTests
 {
     [TestClass]
     public class Messaging2PresenterTests
@@ -36,8 +33,10 @@ namespace WebFormsMvp.FeatureDemos.Web
         {
             // Arrange
             var view = MockRepository.GenerateStub<IMessaging2View>();
-            var presenter = new Messaging2Presenter(view);
-            presenter.Messages = new MessageCoordinator();
+            var presenter = new Messaging2Presenter(view)
+                            {
+                                Messages = new MessageCoordinator()
+                            };
             var message = new Widget { Id = 12345 };
 
             // Act
