@@ -10,6 +10,8 @@ namespace WebFormsMvp.UnitTests
     [TestClass]
     public class PresenterTests
     {
+        public TestContext TestContext { get; set; }
+
         [TestMethod]
         public void Presenter_Constructor_ShouldIntializeDefaultViewModelForViewTypesThatImplementIViewTModel()
         {
@@ -104,17 +106,33 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
-        public void Presenter_RouteData_ReturnsRouteData()
+        public void Presenter_RouteData_ReturnsRouteDataFromHttpContext()
         {
-            // Arrange
-            var view = MockRepository.GenerateStub<IView>();
-            var httpContext = MockRepository.GenerateStub<HttpContextBase>();
-            var request = MockRepository.GenerateStub<HttpRequestBase>();
-            httpContext.Stub(h => h.Request).Return(request);
+            TestHelper.Isolate(TestContext,
+                () =>
+                {
+                    // Arrange
+                    var view = MockRepository.GenerateStub<IView>();
+                    var httpContext = MockRepository.GenerateStub<HttpContextBase>();
+                    var request = MockRepository.GenerateStub<HttpRequestBase>();
+                    httpContext.Stub(h => h.Request).Return(request);
+                    var route = MockRepository.GenerateStub<RouteBase>();
+                    var routeData = new RouteData();
+                    routeData.Values.Add("TestRouteDataValue", 1);
+                    route.Stub(r => r.GetRouteData(httpContext)).Return(routeData);
+                    RouteTable.Routes.Add("Test Route", route);
 
-            // Act
-            var presenter = new TestPresenter(view);
-            presenter.HttpContext = httpContext;
+                    // Act
+                    var presenter = new TestPresenter(view) { HttpContext = httpContext };
+                    AppDomain.CurrentDomain.SetData("presenter.RouteData.Value", presenter.RouteData.Values["TestRouteDataValue"]);
+                },
+                appDomain =>
+                {
+                    // Assert
+                    var presenterRouteDataValue = (int)appDomain.GetData("presenter.RouteData.Value");
+                    Assert.AreEqual(1, presenterRouteDataValue);
+                }
+            );
         }
 
         class TestModel { }
