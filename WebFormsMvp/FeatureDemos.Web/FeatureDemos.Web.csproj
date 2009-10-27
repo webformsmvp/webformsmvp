@@ -182,6 +182,10 @@
     <Compile Include="RedirectTo.aspx.designer.cs">
       <DependentUpon>RedirectTo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TimeService.asmx.cs">
+      <DependentUpon>TimeService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WidgetLookup.aspx.cs">
       <DependentUpon>WidgetLookup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -242,6 +246,7 @@
     <Content Include="SharedPresenter.aspx" />
     <Content Include="Controls\SharedPresenterControl.ascx" />
     <Content Include="Handlers\TimeHandler.ashx" />
+    <Content Include="TimeService.asmx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
