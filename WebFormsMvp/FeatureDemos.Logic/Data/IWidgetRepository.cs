@@ -14,6 +14,6 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
         Widget FindByName(string name);
         IAsyncResult BeginFindByName(string name, AsyncCallback callback, Object asyncState);
         Widget EndFindByName(IAsyncResult result);
-        void Save(Widget widget);
+        void Save(Widget widget, Widget originalWidget);
     }
 }

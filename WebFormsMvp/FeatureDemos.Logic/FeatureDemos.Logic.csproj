@@ -69,6 +69,7 @@
     <Compile Include="Data\WidgetRepository.cs" />
     <Compile Include="Domain\Widget.cs" />
     <Compile Include="Presenters\AsyncMessagesPresenter.cs" />
+    <Compile Include="Presenters\EditWidgetPresenter.cs" />
     <Compile Include="Presenters\Messaging1Presenter.cs" />
     <Compile Include="Presenters\Messaging2Presenter.cs" />
     <Compile Include="Presenters\SharedPresenter.cs" />
@@ -84,6 +85,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Views\IAsyncMessagesView.cs" />
+    <Compile Include="Views\IEditWidgetView.cs" />
     <Compile Include="Views\IMessaging1View.cs" />
     <Compile Include="Views\IMessaging2View.cs" />
     <Compile Include="Views\ISharedPresenterView.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Views\IRedirectView.cs" />
     <Compile Include="Views\ITimeServiceView.cs" />
     <Compile Include="Views\Models\AsyncMessagesModel.cs" />
+    <Compile Include="Views\Models\EditWidgetModel.cs" />
     <Compile Include="Views\Models\MessagingModel.cs" />
     <Compile Include="Views\Models\SharedPresenterViewModel.cs" />
     <Compile Include="Views\Models\HelloWorldModel.cs" />

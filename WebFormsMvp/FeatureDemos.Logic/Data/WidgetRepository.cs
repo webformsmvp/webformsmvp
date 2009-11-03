@@ -73,12 +73,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
         {
             var rdr = _beginFindAllCmd.EndExecuteReader(result);
             var widgets = (from w in _db.Translate<Widget>(rdr)
-                           select w /*new Domain.Widget
-                           {
-                               Id = w.Id,
-                               Name = w.Name,
-                               Description = w.Description
-                           }*/).ToList();
+                           select w).ToList();
             rdr.Close();
             return widgets;
         }
@@ -90,12 +85,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
             {
                 widget = (from w in db.Widgets
                           where w.Name == name
-                          select w/*new Domain.Widget
-                          {
-                              Id = w.Id,
-                              Name = w.Name,
-                              Description = w.Description
-                          }*/).SingleOrDefault();
+                          select w).SingleOrDefault();
             }
             return widget;
         }
@@ -117,34 +107,24 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
         {
             var rdr = _beginFindByNameCmd.EndExecuteReader(result);
             var widget = (from w in _db.Translate<Widget>(rdr)
-                           select w/*new Domain.Widget
-                           {
-                               Id = w.Id,
-                               Name = w.Name,
-                               Description = w.Description
-                           }*/).SingleOrDefault();
+                           select w).SingleOrDefault();
             rdr.Close();
             return widget;
         }
 
-        public void Save(Widget widget)
+        public void Save(Widget widget, Widget originalWidget)
         {
-            var dataWidget = widget/* new Data.Widget
-                {
-                    Name = widget.Name, Description = widget.Description
-                }*/;
             using (var db = new SiteDbDataContext())
             {
                 if (widget.Id > 0)
                 {
                     // Update
-                    //dataWidget.Id = widget.Id;
-                    db.Widgets.Attach(dataWidget, true);
+                    db.Widgets.Attach(widget, originalWidget);
                 }
                 else
                 {
                     // Create
-                    db.Widgets.InsertOnSubmit(dataWidget);
+                    db.Widgets.InsertOnSubmit(widget);
                 }
                 db.SubmitChanges();
             }

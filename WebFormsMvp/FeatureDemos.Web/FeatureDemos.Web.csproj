@@ -77,6 +77,13 @@
     <Compile Include="AsyncMessages.aspx.designer.cs">
       <DependentUpon>AsyncMessages.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EditWidgetControl.ascx.cs">
+      <DependentUpon>EditWidgetControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\EditWidgetControl.ascx.designer.cs">
+      <DependentUpon>EditWidgetControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Messaging1Control.ascx.cs">
       <DependentUpon>Messaging1Control.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -186,6 +193,13 @@
       <DependentUpon>TimeService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WidgetEdit.aspx.cs">
+      <DependentUpon>WidgetEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WidgetEdit.aspx.designer.cs">
+      <DependentUpon>WidgetEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WidgetLookup.aspx.cs">
       <DependentUpon>WidgetLookup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -240,6 +254,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\EditWidgetControl.ascx" />
     <Content Include="Controls\Messaging1Control.ascx" />
     <Content Include="Controls\Messaging2Control.ascx" />
     <Content Include="Messaging.aspx" />
@@ -247,6 +262,7 @@
     <Content Include="Controls\SharedPresenterControl.ascx" />
     <Content Include="Handlers\TimeHandler.ashx" />
     <Content Include="TimeService.asmx" />
+    <Content Include="WidgetEdit.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
