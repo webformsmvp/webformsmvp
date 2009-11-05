@@ -11,49 +11,27 @@ namespace WebFormsMvp.UnitTests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void PresenterBinder_Factory_CanOnlyBeSetOnce()
         {
-            TestHelper.Isolate(TestContext,
-                () => // Act
+            TestContext.Isolate(() =>
                 {
-                    try
-                    {
-                        PresenterBinder.Factory = new DefaultPresenterFactory();
-                        PresenterBinder.Factory = null;
-                    }
-                    catch (Exception ex)
-                    {
-                        AppDomain.CurrentDomain.SetData("ex", ex);
-                    }
-                },
-                appDomain => // Assert
-                {
-                    var exception = appDomain.GetData("ex");
-                    Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+                    // Act
+                    PresenterBinder.Factory = new DefaultPresenterFactory();
+                    PresenterBinder.Factory = null;
                 }
             );
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void PresenterBinder_Factory_CantSetFactoryAfterItHasBeenUsed()
         {
-            TestHelper.Isolate(TestContext,
-                () => // Act
+            TestContext.Isolate(() =>
                 {
-                    try
-                    {
-                        var factory = PresenterBinder.Factory;
-                        PresenterBinder.Factory = null;
-                    }
-                    catch (Exception ex)
-                    {
-                        AppDomain.CurrentDomain.SetData("ex", ex);
-                    }
-                },
-                appDomain => // Assert
-                {
-                    var exception = appDomain.GetData("ex");
-                    Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+                    // Act
+                    var factory = PresenterBinder.Factory;
+                    PresenterBinder.Factory = null;
                 }
             );
         }
@@ -61,9 +39,9 @@ namespace WebFormsMvp.UnitTests
         [TestMethod]
         public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsDefaultUsesFreindlyExceptionMessage()
         {
-            TestHelper.Isolate(TestContext,
-                () => // Act
+            TestContext.Isolate(() =>
                 {
+                    // Act
                     try
                     {
                         PresenterBinder.Factory = new DefaultPresenterFactory();
@@ -71,14 +49,10 @@ namespace WebFormsMvp.UnitTests
                     }
                     catch (Exception ex)
                     {
-                        AppDomain.CurrentDomain.SetData("ex", ex);
+                        // Assert
+                        Assert.IsNotNull(ex);
+                        StringAssert.Contains(ex.Message, "default implementation");
                     }
-                },
-                appDomain => // Assert
-                {
-                    var exception = appDomain.GetData("ex") as InvalidOperationException;
-                    Assert.IsNotNull(exception);
-                    StringAssert.Contains(exception.Message, "default implementation");
                 }
             );
         }
@@ -86,25 +60,23 @@ namespace WebFormsMvp.UnitTests
         [TestMethod]
         public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsNotDefaultUsesTerseExceptionMessage()
         {
-            TestHelper.Isolate(TestContext,
-                () => // Act
+            TestContext.Isolate(() =>
                 {
                     try
                     {
+                        // Arrange
                         var factory = MockRepository.GenerateStub<IPresenterFactory>();
+
+                        // Act
                         PresenterBinder.Factory = factory;
                         PresenterBinder.Factory = null;
                     }
                     catch (Exception ex)
                     {
-                        AppDomain.CurrentDomain.SetData("ex", ex);
+                        // Assert
+                        Assert.IsNotNull(ex);
+                        StringAssert.StartsWith(ex.Message, "You can only set your factory once");
                     }
-                },
-                appDomain => // Assert
-                {
-                    var exception = appDomain.GetData("ex") as InvalidOperationException;
-                    Assert.IsNotNull(exception);
-                    StringAssert.StartsWith(exception.Message, "You can only set your factory once");
                 }
             );
         }
@@ -112,14 +84,12 @@ namespace WebFormsMvp.UnitTests
         [TestMethod]
         public void PresenterBinder_Factory_ReturnsDefaultFactoryWhenNoneIsSet()
         {
-            TestHelper.Isolate(TestContext,
-                () => // Act
+            TestContext.Isolate(() =>
                 {
-                    AppDomain.CurrentDomain.SetData("factoryTypeName", PresenterBinder.Factory.GetType().FullName);
-                },
-                appDomain => // Assert
-                {
-                    var factoryTypeName = appDomain.GetData("factoryTypeName");
+                    // Act
+                    var factoryTypeName = PresenterBinder.Factory.GetType().FullName;
+                    
+                    // Assert
                     Assert.AreEqual(factoryTypeName, typeof(DefaultPresenterFactory).FullName);
                 }
             );

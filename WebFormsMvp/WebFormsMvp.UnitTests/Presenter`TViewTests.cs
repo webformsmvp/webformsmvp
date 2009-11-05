@@ -108,8 +108,7 @@ namespace WebFormsMvp.UnitTests
         [TestMethod]
         public void Presenter_RouteData_ReturnsRouteDataFromHttpContext()
         {
-            TestHelper.Isolate(TestContext,
-                () =>
+            TestContext.Isolate(() =>
                 {
                     // Arrange
                     var view = MockRepository.GenerateStub<IView>();
@@ -124,13 +123,9 @@ namespace WebFormsMvp.UnitTests
 
                     // Act
                     var presenter = new TestPresenter(view) { HttpContext = httpContext };
-                    AppDomain.CurrentDomain.SetData("presenter.RouteData.Value", presenter.RouteData.Values["TestRouteDataValue"]);
-                },
-                appDomain =>
-                {
+
                     // Assert
-                    var presenterRouteDataValue = (int)appDomain.GetData("presenter.RouteData.Value");
-                    Assert.AreEqual(1, presenterRouteDataValue);
+                    Assert.AreEqual(1, presenter.RouteData.Values["TestRouteDataValue"]);
                 }
             );
         }

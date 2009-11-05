@@ -10,7 +10,7 @@ namespace WebFormsMvp.UnitTests
         /// <summary>
         /// Creates an AppDomain based on the passed TestContext to provide isolation for a unit test.
         /// </summary>
-        internal static AppDomain CreateAppDomain(TestContext testContext)
+        private static AppDomain CreateAppDomain(TestContext testContext)
         {
             return AppDomain.CreateDomain(
                 testContext.TestName + "_AppDomain",
@@ -22,14 +22,33 @@ namespace WebFormsMvp.UnitTests
         /// <summary>
         /// Runs a delegate in its own AppDomain for isolation during unit testing.
         /// </summary>
-        internal static void Isolate(TestContext testContext, CrossAppDomainDelegate action, Action<AppDomain> assertion)
+        internal static void Isolate(this TestContext testContext, Action testAction)
         {
+            if (testAction == null)
+                throw new ArgumentNullException("testAction");
+
             AppDomain appDomain = null;
             try
             {
                 appDomain = CreateAppDomain(testContext);
-                appDomain.DoCallBack(action);
-                assertion.Invoke(appDomain);
+                appDomain.SetData("testAction", testAction);
+                appDomain.DoCallBack(() =>
+                {
+                    try
+                    {
+                        var marshalledAction = AppDomain.CurrentDomain.GetData("testAction") as Action;
+                        marshalledAction.Invoke();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppDomain.CurrentDomain.SetData("Exception", ex);
+                    }
+                });
+                var testActionEx = appDomain.GetData("Exception") as Exception;
+                if (testActionEx != null)
+                {
+                    throw testActionEx;
+                }
             }
             finally
             {
