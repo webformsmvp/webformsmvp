@@ -46,6 +46,8 @@ namespace WebFormsMvp.Binder
             }
         }
 
+        static ICompositeViewTypeFactory compositeViewTypeFactory = new DefaultCompositeViewTypeFactory();
+
         readonly HttpContextBase httpContext;
         readonly IMessageCoordinator messageCoordinator = new MessageCoordinator();
         readonly IList<IView> viewInstancesRequiringBinding = new List<IView>();
@@ -340,8 +342,7 @@ namespace WebFormsMvp.Binder
 
         internal static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews)
         {
-            var compositeFactory = new CompositeViewTypeFactory();
-            var compositeViewType = compositeFactory.BuildCompositeViewType(viewType);
+            var compositeViewType = compositeViewTypeFactory.BuildCompositeViewType(viewType);
             var view = (ICompositeView)Activator.CreateInstance(compositeViewType);
             foreach (var v in childViews)
             {
