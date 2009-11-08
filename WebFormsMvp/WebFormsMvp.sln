@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{EF165358-8758-45DC-8B74-3B963037E376}"
 	ProjectSection(SolutionItems) = preProject
 		Dependencies\CSSFriendly.dll = Dependencies\CSSFriendly.dll
@@ -23,9 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Castle", "Castle", "{7AD653
 		Dependencies\Castle\Castle.Windsor.dll = Dependencies\Castle\Castle.Windsor.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp", "WebFormsMvp\WebFormsMvp.csproj", "{E265BF3E-8CCB-4C22-8C15-263735227A3D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feature Demos Application", "Feature Demos Application", "{392D516C-6A30-4673-A43A-87DEC9340427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp", "WebFormsMvp\WebFormsMvp.csproj", "{E265BF3E-8CCB-4C22-8C15-263735227A3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Testing", "WebFormsMvp.Testing\WebFormsMvp.Testing.csproj", "{6C47BBFB-0189-4B11-A14B-B76C248B6685}"
 EndProject
