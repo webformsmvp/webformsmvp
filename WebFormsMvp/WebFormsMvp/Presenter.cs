@@ -13,6 +13,13 @@ namespace WebFormsMvp
     public abstract class Presenter<TView> : IPresenter<TView>
         where TView : class, IView
     {
+        private readonly TView view;
+
+        /// <summary>
+        /// Gets the view instance that this presenter is bound to.
+        /// </summary>
+        public TView View { get { return view; } }
+
         /// <summary>
         /// Gets or sets HTTP-specific information about an individual HTTP request.
         /// </summary>
@@ -44,11 +51,6 @@ namespace WebFormsMvp
         public RouteData RouteData { get { return RouteTable.Routes.GetRouteData(HttpContext); } }
 
         /// <summary>
-        /// Gets or sets the view.
-        /// </summary>
-        public TView View { get; set; }
-
-        /// <summary>
         /// Gets or sets the async task manager.
         /// </summary>
         public IAsyncTaskManager AsyncManager { get; set; }
@@ -64,7 +66,7 @@ namespace WebFormsMvp
         protected Presenter(TView view)
         {
             InitializeDefaultModel(view);
-            View = view;
+            this.view = view;
         }
 
         static void InitializeDefaultModel(TView view)

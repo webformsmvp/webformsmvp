@@ -9,6 +9,9 @@ namespace WebFormsMvp
     public interface IPresenter<TView> : IPresenter
         where TView : class, IView
     {
-        TView View { get; set; }
+        /// <summary>
+        /// Gets the view instance that this presenter is bound to.
+        /// </summary>
+        TView View { get; }
     }
 }
