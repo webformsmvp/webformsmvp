@@ -33,11 +33,15 @@ namespace WebFormsMvp.Web
 
         protected virtual void OnObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
+            if (e == null) throw new ArgumentNullException("e");
+
             e.ObjectInstance = ParentHost;
         }
 
         protected virtual void OnObjectDisposing(object sender, ObjectDataSourceDisposingEventArgs e)
         {
+            if (e == null) throw new ArgumentNullException("e");
+            
             e.Cancel = true;
         }
 

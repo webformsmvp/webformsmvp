@@ -16,8 +16,12 @@ namespace WebFormsMvp
 
         public void Add(IView view)
         {
-            var viewOfT = view as TView;
-            if (viewOfT == null)
+            if (view == null)
+            {
+                throw new ArgumentNullException("view");
+            }
+
+            if (!(view is TView))
             {
                 throw new ArgumentException(string.Format(
                     CultureInfo.InvariantCulture,
@@ -26,7 +30,8 @@ namespace WebFormsMvp
                     view.GetType().FullName
                 ));
             }
-            views.Add(viewOfT);
+            
+            views.Add((TView)view);
         }
 
         public abstract event EventHandler Load;

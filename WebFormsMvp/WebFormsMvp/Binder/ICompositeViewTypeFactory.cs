@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace WebFormsMvp.Binder
 {
-    public interface ICompositeViewTypeFactory
+    internal interface ICompositeViewTypeFactory
     {
         Type BuildCompositeViewType(Type viewType);
     }

@@ -164,7 +164,7 @@ public class TestViewComposite
                 .Union
                 (
                     type.GetInterfaces()
-                        .SelectMany(i => DiscoverProperties(i))
+                        .SelectMany(DiscoverProperties)
                 );
         }
 
@@ -533,7 +533,7 @@ set
                 .Union
                 (
                     type.GetInterfaces()
-                        .SelectMany(i => DiscoverEvents(i))
+                        .SelectMany(DiscoverEvents)
                 );
         }
 
@@ -550,6 +550,16 @@ set
             var addMethod = BuildEventAddMethod(type, viewType, eventInfo);
             var removeMethod = BuildEventRemoveMethod(type, viewType, eventInfo);
             
+            if (eventInfo.EventHandlerType == null)
+            {
+                throw new ArgumentException(string.Format(
+                    CultureInfo.InvariantCulture,
+                    "The supplied event {0} from {1} does not have the event handler type specified.",
+                    eventInfo.Name,
+                    eventInfo.ReflectedType.Name),
+                    "eventInfo");
+            }
+
             var @event = type.DefineEvent(
                 eventInfo.Name,
                 eventInfo.Attributes,

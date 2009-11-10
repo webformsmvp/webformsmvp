@@ -11,11 +11,20 @@ namespace WebFormsMvp.Binder
     {
         public IPresenter Create(Type presenterType, Type viewType, IView viewInstance)
         {
+            if (presenterType == null)
+                throw new ArgumentNullException("presenterType");
+
+            if (viewType == null)
+                throw new ArgumentNullException("viewType");
+
+            if (viewInstance == null)
+                throw new ArgumentNullException("viewInstance");
+
             var buildMethod = GetBuildMethod(presenterType, viewType);
+            
             try
             {
-                var presenter = (IPresenter)buildMethod.Invoke(null, new[] { viewInstance });
-                return presenter;
+                return (IPresenter)buildMethod.Invoke(null, new[] { viewInstance });
             }
             catch (TargetInvocationException ex)
             {

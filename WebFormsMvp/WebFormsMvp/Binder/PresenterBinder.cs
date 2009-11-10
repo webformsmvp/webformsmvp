@@ -10,7 +10,7 @@ namespace WebFormsMvp.Binder
     /// Handles the creation and binding of presenters based on the decoration of
     /// <see cref="PresenterBindingAttribute"/> attributes on a host class, such as page.
     /// </summary>
-    public class PresenterBinder
+    public sealed class PresenterBinder
     {
         static readonly IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> hostTypeToPresenterBindInfoCache
             = new Dictionary<IntPtr, IEnumerable<PresenterBindInfo>>();
@@ -27,11 +27,7 @@ namespace WebFormsMvp.Binder
         {
             get
             {
-                if (factory == null)
-                {
-                    factory = new DefaultPresenterFactory();
-                }
-                return factory;
+                return factory ?? (factory = new DefaultPresenterFactory());
             }
             set
             {
@@ -46,7 +42,7 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        static ICompositeViewTypeFactory compositeViewTypeFactory = new DefaultCompositeViewTypeFactory();
+        static readonly ICompositeViewTypeFactory compositeViewTypeFactory = new DefaultCompositeViewTypeFactory();
 
         readonly HttpContextBase httpContext;
         readonly IMessageCoordinator messageCoordinator = new MessageCoordinator();
@@ -108,8 +104,8 @@ namespace WebFormsMvp.Binder
 
         /// <summary>
         /// Registers a view instance as being a candidate for binding. If
-        /// <see cref="PerformBinding"/> has not been called, the view will
-        /// be queued until that time. If <see cref="PerformBinding"/> has
+        /// <see cref="PerformBinding()"/> has not been called, the view will
+        /// be queued until that time. If <see cref="PerformBinding()"/> has
         /// already been called, binding is attempted instantly.
         /// </summary>
         public void RegisterView(IView viewInstance)
@@ -167,7 +163,7 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        protected virtual void OnPresenterCreated(PresenterCreatedEventArgs args)
+        private void OnPresenterCreated(PresenterCreatedEventArgs args)
         {
             if (PresenterCreated != null)
             {
@@ -226,7 +222,7 @@ namespace WebFormsMvp.Binder
             //    Binding 1 -> View 1
             //    Binding 2 -> View 2
             //    Binding 3 -> View 1, View 2
-            var bindingsToInstances = presenterBindings
+            return presenterBindings
                 .Select
                 (
                     binding => new KeyValuePair<PresenterBindInfo, IEnumerable<IView>>
@@ -239,8 +235,6 @@ namespace WebFormsMvp.Binder
                 )
                 .Where(map => map.Value.Any())
                 .ToDictionary(m => m.Key, m => m.Value);
-
-            return bindingsToInstances;
         }
 
         internal static IDictionary<IView, IEnumerable<Type>> GetViewInterfaces(IEnumerable<IView> instances)
