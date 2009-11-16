@@ -3,7 +3,7 @@
 	$ReleaseVersionNumber
 )
 
-$PSScriptFilePath = (get-item $MyInvocation.MyCommand.Path).FullName
+$PSScriptFilePath = (Get-Item $MyInvocation.MyCommand.Path).FullName
 
 $SolutionRoot = Split-Path -Path $PSScriptFilePath -Parent
 
@@ -28,7 +28,17 @@ if ($PendingChangesPriorToBuild)
 	Write-Warning "There are pending changes in your TFS workspace. This will be marked as an unsafe release and should not be uploaded to CodePlex."
 }
 
-# Confirm that there isn't an existing label that uses the version number
+# Make sure we don't have a release folder for this version already
+$ReleaseSuffix = "";
+if ($PendingChangesPriorToBuild) { $ReleaseSuffix = "-UNSAFE" }
+$ReleaseFolder = Join-Path -Path $SolutionRoot -ChildPath "Releases\v$ReleaseVersionNumber$ReleaseSuffix";
+if ((Get-Item $ReleaseFolder -ErrorAction SilentlyContinue) -ne $null)
+{
+	Write-Warning "$ReleaseFolder already exists on your local machine. It will now be deleted."
+	Remove-Item $ReleaseFolder -Recurse
+}
+
+# Confirm that there isn't an existing TFS label that uses the version number
 
 # Checkout SolutionInfo.cs
 $SolutionInfoName = "SolutionInfo.cs"
@@ -46,17 +56,23 @@ if ($SolutionInfoCheckoutResult -ne $SolutionInfoName)
 
 # Build the solution in release mode
 $SolutionPath = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.sln"
-& $MSBuild "$SolutionPath" /p:Configuration=Release
-
-# Check the build result
+& $MSBuild "$SolutionPath" /p:Configuration=Release /maxcpucount
+if (-not $?)
+{
+	throw "The MSBuild process returned an error code."
+}
 
 # Run the unit tests?
+
+# Package Releases\WebFormsMvp.(version).Library.zip (dll + pdb + xml)
+$LibraryReleaseFolder = Join-Path -Path $ReleaseFolder -ChildPath "Library";
+New-Item $LibraryReleaseFolder -Type directory
+$LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release\*.*"
+Copy-Item $LibraryBinFolder -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
 
 # Copy to a temp folder
 
 # Remove the source bindings
-
-# Package Releases\WebFormsMvp.(version).Library.zip (dll + pdb + xml)
 
 # Package Releases\WebFormsMvp.(version).FeatureDemos.zip (feature demo w/ library reference)
 
