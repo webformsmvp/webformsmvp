@@ -69,6 +69,12 @@ $LibraryReleaseFolder = Join-Path -Path $ReleaseFolder -ChildPath "Library";
 New-Item $LibraryReleaseFolder -Type directory
 $LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release"
 Copy-Item "$LibraryBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
+Set-Content (Join-Path -Path $LibraryReleaseFolder -ChildPath "GettingStarted.txt") -Value `
+"This ZIP file only contains the compiled libraries.
+
+For help getting started, check out http://webformsmvp.com
+
+There's also a feature demo app which you can browse at http://webformsmvp.codeplex.com/SourceControl/BrowseLatest"
 
 # Load ZIP library
 $LibraryReleaseZip = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp-v$ReleaseVersionNumber-Library$ReleaseSuffix.zip";
