@@ -30,7 +30,7 @@ if ($PendingChangesPriorToBuild)
 
 # Make sure we don't have a release folder for this version already
 $ReleaseSuffix = "";
-if ($PendingChangesPriorToBuild) { $ReleaseSuffix = "-UNSAFE" }
+if ($PendingChangesPriorToBuild) { $ReleaseSuffix = "-Unsafe" }
 $ReleaseFolder = Join-Path -Path $SolutionRoot -ChildPath "Releases\v$ReleaseVersionNumber$ReleaseSuffix";
 if ((Get-Item $ReleaseFolder -ErrorAction SilentlyContinue) -ne $null)
 {
@@ -64,13 +64,19 @@ if (-not $?)
 
 # Run the unit tests?
 
-# Package Releases\WebFormsMvp.(version).Library.zip (dll + pdb + xml)
+# Copy library files to temp folder (dll + pdb + xml)
 $LibraryReleaseFolder = Join-Path -Path $ReleaseFolder -ChildPath "Library";
 New-Item $LibraryReleaseFolder -Type directory
-$LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release\*.*"
-Copy-Item $LibraryBinFolder -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
+$LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release"
+Copy-Item "$LibraryBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
 
-# Copy to a temp folder
+# Load ZIP library
+$LibraryReleaseZip = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp-v$ReleaseVersionNumber-Library$ReleaseSuffix.zip";
+Add-Type -Path (Join-Path -Path $SolutionRoot -ChildPath "Dependencies\ICSharpCode.SharpZipLib.dll")
+$FastZip = New-Object -TypeName ICSharpCode.SharpZipLib.Zip.FastZip
+$FastZip.CreateZip($LibraryReleaseZip, $LibraryReleaseFolder, $true, "") # zipfile, source, recurse, filter
+
+# Copy source to a temp folder
 
 # Remove the source bindings
 
