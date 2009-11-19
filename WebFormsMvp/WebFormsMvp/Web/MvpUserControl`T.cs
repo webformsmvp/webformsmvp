@@ -9,10 +9,25 @@ namespace WebFormsMvp.Web
     public class MvpUserControl<TModel> : MvpUserControl, IView<TModel>
         where TModel : class, new()
     {
+        TModel model;
+
         /// <summary>
         /// Gets or sets the view model.
         /// </summary>
         /// <value>The view model.</value>
-        public TModel Model { get; set; }
+        public TModel Model
+        {
+            get
+            {
+                if (model == null)
+                    throw new InvalidOperationException("The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
+
+                return model;
+            }
+            protected set
+            {
+                model = value;
+            }
+        }
     }
 }
