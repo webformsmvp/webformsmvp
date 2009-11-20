@@ -37,7 +37,7 @@ namespace WebFormsMvp
 
         void AddMessage<TMessage>(TMessage message)
         {
-            var messageList = messages.GetOrCreateValue(typeof(TMessage),
+            var messageList = messages.GetOrCreateValue<Type, IList>(typeof(TMessage),
                 () => new List<TMessage>());
             lock (messageList)
             {
@@ -88,7 +88,7 @@ namespace WebFormsMvp
             var intermediateReceivedCallback = new Action<object>(m => 
                 messageReceivedCallback((TMessage)m));
 
-            var receivedList = messageReceivedCallbacks.GetOrCreateValue(typeof(TMessage),
+            var receivedList = messageReceivedCallbacks.GetOrCreateValue<Type, IList<Action<object>>>(typeof(TMessage),
                 () => new List<Action<object>>());
             lock (receivedList)
             {

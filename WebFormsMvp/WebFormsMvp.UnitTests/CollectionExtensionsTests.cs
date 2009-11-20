@@ -96,7 +96,7 @@ namespace WebFormsMvp.UnitTests
             dictionary.Add("blah", "value");
 
             // Act
-            var result = dictionary.GetOrCreateValue("blah", () => "yo");
+            var result = CollectionExtensions.GetOrCreateValue<string, string>(dictionary, "blah", () => "yo");
 
             // Assert
             Assert.AreEqual("value", result);

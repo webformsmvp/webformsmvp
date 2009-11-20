@@ -24,7 +24,7 @@ namespace WebFormsMvp.Web
 
                 return model;
             }
-            protected set
+            set
             {
                 model = value;
             }

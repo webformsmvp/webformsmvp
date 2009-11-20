@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace System.Collections.Generic
+namespace WebFormsMvp
 {
     internal static class CollectionExtensions
     {
@@ -45,6 +47,11 @@ namespace System.Collections.Generic
             }
 
             return dictionary[key];
+        }
+
+        internal static IDictionary<TKey,TValue> ToDictionary<TKey,TValue>(this IEnumerable<KeyValuePair<TKey,TValue>> source)
+        {
+            return source.ToDictionary(m => m.Key, m => m.Value);
         }
     }
 }

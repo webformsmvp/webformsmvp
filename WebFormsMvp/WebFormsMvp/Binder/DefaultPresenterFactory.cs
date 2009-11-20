@@ -53,8 +53,7 @@ namespace WebFormsMvp.Binder
             Justification = "CAS protected members are not exposed, only used internally")]
         internal static DynamicMethod GetBuildMethod(Type type, params Type[] constructorArgumentTypes)
         {
-            return buildMethodCache.GetOrCreateValue(
-                type.TypeHandle.Value,
+            return buildMethodCache.GetOrCreateValue(type.TypeHandle.Value,
                 () => GetBuildMethodInternal(type, constructorArgumentTypes));
         }
 

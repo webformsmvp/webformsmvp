@@ -11,7 +11,7 @@ namespace WebFormsMvp
         public PresenterBindingAttribute(Type presenterType)
         {
             PresenterType = presenterType;
-            ViewType = typeof(IView);
+            ViewType = null;
             BindingMode = BindingMode.Default;
         }
 
