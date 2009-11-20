@@ -92,9 +92,6 @@
     </Compile>
     <Compile Include="Views\IAsyncMessagesView.cs" />
     <Compile Include="Views\IEditWidgetView.cs" />
-    <Compile Include="Views\IMessaging1View.cs" />
-    <Compile Include="Views\IMessaging2View.cs" />
-    <Compile Include="Views\ISharedPresenterView.cs" />
     <Compile Include="Views\ILookupWidgetView.cs" />
     <Compile Include="Views\IRedirectView.cs" />
     <Compile Include="Views\ITimeServiceView.cs" />

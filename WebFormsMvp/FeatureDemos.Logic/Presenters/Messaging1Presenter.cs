@@ -1,13 +1,13 @@
 ﻿using System;
 using WebFormsMvp.FeatureDemos.Logic.Domain;
-using WebFormsMvp.FeatureDemos.Logic.Views;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class Messaging1Presenter
-        : Presenter<IMessaging1View>
+        : Presenter<IView<MessagingModel>>
     {
-        public Messaging1Presenter(IMessaging1View view)
+        public Messaging1Presenter(IView<MessagingModel> view)
             : base(view)
         {
             View.Load += View_Load;

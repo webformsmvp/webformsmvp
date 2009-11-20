@@ -2,8 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using Rhino.Mocks;
-using WebFormsMvp.FeatureDemos.Logic.Views;
 using WebFormsMvp.FeatureDemos.Logic.Domain;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.UnitTests
 {
@@ -14,7 +14,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
         public void MessagingPresenter1_Load_ShouldPublishAWidgetMessage()
         {
             // Arrange
-            var view = MockRepository.GenerateStub<IMessaging1View>();
+            var view = MockRepository.GenerateStub<IView<MessagingModel>>();
             var presenter = new Messaging1Presenter(view)
                             {
                                 Messages = MockRepository.GenerateMock<IMessageCoordinator>()

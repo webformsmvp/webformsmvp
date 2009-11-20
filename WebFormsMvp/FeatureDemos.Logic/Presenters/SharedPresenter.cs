@@ -1,12 +1,12 @@
 ﻿using System;
-using WebFormsMvp.FeatureDemos.Logic.Views;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class SharedPresenter
-        : Presenter<ISharedPresenterView>
+        : Presenter<IView<SharedPresenterViewModel>>
     {
-        public SharedPresenter(ISharedPresenterView view)
+        public SharedPresenter(IView<SharedPresenterViewModel> view)
             : base(view)
         {
             View.Load += View_Load;

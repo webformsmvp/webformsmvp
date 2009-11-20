@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebFormsMvp.FeatureDemos.Logic.Views;
 using Rhino.Mocks;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Domain;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.UnitTests
 {
@@ -14,7 +14,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
         public void MessagingPresenter1_Load_ShouldSubscribeToAWidgetMessage()
         {
             // Arrange
-            var view = MockRepository.GenerateStub<IMessaging2View>();
+            var view = MockRepository.GenerateStub<IView<MessagingModel>>();
             var presenter = new Messaging2Presenter(view);
             presenter.Messages = MockRepository.GenerateMock<IMessageBus>();
             presenter.Messages
@@ -32,7 +32,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
         public void MessagingPresenter1_Load_ShouldSetDisplayTextWithReceivedWidget()
         {
             // Arrange
-            var view = MockRepository.GenerateStub<IMessaging2View>();
+            var view = MockRepository.GenerateStub<IView<MessagingModel>>();
             var presenter = new Messaging2Presenter(view)
                             {
                                 Messages = new MessageCoordinator()
