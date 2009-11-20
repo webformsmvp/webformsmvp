@@ -21,10 +21,10 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
-        public void PresenterBindingAttribute_Ctor_SetsViewTypeToTypeOfView()
+        public void PresenterBindingAttribute_Ctor_SetsViewTypeToNull()
         {
             var attribute = new PresenterBindingAttribute(typeof(TestPresenter));
-            Assert.AreEqual(typeof(IView), attribute.ViewType);
+            Assert.IsNull(attribute.ViewType);
         }
         
         class TestPresenter : Presenter<IView>

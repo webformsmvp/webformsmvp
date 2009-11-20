@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Views;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.UnitTests
 {
@@ -15,7 +16,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
         public void HelloWorldPresenterSetsViewMessageForAnonymousUser()
         {
             // Arrange
-            var view = MockRepository.GenerateStub<IHelloWorldView>();
+            var view = MockRepository.GenerateStub<IView<HelloWorldModel>>();
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
             var identity = MockRepository.GenerateMock<IIdentity>();
             var user = MockRepository.GenerateMock<IPrincipal>();
@@ -44,7 +45,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
         public void HelloWorldPresenterSetsViewMessageForAuthenticatedUser()
         {
             // Arrange
-            var view = MockRepository.GenerateStub<IHelloWorldView>();
+            var view = MockRepository.GenerateStub<IView<HelloWorldModel>>();
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
             var identity = MockRepository.GenerateMock<IIdentity>();
             var user = MockRepository.GenerateMock<IPrincipal>();

@@ -1,12 +1,12 @@
 ﻿using System;
-using WebFormsMvp.FeatureDemos.Logic.Views;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class HelloWorldPresenter
-        : Presenter<IHelloWorldView>
+        : Presenter<IView<HelloWorldModel>>
     {
-        public HelloWorldPresenter(IHelloWorldView view)
+        public HelloWorldPresenter(IView<HelloWorldModel> view)
             : base(view)
         {
             View.Load += View_Load;
