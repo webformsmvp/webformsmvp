@@ -2,7 +2,7 @@
 
 namespace WebFormsMvp.Binder
 {
-    internal class PresenterBindInfo
+    public class PresenterBindInfo
     {
         readonly Type presenterType;
         readonly Type viewType;
