@@ -166,10 +166,7 @@ namespace WebFormsMvp.Binder
 
         static IEnumerable<IPresenter> PerformBinding(IEnumerable<IView> candidates, IPresenterDiscoveryStrategy discoveryStrategy, HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory)
         {
-            var instancesToInterfaces = GetViewInterfaces(
-                candidates);
-
-            var bindingsToInstances = discoveryStrategy.MapBindingsToInstances(instancesToInterfaces);
+            var bindingsToInstances = discoveryStrategy.MapBindingsToInstances(candidates);
 
             var newPresenters = BuildPresenters(
                 httpContext,
@@ -179,46 +176,6 @@ namespace WebFormsMvp.Binder
                 bindingsToInstances);
 
             return newPresenters;
-        }
-
-        internal static IDictionary<IView, IEnumerable<Type>> GetViewInterfaces(IEnumerable<IView> instances)
-        {
-            return instances
-                .ToDictionary
-                (
-                    instance => instance,
-                    instance => GetViewInterfaces(instance.GetType())
-                );
-        }
-
-        static readonly IDictionary<IntPtr, IEnumerable<Type>> implementationTypeToViewInterfacesCache = new Dictionary<IntPtr, IEnumerable<Type>>();
-        internal static IEnumerable<Type> GetViewInterfaces(Type implementationType)
-        {
-            // We use the type handle as the cache key because they're fast
-            // to search against in dictionaries.
-            var implementationTypeHandle = implementationType.TypeHandle.Value;
-
-            // Try and pull it from the cache first
-            IEnumerable<Type> viewInterfaces;
-            if (implementationTypeToViewInterfacesCache.TryGetValue(implementationTypeHandle,
-                out viewInterfaces))
-            {
-                return viewInterfaces;
-            }
-
-            // Find all of the interfaces that this type implements which are
-            // derived from IView
-            viewInterfaces = implementationType
-                .GetInterfaces()
-                .Where(i => typeof(IView).IsAssignableFrom(i));
-
-            // Push it back to the cache
-            lock (implementationTypeToViewInterfacesCache)
-            {
-                implementationTypeToViewInterfacesCache[implementationTypeHandle] = viewInterfaces;
-            }
-
-            return viewInterfaces;
         }
 
         static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory, IEnumerable<KeyValuePair<PresenterBindInfo, IEnumerable<IView>>> bindingsToInstances)

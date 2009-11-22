@@ -12,19 +12,24 @@ namespace WebFormsMvp.Binder
 
         readonly IList<PresenterBindInfo> hostDefinedPresenterBindings = new List<PresenterBindInfo>();
 
-        public void AddHosts(IEnumerable<object> hosts)
+        public void AddHost(object host)
         {
-            hostDefinedPresenterBindings.AddRange(hosts
-                .SelectMany(host =>
-                    GetPresenterBindings(
-                        typeToPresenterBindInfoCache,
-                        host.GetType())));
+            if (host == null)
+                throw new ArgumentNullException("host");
+
+            hostDefinedPresenterBindings.AddRange(
+                GetPresenterBindings(
+                    typeToPresenterBindInfoCache,
+                    host.GetType()));
         }
-        
-        public IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(IDictionary<IView, IEnumerable<Type>> instancesToInterfaces)
+
+        public IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(IEnumerable<IView> viewInstances)
         {
-            if (instancesToInterfaces == null)
-                throw new ArgumentNullException("instancesToInterfaces");
+            if (viewInstances == null)
+                throw new ArgumentNullException("viewInstances");
+
+            var instancesToInterfaces = GetViewInterfaces(
+                viewInstances);
 
             // Build a dictionary of view defined bindings, for example:
             //    View 1 -> Binding 1
@@ -83,6 +88,47 @@ namespace WebFormsMvp.Binder
                 .ToDictionary();
         }
 
+        internal static IDictionary<IView, IEnumerable<Type>> GetViewInterfaces(IEnumerable<IView> instances)
+        {
+            return instances
+                .ToDictionary
+                (
+                    instance => instance,
+                    instance => GetViewInterfaces(instance.GetType())
+                );
+        }
+
+        static readonly IDictionary<IntPtr, IEnumerable<Type>> implementationTypeToViewInterfacesCache = new Dictionary<IntPtr, IEnumerable<Type>>();
+        internal static IEnumerable<Type> GetViewInterfaces(Type implementationType)
+        {
+            // We use the type handle as the cache key because they're fast
+            // to search against in dictionaries.
+            var implementationTypeHandle = implementationType.TypeHandle.Value;
+
+            // Try and pull it from the cache first
+            IEnumerable<Type> viewInterfaces;
+            if (implementationTypeToViewInterfacesCache.TryGetValue(implementationTypeHandle,
+                out viewInterfaces))
+            {
+                return viewInterfaces;
+            }
+
+            // Find all of the interfaces that this type implements which are
+            // derived from IView
+            viewInterfaces = implementationType
+                .GetInterfaces()
+                .Where(i => typeof(IView).IsAssignableFrom(i));
+
+            // Push it back to the cache
+            lock (implementationTypeToViewInterfacesCache)
+            {
+                implementationTypeToViewInterfacesCache[implementationTypeHandle] = viewInterfaces;
+            }
+
+            return viewInterfaces;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
         static IEnumerable<PresenterBindInfo> GetPresenterBindings(IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> cache, Type sourceType)
         {
             var hostTypeHandle = sourceType.TypeHandle.Value;
@@ -99,7 +145,8 @@ namespace WebFormsMvp.Binder
                 .Select(pba => new PresenterBindInfo(
                                    pba.PresenterType,
                                    pba.ViewType ?? sourceType,
-                                   pba.BindingMode)).ToArray();
+                                   pba.BindingMode))
+                .ToArray();
 
             lock (cache)
             {

@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binder\DefaultCompositeViewTypeFactoryTests.cs" />
+    <Compile Include="Binder\DefaultPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultPresenterFactoryTests.cs" />
     <Compile Include="Binder\PresenterBinderTests.cs" />
     <Compile Include="CollectionExtensionsTests.cs" />

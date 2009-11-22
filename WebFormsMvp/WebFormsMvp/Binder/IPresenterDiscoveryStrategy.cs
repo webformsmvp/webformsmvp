@@ -6,10 +6,9 @@ namespace WebFormsMvp.Binder
 {
     public interface IPresenterDiscoveryStrategy
     {
-        void AddHosts(IEnumerable<object> hosts);
+        void AddHost(object host);
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(
-            IDictionary<IView, IEnumerable<Type>> instancesToInterfaces);
+        IDictionary<PresenterBindInfo, IEnumerable<IView>> MapBindingsToInstances(IEnumerable<IView> viewInstances);
     }
 }
