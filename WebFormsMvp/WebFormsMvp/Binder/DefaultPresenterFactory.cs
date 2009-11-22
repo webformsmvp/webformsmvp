@@ -64,7 +64,7 @@ namespace WebFormsMvp.Binder
             {
                 throw new ArgumentException(string.Format(
                     CultureInfo.InvariantCulture,
-                    "{0} is missing expected constructor. We looked for a custructor that took parameters of: ({1}).",
+                    "{0} is missing expected constructor. We looked for a constructor that took parameters of: ({1}).",
                     type.FullName,
                     string.Join(", ", constructorArgumentTypes.Select(t => t.FullName).ToArray())),
                     "type");
