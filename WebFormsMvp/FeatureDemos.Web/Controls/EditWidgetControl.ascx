@@ -1,13 +1,16 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EditWidgetControl.ascx.cs" Inherits="WebFormsMvp.FeatureDemos.Web.Controls.EditWidgetControl" %>
 <div class="edit-widget">
-    <asp:FormView runat="server" DataSourceID="widgetDataSource" DefaultMode="ReadOnly">
+    <asp:FormView runat="server" DataSourceID="widgetDataSource" DefaultMode="ReadOnly"
+        DataKeyNames="Id" AllowPaging="true">
         <ItemTemplate>
             <dl>
                 <dt>ID:</dt><dd><%# Eval("Id") %></dd>
                 <dt>Name:</dt><dd><%# Eval("Name") %></dd>
                 <dt>Description:</dt><dd><%# Eval("Description") %></dd>
             </dl>
+            <asp:Button runat="server" CommandName="New" Text="New" />
             <asp:Button runat="server" CommandName="Edit" Text="Edit" />
+            <asp:Button runat="server" CommandName="Delete" Text="Delete" />
         </ItemTemplate>
         <EditItemTemplate>
             <fieldset>
@@ -57,7 +60,7 @@
                         <asp:TextBox runat="server" ID="widgetDescription" Text='<%# Bind("Description") %>' TextMode="MultiLine" />
                     </li>
                     <li class="action save">
-                        <asp:Button runat="server" CommandName="Create" Text="Save" />
+                        <asp:Button runat="server" CommandName="Insert" Text="Save" />
                     </li>
                     <li class="action cancel">
                         <asp:Button runat="server" CommandName="Cancel" Text="Cancel" />
@@ -71,15 +74,14 @@
     </asp:FormView>
     
     <mvp:PageDataSource ID="widgetDataSource" runat="server"
+        EnablePaging="true"
         DataObjectTypeName="WebFormsMvp.FeatureDemos.Logic.Data.Widget"
         ConflictDetection="CompareAllValues"
         OldValuesParameterFormatString="original{0}"
-        SelectMethod="GetWidget"
+        SelectMethod="GetWidgets"
+        SelectCountMethod="GetWidgetsCount"
         UpdateMethod="UpdateWidget"
         InsertMethod="InsertWidget"
         DeleteMethod="DeleteWidget">
-        <SelectParameters>
-            <asp:QueryStringParameter Name="widgetId" QueryStringField="id" Type="Int32" DefaultValue="1" />
-        </SelectParameters>
     </mvp:PageDataSource>
 </div>

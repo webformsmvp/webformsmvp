@@ -12,17 +12,14 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
 {
     public class WidgetRepository : IWidgetRepository
     {
-        SiteDbDataContext _db = null;
+        SiteDbDataContext _db = new SiteDbDataContext();
 
         public Widget Find(int id)
         {
             Widget widget = null;
-            using (var db = new SiteDbDataContext())
-            {
-                widget = (from w in db.Widgets
-                          where w.Id == id
-                          select w).SingleOrDefault();
-            }
+            widget = (from w in _db.Widgets
+                      where w.Id == id
+                      select w).SingleOrDefault();
             return widget;
         }
 
@@ -30,7 +27,6 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
 
         public IAsyncResult BeginFind(int id, AsyncCallback callback, Object asyncState)
         {
-            _db = new SiteDbDataContext();
             var query = from w in _db.Widgets
                         where w.Id == id
                         select w;
@@ -50,18 +46,14 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
 
         public IEnumerable<Widget> FindAll()
         {
-            using (var db = new SiteDbDataContext())
-            {
-                return from w in db.Widgets
-                       select w;
-            }
+            return from w in _db.Widgets
+                   select w;
         }
 
         SqlCommand _beginFindAllCmd = null;
 
         public IAsyncResult BeginFindAll(AsyncCallback callback, Object asyncState)
         {
-            _db = new SiteDbDataContext();
             var query = from w in _db.Widgets
                         select w;
             _beginFindAllCmd = _db.GetCommand(query) as SqlCommand;
@@ -81,12 +73,9 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
         public Widget FindByName(string name)
         {
             Widget widget = null;
-            using (var db = new SiteDbDataContext())
-            {
-                widget = (from w in db.Widgets
-                          where w.Name == name
-                          select w).SingleOrDefault();
-            }
+            widget = (from w in _db.Widgets
+                      where w.Name == name
+                      select w).SingleOrDefault();
             return widget;
         }
 
@@ -94,7 +83,6 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
 
         public IAsyncResult BeginFindByName(string name, AsyncCallback callback, Object asyncState)
         {
-            _db = new SiteDbDataContext();
             var query = from w in _db.Widgets
                         where w.Name == name
                         select w;
@@ -114,20 +102,17 @@ namespace WebFormsMvp.FeatureDemos.Logic.Data
 
         public void Save(Widget widget, Widget originalWidget)
         {
-            using (var db = new SiteDbDataContext())
+            if (widget.Id > 0)
             {
-                if (widget.Id > 0)
-                {
-                    // Update
-                    db.Widgets.Attach(widget, originalWidget);
-                }
-                else
-                {
-                    // Create
-                    db.Widgets.InsertOnSubmit(widget);
-                }
-                db.SubmitChanges();
+                // Update
+                _db.Widgets.Attach(widget, originalWidget);
             }
+            else
+            {
+                // Create
+                _db.Widgets.InsertOnSubmit(widget);
+            }
+            _db.SubmitChanges();
         }
     }
 }

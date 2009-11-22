@@ -8,19 +8,22 @@ namespace WebFormsMvp.FeatureDemos.Logic.Views
 {
     public interface IEditWidgetView : IView<EditWidgetModel>
     {
-        event EventHandler<GetWidgetEventArgs> GettingWidget;
+        event EventHandler<GettingWidgetEventArgs> GettingWidgets;
+        event EventHandler GettingWidgetsTotalCount;
         event EventHandler<UpdateWidgetEventArgs> UpdatingWidget;
         event EventHandler<EditWidgetEventArgs> InsertingWidget;
         event EventHandler<EditWidgetEventArgs> DeletingWidget;
     }
 
-    public class GetWidgetEventArgs : EventArgs
+    public class GettingWidgetEventArgs : EventArgs
     {
-        public int WidgetId { get; private set; }
+        public int MaximumRows { get; private set; }
+        public int StartRowIndex { get; private set; }
 
-        public GetWidgetEventArgs(int widgetId)
+        public GettingWidgetEventArgs(int maximumRows, int startRowIndex)
         {
-            WidgetId = widgetId;
+            MaximumRows = maximumRows;
+            StartRowIndex = startRowIndex;
         }
     }
 

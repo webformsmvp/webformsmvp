@@ -19,15 +19,23 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
             : base(view)
         {
             widgets = widgetRepository ?? new WidgetRepository();
-            View.GettingWidget += View_GettingWidget;
+            View.GettingWidgets += View_GettingWidgets;
+            View.GettingWidgetsTotalCount += View_GettingWidgetsTotalCount;
             View.UpdatingWidget += View_UpdatingWidget;
             View.InsertingWidget += View_InsertingWidget;
             View.DeletingWidget += View_DeletingWidget;
         }
 
-        void View_GettingWidget(object sender, GetWidgetEventArgs e)
+        void View_GettingWidgets(object sender, GettingWidgetEventArgs e)
         {
-            View.Model.Widget = widgets.Find(e.WidgetId);
+            View.Model.Widgets = widgets.FindAll()
+                .Skip(e.StartRowIndex * e.MaximumRows)
+                .Take(e.MaximumRows);
+        }
+
+        void View_GettingWidgetsTotalCount(object sender, EventArgs e)
+        {
+            View.Model.TotalCount = widgets.FindAll().Count();
         }
 
         void View_UpdatingWidget(object sender, UpdateWidgetEventArgs e)
@@ -47,7 +55,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 
         public override void ReleaseView()
         {
-            View.GettingWidget -= View_GettingWidget;
+            View.GettingWidgets -= View_GettingWidgets;
             View.UpdatingWidget -= View_UpdatingWidget;
             View.InsertingWidget -= View_InsertingWidget;
             View.DeletingWidget -= View_DeletingWidget;

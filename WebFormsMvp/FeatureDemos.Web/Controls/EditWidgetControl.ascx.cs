@@ -7,6 +7,7 @@ using WebFormsMvp.Web;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 using WebFormsMvp.FeatureDemos.Logic.Data;
 using WebFormsMvp.FeatureDemos.Logic.Views;
+using System.Collections.Generic;
 
 namespace WebFormsMvp.FeatureDemos.Web.Controls
 {
@@ -17,10 +18,16 @@ namespace WebFormsMvp.FeatureDemos.Web.Controls
             AutoDataBind = false;
         }
 
-        public Widget GetWidget(int widgetId)
+        public IEnumerable<Widget> GetWidgets(int maximumRows, int startRowIndex)
         {
-            OnGettingWidget(widgetId);
-            return Model.Widget;
+            OnGettingWidgets(maximumRows, startRowIndex);
+            return Model.Widgets;
+        }
+
+        public int GetWidgetsCount()
+        {
+            OnGettingWidgetsTotalCount();
+            return Model.TotalCount;
         }
 
         public void UpdateWidget(Widget widget, Widget originalWidget)
@@ -38,12 +45,21 @@ namespace WebFormsMvp.FeatureDemos.Web.Controls
             OnDeletingWidget(widget);
         }
 
-        public event EventHandler<GetWidgetEventArgs> GettingWidget;
-        private void OnGettingWidget(int widgetId)
+        public event EventHandler<GettingWidgetEventArgs> GettingWidgets;
+        private void OnGettingWidgets(int maximumRows, int startRowIndex)
         {
-            if (GettingWidget != null)
+            if (GettingWidgets != null)
             {
-                GettingWidget(this, new GetWidgetEventArgs(widgetId));
+                GettingWidgets(this, new GettingWidgetEventArgs(maximumRows, startRowIndex));
+            }
+        }
+
+        public event EventHandler GettingWidgetsTotalCount;
+        private void OnGettingWidgetsTotalCount()
+        {
+            if (GettingWidgetsTotalCount != null)
+            {
+                GettingWidgetsTotalCount(this, EventArgs.Empty);
             }
         }
 
