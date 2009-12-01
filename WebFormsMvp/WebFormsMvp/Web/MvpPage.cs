@@ -23,6 +23,10 @@ namespace WebFormsMvp.Web
 
         internal void RegisterView(IView view)
         {
+            if (presenterBinder == null)
+            {
+                throw new InvalidOperationException("The presenter binder has not been initialized correctly, preventing views from being registered.");
+            }
             presenterBinder.RegisterView(view);
         }
 
@@ -57,19 +61,30 @@ namespace WebFormsMvp.Web
 
         protected override void OnInit(EventArgs e)
         {
+            if (presenterBinder == null)
+            {
+                throw new InvalidOperationException("The presenter binder has not been initialized correctly, preventing binding from occurring.");
+            }
             presenterBinder.PerformBinding();
             base.OnInit(e);
         }
 
         protected override void OnPreRenderComplete(EventArgs e)
         {
+            if (presenterBinder == null)
+            {
+                throw new InvalidOperationException("The presenter binder has not been initialized correctly, preventing the messaging bus from being closed.");
+            }
             presenterBinder.MessageCoordinator.Close();
             base.OnPreRenderComplete(e);
         }
 
         private void PageBase_Unload(object sender, EventArgs e)
         {
-            presenterBinder.Release();
+            if (presenterBinder != null)
+            {
+                presenterBinder.Release();
+            }
         }
     }
 }
