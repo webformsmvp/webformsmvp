@@ -117,7 +117,8 @@ namespace WebFormsMvp.Binder
             // derived from IView
             viewInterfaces = implementationType
                 .GetInterfaces()
-                .Where(i => typeof(IView).IsAssignableFrom(i));
+                .Where(i => typeof(IView).IsAssignableFrom(i))
+                .ToArray();
 
             // Push it back to the cache
             lock (implementationTypeToViewInterfacesCache)
