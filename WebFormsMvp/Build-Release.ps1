@@ -1,5 +1,7 @@
 ﻿param (
 	[Parameter(Mandatory=$true)]
+    [ValidatePattern("\d\.\d\.\d\.\d")]
+    [string]
 	$ReleaseVersionNumber
 )
 
@@ -56,6 +58,11 @@ if ($SolutionInfoCheckoutResult -ne $SolutionInfoName)
 
 # Build the solution in release mode
 $SolutionPath = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.sln"
+& $MSBuild "$SolutionPath" /p:Configuration=Release /maxcpucount /t:Clean
+if (-not $?)
+{
+	throw "The MSBuild process returned an error code."
+}
 & $MSBuild "$SolutionPath" /p:Configuration=Release /maxcpucount
 if (-not $?)
 {
@@ -69,6 +76,8 @@ $LibraryReleaseFolder = Join-Path -Path $ReleaseFolder -ChildPath "Library";
 New-Item $LibraryReleaseFolder -Type directory
 $LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release"
 Copy-Item "$LibraryBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
+$CastleBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Castle\bin\Release"
+Copy-Item "$CastleBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.Castle.dll","WebFormsMvp.Castle.pdb","WebFormsMvp.Castle.xml"
 Set-Content (Join-Path -Path $LibraryReleaseFolder -ChildPath "GettingStarted.txt") -Value `
 "This ZIP file only contains the compiled libraries.
 
