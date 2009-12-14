@@ -15,23 +15,15 @@ namespace WebFormsMvp.Web
         }
 
         /// <summary>
-        /// Gets a reference to the WebFormsMvp.Web.MvpPage that contains the user control.
-        /// </summary>
-        /// <value>The MvpPage.</value>
-        public MvpPage PageBase
-        {
-            get { return Page as MvpPage; }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the user control should automatically data bind itself at the Page.PreRenderComplete event.
         /// </summary>
         /// <value><c>true</c> if auto data binding is enabled (default); otherwise, <c>false</c>.</value>
         protected bool AutoDataBind { get; set; }
-
+        
         protected override void OnInit(EventArgs e)
         {
-            PageBase.RegisterView(this);
+            PageViewHost.Register(this);
+
             base.OnInit(e);
 
             Page.PreRenderComplete += Page_PreRenderComplete;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using WebFormsMvp.Web;
+using System.Web.UI;
 
 namespace WebFormsMvp.FeatureDemos.Web
 {
-    public partial class Messaging : MvpPage
+    public partial class Messaging : Page
     {
     }
 }

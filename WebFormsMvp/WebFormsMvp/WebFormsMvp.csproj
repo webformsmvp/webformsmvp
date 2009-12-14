@@ -128,6 +128,7 @@
     <Compile Include="Web\MvpWebService.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Web\PageViewHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />
