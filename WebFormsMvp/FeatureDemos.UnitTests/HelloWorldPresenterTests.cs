@@ -4,7 +4,6 @@ using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
-using WebFormsMvp.FeatureDemos.Logic.Views;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.UnitTests

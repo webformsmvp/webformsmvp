@@ -19,16 +19,15 @@ namespace WebFormsMvp.Web
         /// Initializes a new instance of the <see cref="PageViewHost"/> class.
         /// </summary>
         /// <param name="page">The page instance that this view host will be responsible for.</param>
-        public PageViewHost(Page page)
+        /// <param name="httpContext">The owning HTTP context.</param>
+        public PageViewHost(Page page, HttpContext httpContext)
         {
             if (page == null)
                 throw new ArgumentNullException("page");
 
             var hosts = FindHosts(page).ToArray();
 
-            presenterBinder = new PresenterBinder(
-                hosts,
-                new HttpContextWrapper(HttpContext.Current));
+            presenterBinder = new PresenterBinder(hosts, httpContext);
 
             var asyncManager = new PageAsyncTaskManagerWrapper(page);
             presenterBinder.PresenterCreated += (sender, args) =>
@@ -74,14 +73,14 @@ namespace WebFormsMvp.Web
         }
 
         readonly static string viewHostCacheKey = typeof(PageViewHost).FullName + ".PageContextKey";
-        internal static PageViewHost FindViewHost(Control control)
+        internal static PageViewHost FindViewHost(Control control, HttpContext httpContext)
         {
             var pageContext = control.Page.Items;
 
             if (pageContext.Contains(viewHostCacheKey))
                 return (PageViewHost)pageContext[viewHostCacheKey];
 
-            var host = new PageViewHost(control.Page);
+            var host = new PageViewHost(control.Page, httpContext);
 
             pageContext[viewHostCacheKey] = host;
 
@@ -93,9 +92,10 @@ namespace WebFormsMvp.Web
         /// If no view host has yet been initialized for the current page instance, one will be created.
         /// </summary>
         /// <param name="control">The control instance to register.</param>
+        /// <param name="httpContext">The owning HTTP context.</param>
         /// <exception cref="ArgumentNullException">The control argument was null.</exception>
         /// <exception cref="InvalidOperationException">The control is not in a valid state for registration. Controls can only be registered once they have been added to the live control tree. The best place to register them is within the control's <see cref="System.Web.UI.Control.Init"/> event.</exception>
-        public static void Register<T>(T control)
+        public static void Register<T>(T control, HttpContext httpContext)
             where T : Control, IView
         {
             if (control == null)
@@ -104,7 +104,7 @@ namespace WebFormsMvp.Web
             if (control.Page == null)
                 throw new InvalidOperationException("Controls can only be registered once they have been added to the live control tree. The best place to register them is within the control's Init event.");
 
-            var viewHost = FindViewHost(control);
+            var viewHost = FindViewHost(control, httpContext);
             viewHost.RegisterView(control);
         }
     }

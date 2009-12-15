@@ -22,7 +22,7 @@ namespace WebFormsMvp.Web
         
         protected override void OnInit(EventArgs e)
         {
-            PageViewHost.Register(this);
+            PageViewHost.Register(this, Context);
 
             base.OnInit(e);
 

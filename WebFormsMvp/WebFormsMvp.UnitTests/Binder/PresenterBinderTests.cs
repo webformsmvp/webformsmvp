@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +20,7 @@ namespace WebFormsMvp.UnitTests.Binder
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
 
             // Act
-            var binder = new PresenterBinder(host, httpContext);
+            var binder = new PresenterBinder(new[] { host }, httpContext);
 
             // Assert
             Assert.IsNotNull(binder.MessageCoordinator);

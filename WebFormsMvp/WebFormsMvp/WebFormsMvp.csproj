@@ -85,9 +85,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binder\DefaultCompositeViewTypeFactory.cs" />
+    <Compile Include="Binder\DefaultHttpContextAdapter.cs" />
     <Compile Include="Binder\DefaultPresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\DefaultPresenterFactory.cs" />
     <Compile Include="Binder\ICompositeViewTypeFactory.cs" />
+    <Compile Include="Binder\IHttpContextAdapter.cs" />
     <Compile Include="Binder\IPresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\IPresenterFactory.cs" />
     <Compile Include="Binder\PresenterBindInfo.cs" />

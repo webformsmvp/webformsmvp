@@ -19,7 +19,8 @@ namespace WebFormsMvp.Binder
         /// default implementation but can be overriden if desired.
         /// This property can only be set once.
         ///</summary>
-        ///<exception cref="InvalidOperationException"></exception>
+        ///<exception cref="ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
+        ///<exception cref="InvalidOperationException">Thrown if the property is being set for a second time.</exception>
         public static IPresenterFactory Factory
         {
             get
@@ -28,6 +29,10 @@ namespace WebFormsMvp.Binder
             }
             set
             {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
                 if (factory != null)
                 {
                     throw new InvalidOperationException(
@@ -36,6 +41,30 @@ namespace WebFormsMvp.Binder
                         : "You can only set your factory once, and should really do this in Application_Start.");
                 }
                 factory = value;
+            }
+        }
+
+        static IHttpContextAdapter httpContextAdapter;
+        ///<summary>
+        /// Gets or sets the adapter that the binder will use to wrap
+        /// concrete <see cref="HttpContext"/> instances. This is
+        /// pre-initialized to a default implementation but can be
+        /// overriden if desired.
+        ///</summary>
+        ///<exception cref="ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
+        public static IHttpContextAdapter HttpContextAdapter
+        {
+            get
+            {
+                return httpContextAdapter ?? (httpContextAdapter = new DefaultHttpContextAdapter());
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                httpContextAdapter = value;
             }
         }
 
@@ -59,17 +88,23 @@ namespace WebFormsMvp.Binder
         /// </summary>
         /// <param name="host">The host.</param>
         /// <param name="httpContext">The owning HTTP context.</param>
-        public PresenterBinder(object host, HttpContextBase httpContext)
-            : this(new[] { host }, httpContext)
-        {
-        }
+        public PresenterBinder(object host, HttpContext httpContext)
+            : this(new[] { host }, httpContext) {}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PresenterBinder"/> class.
         /// </summary>
         /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
         /// <param name="httpContext">The owning HTTP context.</param>
-        public PresenterBinder(IEnumerable<object> hosts, HttpContextBase httpContext)
+        public PresenterBinder(IEnumerable<object> hosts, HttpContext httpContext)
+            : this(hosts, HttpContextAdapter.Adapt(httpContext)) {}
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PresenterBinder"/> class.
+        /// </summary>
+        /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
+        /// <param name="httpContext">The owning HTTP context.</param>
+        internal PresenterBinder(IEnumerable<object> hosts, HttpContextBase httpContext)
         {
             this.httpContext = httpContext;
 
