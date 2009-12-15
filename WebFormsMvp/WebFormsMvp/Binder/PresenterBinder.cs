@@ -44,19 +44,17 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        static IHttpContextAdapter httpContextAdapter;
+        static IHttpContextAdapterFactory httpContextAdapterFactory;
         ///<summary>
-        /// Gets or sets the adapter that the binder will use to wrap
-        /// concrete <see cref="HttpContext"/> instances. This is
-        /// pre-initialized to a default implementation but can be
-        /// overriden if desired.
+        /// Gets or sets the factory that the binder will use to build adapters for concrete <see cref="HttpContext"/> instances.
+        /// This is pre-initialized to a default implementation but can be overriden if desired.
         ///</summary>
         ///<exception cref="ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
-        public static IHttpContextAdapter HttpContextAdapter
+        public static IHttpContextAdapterFactory HttpContextAdapterFactory
         {
             get
             {
-                return httpContextAdapter ?? (httpContextAdapter = new DefaultHttpContextAdapter());
+                return httpContextAdapterFactory ?? (httpContextAdapterFactory = new DefaultHttpContextAdapterFactory());
             }
             set
             {
@@ -64,7 +62,7 @@ namespace WebFormsMvp.Binder
                 {
                     throw new ArgumentNullException("value");
                 }
-                httpContextAdapter = value;
+                httpContextAdapterFactory = value;
             }
         }
 
@@ -97,7 +95,7 @@ namespace WebFormsMvp.Binder
         /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
         /// <param name="httpContext">The owning HTTP context.</param>
         public PresenterBinder(IEnumerable<object> hosts, HttpContext httpContext)
-            : this(hosts, HttpContextAdapter.Adapt(httpContext)) {}
+            : this(hosts, HttpContextAdapterFactory.Create(httpContext)) {}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PresenterBinder"/> class.
