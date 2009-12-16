@@ -107,7 +107,8 @@ namespace WebFormsMvp.Binder
             this.httpContext = httpContext;
 
             discoveryStrategy = new DefaultPresenterDiscoveryStrategy();
-            discoveryStrategy.AddHosts(hosts);
+            foreach(var host in hosts)
+                discoveryStrategy.AddHost(host);
 
             foreach (var selfHostedView in hosts.OfType<IView>())
             {

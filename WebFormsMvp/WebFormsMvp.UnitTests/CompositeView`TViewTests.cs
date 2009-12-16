@@ -31,6 +31,19 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CompositeView_Add_ShouldThrowArgumentNullExceptionIfViewIsNull()
+        {
+            // Arrange
+            var compositeView = new MyView();
+
+            // Act
+            compositeView.Add(null);
+
+            // Assert
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void CompositeView_Add_ShouldThrowArgumentExceptionIfViewTypeIsWrong()
         {

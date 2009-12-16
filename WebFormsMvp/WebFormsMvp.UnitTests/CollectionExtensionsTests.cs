@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,20 +9,6 @@ namespace WebFormsMvp.UnitTests
     [TestClass]
     public class CollectionExtensionsTests
     {
-        [TestMethod]
-        public void CollectionExtensions_IList_AddRange_AddsItemsToInstance()
-        {
-            // Arrange
-            IList<string> actual = new List<string> { "1", "2", "3" };
-
-            // Act
-            actual.AddRange(new [] {"4", "5"});
-
-            // Assert
-            var expecting = new List<string> { "1", "2", "3", "4", "5" };
-            CollectionAssert.AreEqual(expecting, (List<string>)actual);
-        }
-
         [TestMethod]
         public void CollectionExtensions_ICollection_AddRange_AddsItemsToInstance()
         {
@@ -34,32 +21,6 @@ namespace WebFormsMvp.UnitTests
             // Assert
             var expecting = new List<string> { "1", "2", "3", "4", "5" };
             CollectionAssert.AreEqual(expecting, (List<string>)actual);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CollectionExtensions_IList_AddRange_ThrowsIfTargetArgumentIsNull()
-        {
-            // Arrange
-            IList<string> actual = null;
-
-            // Act
-            actual.AddRange(new[] { "1", "2" });
-
-            // Assert
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CollectionExtensions_IList_AddRange_ThrowsIfListArgumentIsNull()
-        {
-            // Arrange
-            IList<string> actual = new List<string> { "1", "2", "3" };
-
-            // Act
-            actual.AddRange(null);
-
-            // Assert
         }
 
         [TestMethod]
@@ -92,11 +53,12 @@ namespace WebFormsMvp.UnitTests
         public void CollectionExtensions_IDictionary_GetOrCreateValue_GetsValueIfContainedInDictionary()
         {
             // Arrange
-            IDictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("blah", "value");
+            IDictionary<string, string> dictionary = new Dictionary<string, string> {{"blah", "value"}};
 
             // Act
-            var result = CollectionExtensions.GetOrCreateValue<string, string>(dictionary, "blah", () => "yo");
+// ReSharper disable InvokeAsExtensionMethod
+            var result = CollectionExtensions.GetOrCreateValue(dictionary, "blah", () => "yo");
+// ReSharper restore InvokeAsExtensionMethod
 
             // Assert
             Assert.AreEqual("value", result);
@@ -120,12 +82,43 @@ namespace WebFormsMvp.UnitTests
         public void CollectionExtensions_IDictionary_GetOrCreateValue_ThrowsIfDictionaryArgumentIsNull()
         {
             // Arrange
-            IDictionary<string, string> dictionary = null;
-
+            
             // Act
-            var result = dictionary.GetOrCreateValue("blah", () => "yo");
+            ((IDictionary<string, string>)null).GetOrCreateValue("blah", () => "yo");
 
             // Assert
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CollectionExtensions_IEnumerable_ToDictionary_ThrowsIfSourceArgumentIsNull()
+        {
+            // Arrange
+            
+            // Act
+            ((IEnumerable<KeyValuePair<string, string>>)null).ToDictionary();
+
+            // Assert
+        }
+
+        [TestMethod]
+        public void CollectionExtensions_IEnumerable_ToDictionary_ReturnsItemsAsDictionary()
+        {
+            // Arrange
+            var source = new[]
+                         {
+                             new KeyValuePair<int, string>(1, "1"),
+                             new KeyValuePair<int, string>(2, "2"),
+                             new KeyValuePair<int, string>(3, "3"),
+                             new KeyValuePair<int, string>(4, "4"),
+                         };
+
+            // Act
+            var result = source.ToDictionary();
+
+            // Assert
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, (ICollection)result.Keys);
+            CollectionAssert.AreEqual(new[] { "1", "2", "3", "4" }, (ICollection)result.Values);
         }
     }
 }

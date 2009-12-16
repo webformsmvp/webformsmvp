@@ -15,7 +15,7 @@ namespace WebFormsMvp.Web
             presenterBinder.Release();
         }
 
-        public bool IsReusable
+        public virtual bool IsReusable
         {
             get { return false; }
         }

@@ -6,27 +6,15 @@ namespace WebFormsMvp
 {
     internal static class CollectionExtensions
     {
-        internal static void AddRange<T>(this IList<T> target, IEnumerable<T> list)
+        internal static void AddRange<T>(this ICollection<T> target, IEnumerable<T> items)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            if (list == null)
-                throw new ArgumentNullException("list");
+            if (items == null)
+                throw new ArgumentNullException("items");
 
-            foreach (var item in list)
-                target.Add(item);
-        }
-
-        internal static void AddRange<T>(this ICollection<T> target, IEnumerable<T> collection)
-        {
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            if (collection == null)
-                throw new ArgumentNullException("collection");
-
-            foreach (var item in collection)
+            foreach (var item in items)
                 target.Add(item);
         }
 
@@ -51,6 +39,9 @@ namespace WebFormsMvp
 
         internal static IDictionary<TKey,TValue> ToDictionary<TKey,TValue>(this IEnumerable<KeyValuePair<TKey,TValue>> source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
             return source.ToDictionary(m => m.Key, m => m.Value);
         }
     }

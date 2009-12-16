@@ -110,6 +110,57 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(presenter.DisposeCalled);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfPresenterTypeIsNull()
+        {
+            // Arrange
+            var viewType = typeof(IView);
+            var viewInstance = MockRepository.GenerateMock<IView>();
+
+            // Act
+            new DefaultPresenterFactory().Create(
+                null,
+                viewType,
+                viewInstance);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfViewTypeIsNull()
+        {
+            // Arrange
+            var presenterType = typeof(Create_Presenter);
+            var viewInstance = MockRepository.GenerateMock<IView>();
+
+            // Act
+            new DefaultPresenterFactory().Create(
+                presenterType,
+                null,
+                viewInstance);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfViewInstanceIsNull()
+        {
+            // Arrange
+            var presenterType = typeof(Create_Presenter);
+            var viewType = typeof(IView);
+
+            // Act
+            new DefaultPresenterFactory().Create(
+                presenterType,
+                viewType,
+                null);
+
+            // Assert
+        }
+
         public class Create_Presenter : Presenter<IView>
         {
             public Create_Presenter(IView view)
