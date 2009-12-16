@@ -36,7 +36,7 @@ namespace WebFormsMvp.UnitTests
                 {
                     try
                     {
-                        var marshalledAction = AppDomain.CurrentDomain.GetData("testAction") as Action;
+                        var marshalledAction = (Action)AppDomain.CurrentDomain.GetData("testAction");
                         marshalledAction.Invoke();
                     }
                     catch (Exception ex)
