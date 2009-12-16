@@ -71,12 +71,21 @@ namespace WebFormsMvp.Binder
 
         internal static DynamicMethod GetBuildMethodInternal(Type presenterType, Type viewType)
         {
+            if (presenterType.IsNotPublic)
+            {
+                throw new ArgumentException(string.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0} does not meet accessibility requirements. For the WebFormsMvp framework to be able to call it, it must be public. Make the type public, or set PresenterBinder.Factory to an implementation that can access this type.",
+                    presenterType.FullName),
+                    "presenterType");
+            }
+
             var constructor = presenterType.GetConstructor(new[] { viewType });
             if (constructor == null)
             {
                 throw new ArgumentException(string.Format(
                     CultureInfo.InvariantCulture,
-                    "{0} is missing an expected constructor. We tried to execute code equivalent to: new {0}({1} view). Add a constructor with a compatible signature, or set PresenterBinder.Factory to something that can supply constructor dependencies.",
+                    "{0} is missing an expected constructor, or the constructor is not accessible. We tried to execute code equivalent to: new {0}({1} view). Add a public constructor with a compatible signature, or set PresenterBinder.Factory to an implementation that can supply constructor dependencies.",
                     presenterType.FullName,
                     viewType.FullName),
                     "presenterType");
