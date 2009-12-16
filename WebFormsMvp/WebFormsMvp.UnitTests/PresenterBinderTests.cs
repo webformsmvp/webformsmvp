@@ -18,7 +18,7 @@ namespace WebFormsMvp.UnitTests
                 {
                     // Act
                     PresenterBinder.Factory = new DefaultPresenterFactory();
-                    PresenterBinder.Factory = null;
+                    PresenterBinder.Factory = new DefaultPresenterFactory();
                 }
             );
         }
@@ -30,22 +30,25 @@ namespace WebFormsMvp.UnitTests
             TestContext.Isolate(() =>
                 {
                     // Act
-                    var factory = PresenterBinder.Factory;
-                    PresenterBinder.Factory = null;
+                    PresenterBinder.Factory.ToString();
+                    PresenterBinder.Factory = new DefaultPresenterFactory();
                 }
             );
         }
 
         [TestMethod]
-        public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsDefaultUsesFreindlyExceptionMessage()
+        public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsDefaultUsesFriendlyExceptionMessage()
         {
             TestContext.Isolate(() =>
                 {
+                    // Arrange
+                    var factory = MockRepository.GenerateStub<IPresenterFactory>();
+
                     // Act
                     try
                     {
                         PresenterBinder.Factory = new DefaultPresenterFactory();
-                        PresenterBinder.Factory = null;
+                        PresenterBinder.Factory = factory;
                     }
                     catch (Exception ex)
                     {
@@ -66,10 +69,11 @@ namespace WebFormsMvp.UnitTests
                     {
                         // Arrange
                         var factory = MockRepository.GenerateStub<IPresenterFactory>();
+                        var factory2 = MockRepository.GenerateStub<IPresenterFactory>();
 
                         // Act
                         PresenterBinder.Factory = factory;
-                        PresenterBinder.Factory = null;
+                        PresenterBinder.Factory = factory2;
                     }
                     catch (Exception ex)
                     {
@@ -87,10 +91,10 @@ namespace WebFormsMvp.UnitTests
             TestContext.Isolate(() =>
                 {
                     // Act
-                    var factoryTypeName = PresenterBinder.Factory.GetType().FullName;
+                    var factoryType = PresenterBinder.Factory.GetType();
                     
                     // Assert
-                    Assert.AreEqual(factoryTypeName, typeof(DefaultPresenterFactory).FullName);
+                    Assert.AreEqual(factoryType, typeof(DefaultPresenterFactory));
                 }
             );
         }

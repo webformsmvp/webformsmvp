@@ -11,29 +11,13 @@ namespace WebFormsMvp.UnitTests.Binder
     {
         // ReSharper disable InconsistentNaming
 
-        class GetBuildMethodInternal_TestClass { }
-
-        class GetBuildMethodInternal_TestClassWithParameter
+        public class GetBuildMethodInternal_TestClassWithParameter
         {
             public GetBuildMethodInternal_TestClassWithParameter(string param)
             {
                 Param = param;
             }
             public string Param { get; private set; }
-        }
-
-        [TestMethod]
-        public void DefaultPresenterFactory_GetBuildMethodInternal_ShouldReturnWorkingBuildMethodForConstructorWithNoParameters()
-        {
-            // Arrange
-            var typeToBuild = typeof(GetBuildMethodInternal_TestClass);
-
-            // Act
-            var buildMethod = DefaultPresenterFactory.GetBuildMethodInternal(typeToBuild);
-            var instance = buildMethod.Invoke(null, null);
-
-            // Assert
-            Assert.IsInstanceOfType(instance, typeToBuild);
         }
 
         [TestMethod]
@@ -45,7 +29,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Act
             var buildMethod = DefaultPresenterFactory.GetBuildMethodInternal(
                 typeToBuild,
-                new[] { typeof(string) });
+                typeof(string));
             var instance = buildMethod.Invoke(null, new[] { "test" });
 
             // Assert
@@ -63,7 +47,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Act
             DefaultPresenterFactory.GetBuildMethodInternal(
                 typeToBuild,
-                new[] { typeof(int) });
+                typeof(int));
 
             // Assert
         }
@@ -74,11 +58,24 @@ namespace WebFormsMvp.UnitTests.Binder
             // Arrange
             
             // Act
-            var buildMethod1 = DefaultPresenterFactory.GetBuildMethod(typeof(object));
-            var buildMethod2 = DefaultPresenterFactory.GetBuildMethod(typeof(object));
+            var buildMethod1 = DefaultPresenterFactory.GetBuildMethod(typeof(string), typeof(char[]));
+            var buildMethod2 = DefaultPresenterFactory.GetBuildMethod(typeof(string), typeof(char[]));
 
             // Assert
-            Assert.IsTrue(buildMethod1 == buildMethod2);
+            Assert.AreEqual(buildMethod1, buildMethod2);
+        }
+
+        [TestMethod]
+        public void DefaultPresenterFactory_GetBuildMethod_ShouldReturnDifferentMethodsForDifferentConstructors()
+        {
+            // Arrange
+            
+            // Act
+            var buildMethod1 = DefaultPresenterFactory.GetBuildMethod(typeof(string), typeof(char*));
+            var buildMethod2 = DefaultPresenterFactory.GetBuildMethod(typeof(string), typeof(char[]));
+
+            // Assert
+            Assert.AreNotEqual(buildMethod1, buildMethod2);
         }
 
         class Release_DisposablePresenter : Presenter<IView>, IDisposable
@@ -113,7 +110,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(presenter.DisposeCalled);
         }
 
-        class Create_Presenter : Presenter<IView>
+        public class Create_Presenter : Presenter<IView>
         {
             public Create_Presenter(IView view)
                 : base(view)
@@ -142,7 +139,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsInstanceOfType(presenter, presenterType);
         }
 
-        class Create_ErrorPresenter : Presenter<IView>
+        public class Create_ErrorPresenter : Presenter<IView>
         {
             public Create_ErrorPresenter(IView view)
                 : base(view)
