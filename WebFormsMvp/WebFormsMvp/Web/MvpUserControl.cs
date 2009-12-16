@@ -37,10 +37,10 @@ namespace WebFormsMvp.Web
         }
 
         /// <summary>
-        /// Gets the data item at the top of the data-binding context stack as T otherwise returns a new instance of T.
+        /// Gets the data item at the top of the data-binding context stack as <typeparamref name="T"/> otherwise returns a new instance of <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type to get the data item as</typeparam>
-        /// <returns>The data item as type T, or a new instance of T if the data item is null.</returns>
+        /// <returns>The data item as type <typeparamref name="T"/>, or a new instance of <typeparamref name="T"/> if the data item is null.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
             "CA1004:GenericMethodsShouldProvideTypeParameter",
             Justification = "This method exists to assist with type conversion.")]
