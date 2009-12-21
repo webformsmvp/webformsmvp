@@ -71,6 +71,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PageView.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +112,13 @@
     </Compile>
     <Compile Include="Messaging.aspx.designer.cs">
       <DependentUpon>Messaging.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PageView.aspx.cs">
+      <DependentUpon>PageView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageView.aspx.designer.cs">
+      <DependentUpon>PageView.aspx</DependentUpon>
     </Compile>
     <Compile Include="SharedPresenter.aspx.cs">
       <DependentUpon>SharedPresenter.aspx</DependentUpon>

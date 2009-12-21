@@ -113,7 +113,6 @@ namespace WebFormsMvp.Binder
             foreach (var selfHostedView in hosts.OfType<IView>())
             {
                 RegisterView(selfHostedView);
-                PerformBinding();
             }
         }
 
@@ -156,7 +155,7 @@ namespace WebFormsMvp.Binder
             if (viewInstancesRequiringBinding.Any())
             {
                 var newPresenters = PerformBinding(
-                    viewInstancesRequiringBinding,
+                    viewInstancesRequiringBinding.Distinct(),
                     discoveryStrategy,
                     httpContext,
                     messageCoordinator,
@@ -178,6 +177,11 @@ namespace WebFormsMvp.Binder
         /// </summary>
         public void Release()
         {
+            if (!initialBindingHasBeenPerformed)
+            {
+                throw new InvalidOperationException("The presenter binder is being released without PerformBinding having ever being called.");
+            }
+
             MessageCoordinator.Close();
             lock (presenters)
             {

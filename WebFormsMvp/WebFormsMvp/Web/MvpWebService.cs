@@ -15,6 +15,7 @@ namespace WebFormsMvp.Web
         protected MvpWebService()
         {
             presenterBinder = new PresenterBinder(this, HttpContext.Current);
+            presenterBinder.PerformBinding();
         }
 
         public event EventHandler Load;

@@ -9,6 +9,7 @@ namespace WebFormsMvp.Web
         public void ProcessRequest(HttpContext context)
         {
             var presenterBinder = new PresenterBinder(this, context);
+            presenterBinder.PerformBinding();
 
             OnLoad();
 
