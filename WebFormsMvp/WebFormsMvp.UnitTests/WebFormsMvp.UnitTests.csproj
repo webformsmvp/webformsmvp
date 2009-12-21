@@ -84,7 +84,6 @@
     <Compile Include="CollectionExtensionsTests.cs" />
     <Compile Include="CompositeView`TViewTests.cs" />
     <Compile Include="MessageCoordinatorTests.cs" />
-    <Compile Include="PresenterBinderTests.cs" />
     <Compile Include="PresenterBindingAttributeTests.cs" />
     <Compile Include="Presenter`TViewTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
