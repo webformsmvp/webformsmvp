@@ -24,6 +24,13 @@ namespace WebFormsMvp
             neverReceivedCallbacks = new Dictionary<Type, IList<Action>>();
         }
 
+        /// <summary>
+        /// Publishes a message to the bus. Any existing subscriptions to this type,
+        /// or an assignable type such as a base class or an interface, will be notified
+        /// at this time.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message to publish</typeparam>
+        /// <param name="message">The message to publish</param>
         public void Publish<TMessage>(TMessage message)
         {
             if (closed)
@@ -37,7 +44,7 @@ namespace WebFormsMvp
 
         void AddMessage<TMessage>(TMessage message)
         {
-            var messageList = messages.GetOrCreateValue<Type, IList>(typeof(TMessage),
+            var messageList = messages.GetOrCreateValue(typeof(TMessage),
                 () => new List<TMessage>());
             lock (messageList)
             {
@@ -62,11 +69,26 @@ namespace WebFormsMvp
             }
         }
 
+        /// <summary>
+        /// Registers a subscription to messages of the specified type. Any previously
+        /// published messages that are valid for this subscription will be raised
+        /// at this time.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of messages to subscribe to</typeparam>
+        /// <param name="messageReceivedCallback">A callback that will be invoked for each message received. This callback will be invoked once per message.</param>
         public void Subscribe<TMessage>(Action<TMessage> messageReceivedCallback)
         {
             Subscribe(messageReceivedCallback, null);
         }
 
+        /// <summary>
+        /// Registers a subscription to messages of the specified type. Any previously
+        /// published messages that are valid for this subscription will be raised
+        /// at this time.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of messages to subscribe to</typeparam>
+        /// <param name="messageReceivedCallback">A callback that will be invoked for each message received. This callback will be invoked once per message.</param>
+        /// <param name="neverReceivedCallback">A callback that will be invoked if no matching message is ever received. This callback will not be invoked more than once.</param>
         public void Subscribe<TMessage>(Action<TMessage> messageReceivedCallback, Action neverReceivedCallback)
         {
             if (closed)
@@ -88,7 +110,7 @@ namespace WebFormsMvp
             var intermediateReceivedCallback = new Action<object>(m => 
                 messageReceivedCallback((TMessage)m));
 
-            var receivedList = messageReceivedCallbacks.GetOrCreateValue<Type, IList<Action<object>>>(typeof(TMessage),
+            var receivedList = messageReceivedCallbacks.GetOrCreateValue(typeof(TMessage),
                 () => new List<Action<object>>());
             lock (receivedList)
             {
@@ -126,6 +148,22 @@ namespace WebFormsMvp
 
         bool closed;
         readonly object closeLock = new object();
+
+        /// <summary>
+        /// <para>
+        ///     Closes the message bus, causing any subscribers that have not yet received
+        ///     a message to have their "never received" callback fired.
+        /// </para>
+        /// <para>
+        ///     After this method is called, any further calls to <see cref="IMessageBus.Publish{TMessage}"/> or
+        ///     <see cref="IMessageBus.Subscribe{TMessage}(System.Action{TMessage})"/> will result in an
+        ///     <see cref="InvalidOperationException"/>.
+        /// </para>
+        /// <para>
+        ///     The <see cref="IMessageCoordinator.Close"/> method may be called multiple times and must not
+        ///     fail in this scenario.
+        /// </para>
+        /// </summary>
         public void Close()
         {
             lock (closeLock)

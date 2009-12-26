@@ -2,6 +2,9 @@
 
 namespace WebFormsMvp
 {
+    /// <summary>
+    /// Defines the basic methods of a cross-presenter messaging coordinator.
+    /// </summary>
     public interface IMessageCoordinator : IMessageBus
     {
         /// <summary>
@@ -11,7 +14,7 @@ namespace WebFormsMvp
         /// </para>
         /// <para>
         ///     After this method is called, any further calls to <see cref="IMessageBus.Publish{TMessage}"/> or
-        ///     <see cref="IMessageBus.Subscribe"/> will result in an
+        ///     <see cref="IMessageBus.Subscribe{TMessage}(System.Action{TMessage})"/> will result in an
         ///     <see cref="InvalidOperationException"/>.
         /// </para>
         /// <para>

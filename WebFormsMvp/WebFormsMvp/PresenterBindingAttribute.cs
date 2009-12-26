@@ -2,12 +2,13 @@
 
 namespace WebFormsMvp
 {
-    ///<summary>
-    /// Used to create a binding on a hosting class between a presenter type and a view type.
-    ///</summary>
+    /// <summary>
+    /// Used to define bindings between presenters and a views.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class PresenterBindingAttribute : Attribute
     {
+        /// <summary />
         public PresenterBindingAttribute(Type presenterType)
         {
             PresenterType = presenterType;
@@ -15,8 +16,13 @@ namespace WebFormsMvp
             BindingMode = BindingMode.Default;
         }
 
+        /// <summary />
         public Type PresenterType { get; private set; }
+        
+        /// <summary />
         public Type ViewType { get; set; }
+        
+        /// <summary />
         public BindingMode BindingMode { get; set; }
     }
 }

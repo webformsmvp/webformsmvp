@@ -12,18 +12,26 @@ namespace WebFormsMvp.Web
     {
         readonly PresenterBinder presenterBinder;
 
+        /// <summary />
         protected MvpWebService()
         {
             presenterBinder = new PresenterBinder(this, HttpContext.Current);
             presenterBinder.PerformBinding();
         }
 
+        /// <summary>
+        /// Occurs at the discretion of the view.
+        /// </summary>
         public event EventHandler Load;
+
+        /// <summary>
+        /// Raises the <see cref="Load"/> event.
+        /// </summary>
         protected virtual void OnLoad()
         {
             if (Load != null)
             {
-                Load(this, new EventArgs());
+                Load(this, EventArgs.Empty);
             }
         }
 

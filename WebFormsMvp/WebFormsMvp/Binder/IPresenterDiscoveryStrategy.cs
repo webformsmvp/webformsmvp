@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace WebFormsMvp.Binder
 {
-    public interface IPresenterDiscoveryStrategy
+    internal interface IPresenterDiscoveryStrategy
     {
         void AddHost(object host);
 

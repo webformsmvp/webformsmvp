@@ -7,8 +7,19 @@ using System.Globalization;
 
 namespace WebFormsMvp.Binder
 {
+    /// <summary>
+    /// Provides a default implementation of <see cref="IPresenterFactory"/>.
+    /// </summary>
     public class DefaultPresenterFactory : IPresenterFactory
     {
+        /// <summary>
+        /// Creates a new instance of the specific presenter type, for the specified
+        /// view type and instance.
+        /// </summary>
+        /// <param name="presenterType">The type of presenter to create.</param>
+        /// <param name="viewType">The type of the view as defined by the binding that matched.</param>
+        /// <param name="viewInstance">The view instance to bind this presenter to.</param>
+        /// <returns>An instantitated presenter.</returns>
         public IPresenter Create(Type presenterType, Type viewType, IView viewInstance)
         {
             if (presenterType == null)
@@ -43,7 +54,11 @@ namespace WebFormsMvp.Binder
                 );
             }
         }
-        
+
+        /// <summary>
+        /// Releases the specified presenter from any of its lifestyle demands.
+        /// </summary>
+        /// <param name="presenter">The presenter to release.</param>
         public void Release(IPresenter presenter)
         {
             var disposablePresenter = presenter as IDisposable;

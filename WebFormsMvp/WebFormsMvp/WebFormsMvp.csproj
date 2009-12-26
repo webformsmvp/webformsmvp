@@ -48,7 +48,8 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <DocumentationFile>bin\Debug\WebFormsMvp.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>Migrated rules for WebFormsMvp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -136,9 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Migrated rules for WebFormsMvp.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

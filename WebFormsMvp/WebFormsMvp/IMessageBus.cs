@@ -2,6 +2,9 @@
 
 namespace WebFormsMvp
 {
+    /// <summary>
+    /// Defines the basic methods of a cross-presenter messaging bus.
+    /// </summary>
     public interface IMessageBus
     {
         /// <summary>

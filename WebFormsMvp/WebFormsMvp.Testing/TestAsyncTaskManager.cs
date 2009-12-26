@@ -11,6 +11,8 @@ namespace WebFormsMvp.Testing
     /// Represents a class that can be used when writing unit tests for presenters that utilise an IAsyncTaskManager.
     /// Ensure you call ExecuteTasks() before releasing the view and making your assertions.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable",
+        Justification = "The AutoResetEven is wrapped in a using block to ensure it is disposed.")]
     public class TestAsyncTaskManager : IAsyncTaskManager
     {
         readonly List<PageAsyncTask> tasks = new List<PageAsyncTask>();
@@ -51,18 +53,20 @@ namespace WebFormsMvp.Testing
         /// </summary>
         public void ExecuteRegisteredAsyncTasks(params int[] timeoutIndexes)
         {
-            var resetEvent = new AutoResetEvent(false);
-            var index = 0;
-            tasks.ForEach(t =>
+            using (var resetEvent = new AutoResetEvent(false))
             {
-                var beginResult = t.BeginHandler.Invoke(this, new EventArgs(), result => resetEvent.Set(), null);
-                resetEvent.WaitOne(); // Wait here to ensure that end handler is called after begin handler has completed
-                if (timeoutIndexes.Contains(index))
-                    t.TimeoutHandler(beginResult);
-                else
-                    t.EndHandler(beginResult);
-                index++;
-            });
+                var index = 0;
+                tasks.ForEach(t =>
+                {
+                    var beginResult = t.BeginHandler.Invoke(this, new EventArgs(), result => resetEvent.Set(), null);
+                    resetEvent.WaitOne(); // Wait here to ensure that end handler is called after begin handler has completed
+                    if (timeoutIndexes.Contains(index))
+                        t.TimeoutHandler(beginResult);
+                    else
+                        t.EndHandler(beginResult);
+                    index++;
+                });
+            }
         }
     }
 }

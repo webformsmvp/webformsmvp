@@ -11,10 +11,12 @@ namespace WebFormsMvp.Web
     [ToolboxData("<{0}:PageDataSource runat=server></{0}:PageDataSource>")]
     public class PageDataSource : ObjectDataSource
     {
+        /// <summary />
         public PageDataSource()
             : this(String.Empty, String.Empty)
         { }
 
+        /// <summary />
         public PageDataSource(string typeName, string selectMethod)
             : base(typeName, selectMethod)
         {
@@ -24,13 +26,18 @@ namespace WebFormsMvp.Web
             ObjectCreating += OnObjectCreating;
             ObjectDisposing += OnObjectDisposing;
         }
-        
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             FindParentHost(this);
         }
 
+        /// <summary />
         protected virtual void OnObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
             if (e == null) throw new ArgumentNullException("e");
@@ -38,6 +45,7 @@ namespace WebFormsMvp.Web
             e.ObjectInstance = ParentHost;
         }
 
+        /// <summary />
         protected virtual void OnObjectDisposing(object sender, ObjectDataSourceDisposingEventArgs e)
         {
             if (e == null) throw new ArgumentNullException("e");
@@ -45,6 +53,7 @@ namespace WebFormsMvp.Web
             e.Cancel = true;
         }
 
+        /// <summary />
         protected object ParentHost { get; private set; }
 
         /// <summary>

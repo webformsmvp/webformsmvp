@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WebFormsMvp.Binder
 {
-    public class DefaultPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
+    internal class DefaultPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         static readonly IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> typeToPresenterBindInfoCache
             = new Dictionary<IntPtr, IEnumerable<PresenterBindInfo>>();

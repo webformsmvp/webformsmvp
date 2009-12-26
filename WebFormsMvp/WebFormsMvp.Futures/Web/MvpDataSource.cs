@@ -108,9 +108,11 @@ namespace WebFormsMvp.Web
 
         protected override void OnObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
+            if (e == null) throw new ArgumentNullException("e");
             e.ObjectInstance = this;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
         public IEnumerable RaiseSelectEventOnHost()
         {
             var eventType = ParentHost.GetType().GetEvent(SelectEvent).EventHandlerType;
