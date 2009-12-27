@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Rules FriendlyName="ASP.NET Web Forms Model-View-Presenter Rules">
+  <Rule TypeName="PresentersShouldHaveCorrectSuffix" Category="WebFormsMvp" CheckId="MVP1001">
+    <Name>Presenters should have correct suffix</Name>
+    <Description>All presenter implementations should have their type name suffixed with the word 'Presenter'. For example, 'LoginPresenter'.</Description>
+    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP1001</Url>
+    <Resolution>Type {0} does not end with the suffix 'Presenter'. Add the suffix to the type name.</Resolution>
+    <Email></Email>
+    <MessageLevel Certainty="95">Warning</MessageLevel>
+    <FixCategories>Breaking</FixCategories>
+    <Owner />
+  </Rule>
+</Rules>

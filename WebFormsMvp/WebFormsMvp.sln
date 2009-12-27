@@ -44,9 +44,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Castle", "WebFo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.UnitTests", "WebFormsMvp.UnitTests\WebFormsMvp.UnitTests.csproj", "{66023434-A9DF-465E-926A-316C85F63269}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FxCop Rules", "FxCop Rules", "{F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.CodeAnalysisRules", "WebFormsMvp.CodeAnalysisRules\WebFormsMvp.CodeAnalysisRules.csproj", "{2934629D-FF06-4B81-8756-588A38F3B2E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeAnalysis.TestLibrary", "CodeAnalysis.TestLibrary\CodeAnalysis.TestLibrary.csproj", "{09B600C9-569C-4F2E-BD44-2D80A9ED4526}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.CodeAnalysisRules.IntegrationTests", "WebFormsMvp.CodeAnalysisRules.IntegrationTests\WebFormsMvp.CodeAnalysisRules.IntegrationTests.csproj", "{829A536A-97FC-4FCC-A6E0-7F137276A73E}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 12
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs06.codeplex.com/
 		SccLocalPath0 = .
@@ -77,6 +85,18 @@ Global
 		SccProjectUniqueName8 = WebFormsMvp.UnitTests\\WebFormsMvp.UnitTests.csproj
 		SccProjectName8 = WebFormsMvp.UnitTests
 		SccLocalPath8 = WebFormsMvp.UnitTests
+		SccProjectUniqueName9 = WebFormsMvp.CodeAnalysisRules\\WebFormsMvp.CodeAnalysisRules.csproj
+		SccProjectTopLevelParentUniqueName9 = WebFormsMvp.sln
+		SccProjectName9 = WebFormsMvp.CodeAnalysisRules
+		SccLocalPath9 = WebFormsMvp.CodeAnalysisRules
+		SccProjectUniqueName10 = CodeAnalysis.TestLibrary\\CodeAnalysis.TestLibrary.csproj
+		SccProjectTopLevelParentUniqueName10 = WebFormsMvp.sln
+		SccProjectName10 = CodeAnalysis.TestLibrary
+		SccLocalPath10 = CodeAnalysis.TestLibrary
+		SccProjectUniqueName11 = WebFormsMvp.CodeAnalysisRules.IntegrationTests\\WebFormsMvp.CodeAnalysisRules.IntegrationTests.csproj
+		SccProjectTopLevelParentUniqueName11 = WebFormsMvp.sln
+		SccProjectName11 = WebFormsMvp.CodeAnalysisRules.IntegrationTests
+		SccLocalPath11 = WebFormsMvp.CodeAnalysisRules.IntegrationTests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = WebFormsMvp.vsmdi
@@ -118,6 +138,18 @@ Global
 		{66023434-A9DF-465E-926A-316C85F63269}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66023434-A9DF-465E-926A-316C85F63269}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66023434-A9DF-465E-926A-316C85F63269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829A536A-97FC-4FCC-A6E0-7F137276A73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829A536A-97FC-4FCC-A6E0-7F137276A73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829A536A-97FC-4FCC-A6E0-7F137276A73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829A536A-97FC-4FCC-A6E0-7F137276A73E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,5 +159,8 @@ Global
 		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C} = {392D516C-6A30-4673-A43A-87DEC9340427}
+		{2934629D-FF06-4B81-8756-588A38F3B2E0} = {F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526} = {F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}
+		{829A536A-97FC-4FCC-A6E0-7F137276A73E} = {F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}
 	EndGlobalSection
 EndGlobal
