@@ -14,7 +14,7 @@
     2) View interface                                               ║║
     3) View model                                                   ║║
                                                                     ║║
-  The last two digits are just sequential  ═════════════════════════╩╝
+  The last two digits are just sequential, starting at 01  ═════════╩╝
 
 -->
 <Rules FriendlyName="ASP.NET Web Forms Model-View-Presenter Rules">
