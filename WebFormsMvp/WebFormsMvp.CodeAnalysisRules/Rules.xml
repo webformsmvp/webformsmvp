@@ -1,4 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Check ids are allocated using a specific formula - please follow it.
+  
+  All check ids are MVP, followed by a 4 digit number:         MVPxxxx
+                                                                  ║║║║
+  The first digit specifies the style of the rule  ═══════════════╝║║║
+    1) Naming                                                      ║║║
+    2) Design                                                      ║║║
+                                                                   ║║║
+  The second digit specifies the target of the rule  ══════════════╝║║
+    1) Presenter                                                    ║║
+    2) View interface                                               ║║
+    3) View model                                                   ║║
+                                                                    ║║
+  The last two digits are just sequential  ═════════════════════════╩╝
+
+-->
 <Rules FriendlyName="ASP.NET Web Forms Model-View-Presenter Rules">
   <Rule TypeName="PresentersShouldHaveCorrectSuffix" Category="WebFormsMvp" CheckId="MVP1001">
     <Name>Presenters should have correct suffix</Name>
@@ -20,10 +38,10 @@
     <FixCategories>Breaking</FixCategories>
     <Owner />
   </Rule>
-  <Rule TypeName="PresentersShouldUseProvidedBaseImplementation" Category="WebFormsMvp" CheckId="MVP1101">
+  <Rule TypeName="PresentersShouldUseProvidedBaseImplementation" Category="WebFormsMvp" CheckId="MVP2001">
     <Name>Presenters should use provided base implementation</Name>
     <Description>All presenters should inherit from WebFormsMvp.Presenter&lt;TView&gt;. They should not implement WebFormsMvp.IPresenter or WebFormsMvp.IPresenter&lt;TView&gt; directly.</Description>
-    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP1101</Url>
+    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP2001</Url>
     <Resolution>{0} does not inherit from WebFormsMvp.Presenter&lt;TView&gt;. Instead, it implements WebFormsMvp.IPresenter or WebFormsMvp.IPresenter&lt;TView&gt; directly. Change the type to inherit from WebFormsMvp.Presenter&lt;TView&gt;.</Resolution>
     <Email></Email>
     <MessageLevel Certainty="95">Warning</MessageLevel>

@@ -18,7 +18,7 @@ namespace WebFormsMvp.CodeAnalysisRules
 
             var basePresenter = GetBasePresenterTypeNode(type);
             if (basePresenter == null)
-                throw new InvalidOperationException("Failed to find WebFormsMvp.Presenter`TView even though we found WebFormsMvp.IPresenter.");
+                throw new InvalidOperationException("Failed to find WebFormsMvp.Presenter`1 even though we found WebFormsMvp.IPresenter.");
 
             var baseType = type;
             // We have an extra level of base type checking here so that we skip System.Object
