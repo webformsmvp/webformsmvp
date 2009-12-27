@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
 namespace WebFormsMvp.ProjectSite
 {
-    public class Global : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
-
         protected void Application_Start(object sender, EventArgs e)
         {
 
@@ -25,18 +21,18 @@ namespace WebFormsMvp.ProjectSite
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
             // Add page PreRender event handler
-            HttpApplication app = sender as HttpApplication;
-            Page page = app.Context.CurrentHandler as Page;
+            var app = (HttpApplication)sender;
+            var page = app.Context.CurrentHandler as Page;
             if (page != null)
             {
-                page.PreRender += new EventHandler(page_PreRender);
+                page.PreRender += Page_PreRender;
             }
         }
 
-        void page_PreRender(object sender, EventArgs e)
+        static void Page_PreRender(object sender, EventArgs e)
         {
             // Add print media type to print.css link
-            Page page = sender as Page;
+            var page = (Page)sender;
             var printLinks = page.Header.Controls
                 .OfType<HtmlLink>()
                 .Where(l => l.Href.EndsWith("print.css", StringComparison.InvariantCultureIgnoreCase));
@@ -55,7 +51,7 @@ namespace WebFormsMvp.ProjectSite
             // Move content-type meta tag to top of head, ASP.NET inserts Theme stylesheet links before it
             var meta = page.Header.Controls
                 .OfType<HtmlMeta>()
-                .First(m => m.Content.StartsWith("text/html; charset="));
+                .FirstOrDefault(m => m.Content.StartsWith("text/html; charset="));
             if (meta != null && page.Header.Controls.IndexOf(meta) > 0)
             {
                 page.Header.Controls.Remove(meta);
@@ -66,12 +62,11 @@ namespace WebFormsMvp.ProjectSite
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             // Remove page PreRender event handler
-            HttpApplication app = sender as HttpApplication;
-            Page page = app.Context.CurrentHandler as Page;
-
+            var app = (HttpApplication)sender;
+            var page = app.Context.CurrentHandler as Page;
             if (page != null)
             {
-                page.PreRender -= page_PreRender;
+                page.PreRender -= Page_PreRender;
             }
         }
 
