@@ -52,6 +52,15 @@
     <Compile Include="PresentersShouldHaveCorrectSuffix\1-Fail-BadSuffixImplementingIPresenter.cs" />
     <Compile Include="PresentersShouldHaveCorrectSuffix\2-Fail-BadSuffixImplementingIPresenter`TView.cs" />
     <Compile Include="PresentersShouldHaveCorrectSuffix\3-Fail-BadSuffixImplementingPresenter`TView.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\1-Fail-ReplaceIViewModelInConstructorViaProperty.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\2-Fail-ReplaceIViewModelInConstructorViaArgument.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\3-Fail-ReplaceIViewModelInPrivateInstanceMethod.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\4-Fail-ReplaceIViewModelInPrivateStaticMethod.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\5-Fail-ReplaceIViewModelInPublicInstanceMethod.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\6-Fail-ReplaceIViewModelInPublicStaticMethod.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\7-Fail-ReplaceICustomViewModelInConstructorViaProperty.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\8-Fail-ReplaceICustomViewModelWithCustomModelInConstructorViaProperty.cs" />
+    <Compile Include="PresentersShouldNotReplaceViewModel\9-Pass-PopulateCustomModelInConstructorViaProperty.cs" />
     <Compile Include="PresentersShouldUseProvidedBaseImplementation\1-Fail-TypeImplementingIPresenter.cs" />
     <Compile Include="PresentersShouldUseProvidedBaseImplementation\2-Fail-TypeImplementingIPresenter`TView.cs" />
     <Compile Include="PresentersShouldUseProvidedBaseImplementation\3-Pass-TypeImplementingPresenter`TView.cs" />

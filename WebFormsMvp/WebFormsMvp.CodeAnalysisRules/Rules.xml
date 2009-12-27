@@ -18,31 +18,41 @@
 
 -->
 <Rules FriendlyName="ASP.NET Web Forms Model-View-Presenter Rules">
-  <Rule TypeName="PresentersShouldHaveCorrectSuffix" Category="WebFormsMvp" CheckId="MVP1001">
+  <Rule TypeName="PresentersShouldHaveCorrectSuffix" Category="WebFormsMvp" CheckId="MVP1101">
     <Name>Presenters should have correct suffix</Name>
     <Description>All presenter implementations should have their type name suffixed with the word 'Presenter'. For example, 'LoginPresenter'.</Description>
-    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP1001</Url>
+    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP1101</Url>
     <Resolution>The name of type {0} does not end with the suffix 'Presenter'. Add the suffix to the type name.</Resolution>
     <Email></Email>
     <MessageLevel Certainty="95">Warning</MessageLevel>
     <FixCategories>Breaking</FixCategories>
     <Owner />
   </Rule>
-  <Rule TypeName="PresentersShouldHaveDescriptiveNames" Category="WebFormsMvp" CheckId="MVP1002">
+  <Rule TypeName="PresentersShouldHaveDescriptiveNames" Category="WebFormsMvp" CheckId="MVP1102">
     <Name>Presenters should have descriptive names</Name>
     <Description>All presenter implementations should have a type name that describes their function. For example, 'LoginPresenter'.</Description>
-    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP1002</Url>
+    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP1102</Url>
     <Resolution>The name of type {0} does not describe the presenter's function. Use a more descriptive name.</Resolution>
     <Email></Email>
     <MessageLevel Certainty="95">Warning</MessageLevel>
     <FixCategories>Breaking</FixCategories>
     <Owner />
   </Rule>
-  <Rule TypeName="PresentersShouldUseProvidedBaseImplementation" Category="WebFormsMvp" CheckId="MVP2001">
+  <Rule TypeName="PresentersShouldUseProvidedBaseImplementation" Category="WebFormsMvp" CheckId="MVP2101">
     <Name>Presenters should use provided base implementation</Name>
     <Description>All presenters should inherit from WebFormsMvp.Presenter&lt;TView&gt;. They should not implement WebFormsMvp.IPresenter or WebFormsMvp.IPresenter&lt;TView&gt; directly.</Description>
-    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP2001</Url>
+    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP2101</Url>
     <Resolution>{0} does not inherit from WebFormsMvp.Presenter&lt;TView&gt;. Instead, it implements WebFormsMvp.IPresenter or WebFormsMvp.IPresenter&lt;TView&gt; directly. Change the type to inherit from WebFormsMvp.Presenter&lt;TView&gt;.</Resolution>
+    <Email></Email>
+    <MessageLevel Certainty="95">Warning</MessageLevel>
+    <FixCategories>NonBreaking</FixCategories>
+    <Owner />
+  </Rule>
+  <Rule TypeName="PresentersShouldNotReplaceViewModel" Category="WebFormsMvp" CheckId="MVP2106">
+    <Name>Presenters should not replace View.Model</Name>
+    <Description>Presenter code should never set the View.Model property. The framework automatically intitializes this property to its default value when the presenter is constructed. (The property setter is only public due to requirements imposed by medium trust environments.) Change your presenter code to set propeties within the model instead.</Description>
+    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP2106</Url>
+    <Resolution>Change your presenter code to set propeties within the model instead.</Resolution>
     <Email></Email>
     <MessageLevel Certainty="95">Warning</MessageLevel>
     <FixCategories>NonBreaking</FixCategories>
