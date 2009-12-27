@@ -61,6 +61,7 @@
     <Compile Include="PresentersShouldHaveDescriptiveNames.cs" />
     <Compile Include="PresentersShouldHaveCorrectSuffix.cs" />
     <Compile Include="PresentersShouldNotReplaceViewModel.cs" />
+    <Compile Include="PresentersShouldUseConsistentViewType.cs" />
     <Compile Include="PresentersShouldUseProvidedBaseImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -61,6 +61,10 @@
     <Compile Include="PresentersShouldNotReplaceViewModel\7-Fail-ReplaceICustomViewModelInConstructorViaProperty.cs" />
     <Compile Include="PresentersShouldNotReplaceViewModel\8-Fail-ReplaceICustomViewModelWithCustomModelInConstructorViaProperty.cs" />
     <Compile Include="PresentersShouldNotReplaceViewModel\9-Pass-PopulateCustomModelInConstructorViaProperty.cs" />
+    <Compile Include="PresentersShouldUseConsistentViewType\1-Fail-BasicTypeMismatch.cs" />
+    <Compile Include="PresentersShouldUseConsistentViewType\3-Fail-CustomTypeMismatch.cs" />
+    <Compile Include="PresentersShouldUseConsistentViewType\4-Pass-CustomTypeMatch.cs" />
+    <Compile Include="PresentersShouldUseConsistentViewType\2-Pass-BasicTypeMatch.cs" />
     <Compile Include="PresentersShouldUseProvidedBaseImplementation\1-Fail-TypeImplementingIPresenter.cs" />
     <Compile Include="PresentersShouldUseProvidedBaseImplementation\2-Fail-TypeImplementingIPresenter`TView.cs" />
     <Compile Include="PresentersShouldUseProvidedBaseImplementation\3-Pass-TypeImplementingPresenter`TView.cs" />

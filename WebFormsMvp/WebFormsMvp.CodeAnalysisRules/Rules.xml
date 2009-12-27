@@ -48,13 +48,23 @@
     <FixCategories>NonBreaking</FixCategories>
     <Owner />
   </Rule>
+  <Rule TypeName="PresentersShouldUseConsistentViewType" Category="WebFormsMvp" CheckId="MVP2102">
+    <Name>Presenters should use consistent view type</Name>
+    <Description>Presenter constructors should accept the same view type as the one specified as the presenter's generic type argument. For example, a presenter that implements WebFormsMvp.IPresenter&lt;MyApp.IMyCustomView&gt; should only expose MyApp.IMyCustomView on the constructor.</Description>
+    <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP2101</Url>
+    <Resolution>{0} implements WebFormsMvp.IPresenter&lt;{1}&gt; however the constructor expects a view of type {2}. Make the types consistent by updating the constructor to accept {1} or change the presenter's type definition to use {2}.</Resolution>
+    <Email></Email>
+    <MessageLevel Certainty="95">Error</MessageLevel>
+    <FixCategories>NonBreaking</FixCategories>
+    <Owner />
+  </Rule>
   <Rule TypeName="PresentersShouldNotReplaceViewModel" Category="WebFormsMvp" CheckId="MVP2106">
     <Name>Presenters should not replace View.Model</Name>
     <Description>Presenter code should never set the View.Model property. The framework automatically intitializes this property to its default value when the presenter is constructed. (The property setter is only public due to requirements imposed by medium trust environments.) Change your presenter code to set propeties within the model instead.</Description>
     <Url>http://wiki.webformsmvp.com/index.php?title=CodeAnalysis:MVP2106</Url>
     <Resolution>Change your presenter code to set propeties within the model instead.</Resolution>
     <Email></Email>
-    <MessageLevel Certainty="95">Warning</MessageLevel>
+    <MessageLevel Certainty="95">Error</MessageLevel>
     <FixCategories>NonBreaking</FixCategories>
     <Owner />
   </Rule>

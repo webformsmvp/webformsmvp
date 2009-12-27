@@ -40,6 +40,13 @@ namespace WebFormsMvp.CodeAnalysisRules
                 .GetType(Identifier.For("WebFormsMvp"), Identifier.For("IPresenter"), true);
         }
 
+        internal static TypeNode GetIViewTypeNode(TypeNode inspectingType)
+        {
+            return inspectingType
+                .DeclaringModule
+                .GetType(Identifier.For("WebFormsMvp"), Identifier.For("IView"), true);
+        }
+
         internal static TypeNode GetIView1TypeNode(TypeNode inspectingType)
         {
             return inspectingType
