@@ -52,6 +52,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeAnalysis.TestLibrary", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.CodeAnalysisRules.IntegrationTests", "WebFormsMvp.CodeAnalysisRules.IntegrationTests\WebFormsMvp.CodeAnalysisRules.IntegrationTests.csproj", "{829A536A-97FC-4FCC-A6E0-7F137276A73E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FxCop", "FxCop", "{DFD84314-36C3-4934-9AFD-03415B0F53E0}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\FxCop\FxCopSdk.dll = Dependencies\FxCop\FxCopSdk.dll
+		Dependencies\FxCop\Microsoft.Cci.dll = Dependencies\FxCop\Microsoft.Cci.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 12
@@ -156,6 +162,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7AD65369-54B5-4D52-95C7-C9BFD440B327} = {EF165358-8758-45DC-8B74-3B963037E376}
+		{DFD84314-36C3-4934-9AFD-03415B0F53E0} = {EF165358-8758-45DC-8B74-3B963037E376}
 		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C} = {392D516C-6A30-4673-A43A-87DEC9340427}

@@ -38,11 +38,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FxCopSdk">
-      <HintPath>..\Dependencies\FxCopSdk.dll</HintPath>
+    <Reference Include="FxCopSdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\FxCop\FxCopSdk.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Cci">
-      <HintPath>..\Dependencies\Microsoft.Cci.dll</HintPath>
+    <Reference Include="Microsoft.Cci, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\FxCop\Microsoft.Cci.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,11 +58,13 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="BaseRule.cs" />
+    <Compile Include="PresentersShouldHaveDescriptiveNames.cs" />
     <Compile Include="PresentersShouldHaveCorrectSuffix.cs" />
+    <Compile Include="PresentersShouldUseProvidedBaseImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="WebFormsMvp.CodeAnalysisRules.xml" />
+    <EmbeddedResource Include="Rules.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

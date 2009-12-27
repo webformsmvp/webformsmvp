@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.FxCop.Sdk;
 
 namespace WebFormsMvp.CodeAnalysisRules
 {
-    public class PresentersShouldHaveCorrectSuffix : BaseRule
+    public class PresentersShouldHaveDescriptiveNames : BaseRule
     {
-        public PresentersShouldHaveCorrectSuffix()
-            : base("PresentersShouldHaveCorrectSuffix")
+        public PresentersShouldHaveDescriptiveNames()
+            : base("PresentersShouldHaveDescriptiveNames")
         {
         }
 
@@ -16,8 +15,8 @@ namespace WebFormsMvp.CodeAnalysisRules
             if (type == null) return null;
 
             if (!IsPresenterImplementation(type)) return null;
-
-            if (!type.Name.Name.EndsWith("Presenter", StringComparison.Ordinal))
+            
+            if (type.Name.Name.Equals("Presenter", StringComparison.OrdinalIgnoreCase))
             {
                 return new ProblemCollection { new Problem(
                     GetResolution(type.FullName)) {

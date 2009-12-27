@@ -52,6 +52,9 @@
     <Compile Include="PresentersShouldHaveCorrectSuffix\1-Fail-BadSuffixImplementingIPresenter.cs" />
     <Compile Include="PresentersShouldHaveCorrectSuffix\2-Fail-BadSuffixImplementingIPresenter`TView.cs" />
     <Compile Include="PresentersShouldHaveCorrectSuffix\3-Fail-BadSuffixImplementingPresenter`TView.cs" />
+    <Compile Include="PresentersShouldUseProvidedBaseImplementation\1-Fail-TypeImplementingIPresenter.cs" />
+    <Compile Include="PresentersShouldUseProvidedBaseImplementation\2-Fail-TypeImplementingIPresenter`TView.cs" />
+    <Compile Include="PresentersShouldUseProvidedBaseImplementation\3-Pass-TypeImplementingPresenter`TView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

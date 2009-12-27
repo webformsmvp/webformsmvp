@@ -24,12 +24,7 @@
           <Item>volatile</Item>
         </MODIFIERS_ORDER>
       </FormatSettings>
-      <UsingsSettings>
-        <MandatoryImports IsNull="False">
-          <Item>System</Item>
-          <Item>System.Linq</Item>
-        </MandatoryImports>
-      </UsingsSettings>
+      <UsingsSettings />
       <Naming2>
         <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
         <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
