@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.FxCop.Sdk;
 
 namespace WebFormsMvp.CodeAnalysisRules
