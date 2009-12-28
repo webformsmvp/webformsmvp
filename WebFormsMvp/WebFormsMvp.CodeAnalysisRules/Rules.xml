@@ -3,18 +3,18 @@
 
   Check ids are allocated using a specific formula - please follow it.
   
-  All check ids are MVP, followed by a 4 digit number:         MVPxxxx
-                                                                  ║║║║
-  The first digit specifies the style of the rule  ═══════════════╝║║║
-    1) Naming                                                      ║║║
-    2) Design                                                      ║║║
-                                                                   ║║║
-  The second digit specifies the target of the rule  ══════════════╝║║
-    1) Presenter                                                    ║║
-    2) View interface                                               ║║
-    3) View model                                                   ║║
-                                                                    ║║
-  The last two digits are just sequential, starting at 01  ═════════╩╝
+  All check ids are MVP, followed by a 4 digit number:         
+                                                               MVPxxxx
+  The first digit specifies the style of the rule  ═══════════════╝║╚╣
+    1) Naming                                                      ║ ║
+    2) Design                                                      ║ ║
+                                                                   ║ ║
+  The second digit specifies the target of the rule  ══════════════╝ ║
+    1) Presenter                                                     ║
+    2) View interface                                                ║
+    3) View model                                                    ║
+                                                                     ║
+  The last two digits are just sequential, starting at 01  ══════════╝
 
 -->
 <Rules FriendlyName="ASP.NET Web Forms Model-View-Presenter Rules">
@@ -68,4 +68,23 @@
     <FixCategories>NonBreaking</FixCategories>
     <Owner />
   </Rule>
+  <!--
+  
+    Under development:
+    
+    MVP1201 - View interface names should end with "View"
+    MVP1301 - Types used as view models should end with "ViewModel"
+    MVP2103 - Presenter constructors should all expose the view as the first argument and have it called "view"
+    MVP2104 - Methods overriding Presenter<TView>.ReleaseView should contain a call to remove_* for all events that have a corresponding call to add_* in the constructor at the same level of the type hierarchy
+    MVP2105 - Methods overriding Presenter<TView>.ReleaseView should not seal it (eg. public sealed override ReviewView(IView view) is bad)
+    MVP2107 – Subscribing to view events should only be done in the presenter constructor
+    MVP2201 - View types should be expressed as interfaces (ie. for Presenter<TView>, TView should be an interface)
+    MVP2202 - View interfaces should not contain properties (properties should be moved to a view model)
+    MVP2203 - View interfaces should not contain methods (method logic should be moved to presenters)
+    MVP2204 - View interfaces should not contain indexers (properties should be moved to a view model)
+    MVP2301 - Types used as view models should not contain methods
+    MVP2302 - Types used as view models should not contain events
+    MVP2303 - Types used as view models should not define custom constructors
+  
+  -->
 </Rules>
