@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.FxCop.Sdk;
-using Microsoft.VisualStudio.CodeAnalysis.Extensibility;
+#if DEV10
+    using Microsoft.VisualStudio.CodeAnalysis.Extensibility;
+#endif
 
 namespace WebFormsMvp.CodeAnalysisRules
 {

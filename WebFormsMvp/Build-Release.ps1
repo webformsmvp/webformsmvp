@@ -71,19 +71,53 @@ if (-not $?)
 
 # Run the unit tests?
 
-# Copy library files to temp folder (dll + pdb + xml)
+# Create a temp folder for the library release assets
 $LibraryReleaseFolder = Join-Path -Path $ReleaseFolder -ChildPath "Library";
 New-Item $LibraryReleaseFolder -Type directory
-$LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release"
-Copy-Item "$LibraryBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
-$CastleBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Castle\bin\Release"
-Copy-Item "$CastleBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.Castle.dll","WebFormsMvp.Castle.pdb","WebFormsMvp.Castle.xml"
+
+# Add GettingStarted.txt to the temp folder
 Set-Content (Join-Path -Path $LibraryReleaseFolder -ChildPath "GettingStarted.txt") -Value `
 "This ZIP file only contains the compiled libraries.
 
 For help getting started, check out http://webformsmvp.com
 
 There's also a feature demo app which you can browse at http://webformsmvp.codeplex.com/SourceControl/BrowseLatest"
+
+# Copy core library assets to temp folder (dll + pdb + xml)
+$LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release"
+Copy-Item "$LibraryBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
+
+# Copy Castle assets to temp folder (dll + pdb + xml)
+$CastleBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Castle\bin\Release"
+Copy-Item "$CastleBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.Castle.dll","WebFormsMvp.Castle.pdb","WebFormsMvp.Castle.xml"
+
+# Copy VS2010 CA rules to temp folder (dll + pdb)
+$CodeAnalysisRulesBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.CodeAnalysisRules\bin\Release"
+Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.dll" `
+	-Destination (Join-Path -Path $LibraryReleaseFolder -ChildPath "WebFormsMvp.CodeAnalysisRules.VS2010.dll")
+Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.pdb" `
+	-Destination (Join-Path -Path $LibraryReleaseFolder -ChildPath "WebFormsMvp.CodeAnalysisRules.VS2010.pdb")
+
+# Build the CA rules again for FxCop 1.36 (different SDK + runtime)
+$CodeAnalysisRulesProjectPath = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.CodeAnalysisRules\WebFormsMvp.CodeAnalysisRules.csproj"
+$FxCop136DependencyPath = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\FxCop136\"
+& $MSBuild "$CodeAnalysisRulesProjectPath" /p:Configuration=Release /maxcpucount /t:Clean
+if (-not $?)
+{
+	throw "The MSBuild process returned an error code."
+}
+& $MSBuild "$CodeAnalysisRulesProjectPath" /p:Configuration=Release /maxcpucount /p:CodeAnalysisPath="$FxCop136DependencyPath" /p:DefineConstants="" /p:TargetFrameworkVersion="v3.5"
+if (-not $?)
+{
+	throw "The MSBuild process returned an error code."
+}
+
+# Copy FxCop 1.36 CA rules to temp folder (dll + pdb)
+$CodeAnalysisRulesBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.CodeAnalysisRules\bin\Release"
+Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.dll" `
+	-Destination (Join-Path -Path $LibraryReleaseFolder -ChildPath "WebFormsMvp.CodeAnalysisRules.FxCop136.dll")
+Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.pdb" `
+	-Destination (Join-Path -Path $LibraryReleaseFolder -ChildPath "WebFormsMvp.CodeAnalysisRules.FxCop136.pdb")
 
 # Load ZIP library
 $LibraryReleaseZip = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp-v$ReleaseVersionNumber-Library$ReleaseSuffix.zip";
@@ -98,8 +132,3 @@ $FastZip.CreateZip($LibraryReleaseZip, $LibraryReleaseFolder, $true, "") # zipfi
 # Package Releases\WebFormsMvp.(version).FeatureDemos.zip (feature demo w/ library reference)
 
 # Check in SolutionInfo.cs
-
-# Label the source tree for this version
-
-# DEBUG ONLY
-& $TF undo $solutionInfoPath
