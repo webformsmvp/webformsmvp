@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Test Rule Set" Description=" " ToolsVersion="10.0">
+  <RuleHintPaths>
+    <Path>C:\Code\WebFormsMvp\Trunk\WebFormsMvp\WebFormsMvp.CodeAnalysisRules\bin\Debug</Path>
+  </RuleHintPaths>
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="MVP1101" Action="Error" />
+    <Rule Id="MVP1102" Action="Error" />
+    <Rule Id="MVP2101" Action="Error" />
+    <Rule Id="MVP2102" Action="Error" />
+    <Rule Id="MVP2106" Action="Error" />
+  </Rules>
+</RuleSet>

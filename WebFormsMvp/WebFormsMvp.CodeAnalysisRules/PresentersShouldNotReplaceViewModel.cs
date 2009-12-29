@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.FxCop.Sdk;
+using Microsoft.VisualStudio.CodeAnalysis.Extensibility;
 
 namespace WebFormsMvp.CodeAnalysisRules
 {
