@@ -81,15 +81,21 @@ New-Item $HelpersReleaseFolder -Type directory
 
 # Add GettingStarted.txt to the temp folder
 Set-Content (Join-Path -Path $LibraryReleaseFolder -ChildPath "GettingStarted.txt") -Value `
-"This ZIP file only contains the compiled libraries.
+"This ZIP file only contains the compiled libraries:
 
-/WebFormsMvp.dll  is the main library.
-/Helpers/         contains other libraries that help with development, but aren't actually used in your application.
-/Integrations/    contains useful adapters to connect WebFormsMvp with other projects like Castle.
+  WebFormsMvp.dll  is the main library.
+
+  Helpers/         contains other libraries that help with
+                   development, but aren't actually used in
+                   your application.
+
+  Integrations/    contains useful adapters to connect
+                   WebFormsMvp with other projects like Castle.
 
 For help getting started, check out http://webformsmvp.com
 
-There's also a feature demo app which you can browse at http://webformsmvp.codeplex.com/SourceControl/BrowseLatest"
+There's also a feature demo app which you can browse at
+http://webformsmvp.codeplex.com/SourceControl/BrowseLatest"
 
 # Copy core library assets to temp folder (dll + pdb + xml)
 $LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release"
