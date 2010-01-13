@@ -14,6 +14,9 @@ namespace WebFormsMvp.Unity
         readonly IDictionary<IPresenter, IUnityContainer> presentersToContainers = new Dictionary<IPresenter, IUnityContainer>();
         readonly object presentersToContainersSyncLock = new object();
 
+        readonly IDictionary<IntPtr, Type> presentersToViewTypesCache = new Dictionary<IntPtr, Type>();
+        readonly object presentersToViewTypesSyncLock = new object();
+
         public UnityPresenterFactory(IUnityContainer container)
         {
             this.container = container;
@@ -23,7 +26,7 @@ namespace WebFormsMvp.Unity
         {
             if (viewType == viewInstance.GetType())
             {
-                viewType = FindViewType(presenterType, viewInstance);
+                viewType = FindViewTypeCached(presenterType, viewInstance);
             }
 
             var presenterScopedContainer = container.CreateChildContainer();
@@ -52,6 +55,26 @@ namespace WebFormsMvp.Unity
             {
                 presenterScopedContainer.Teardown(presenter);
             }
+        }
+
+        Type FindViewTypeCached(Type presenterType, IView viewInstance)
+        {
+            var presenterTypeHandle = presenterType.TypeHandle.Value;
+
+            if (!presentersToViewTypesCache.ContainsKey(presenterTypeHandle))
+            {
+                lock (presentersToViewTypesSyncLock)
+                {
+                    if (!presentersToViewTypesCache.ContainsKey(presenterTypeHandle))
+                    {
+                        var viewType = FindViewType(presenterType, viewInstance);
+                        presentersToViewTypesCache[presenterTypeHandle] = viewType;
+                        return viewType;
+                    }
+                }
+            }
+
+            return presentersToViewTypesCache[presenterTypeHandle];
         }
 
         static Type FindViewType(Type presenterType, IView viewInstance)
