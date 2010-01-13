@@ -105,6 +105,10 @@ Copy-Item "$LibraryBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "W
 $CastleBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Castle\bin\Release"
 Copy-Item "$CastleBinFolder\*.*" -Destination $IntegrationsReleaseFolder -Include "WebFormsMvp.Castle.dll","WebFormsMvp.Castle.pdb","WebFormsMvp.Castle.xml"
 
+# Copy Unity assets to temp folder (dll + pdb + xml)
+$UnityBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Unity\bin\Release"
+Copy-Item "$UnityBinFolder\*.*" -Destination $IntegrationsReleaseFolder -Include "WebFormsMvp.Unity.dll","WebFormsMvp.Unity.pdb","WebFormsMvp.Unity.xml"
+
 # Copy VS2010 CA rules to temp folder (dll + pdb)
 $CodeAnalysisRulesBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.CodeAnalysisRules\bin\Release"
 Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.dll" `
