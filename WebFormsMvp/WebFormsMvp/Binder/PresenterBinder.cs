@@ -152,22 +152,27 @@ namespace WebFormsMvp.Binder
         /// </summary>
         public void PerformBinding()
         {
-            if (viewInstancesRequiringBinding.Any())
+            try
             {
-                var newPresenters = PerformBinding(
-                    viewInstancesRequiringBinding.Distinct(),
-                    discoveryStrategy,
-                    httpContext,
-                    messageCoordinator,
-                    p => OnPresenterCreated(new PresenterCreatedEventArgs(p)),
-                    Factory);
+                if (viewInstancesRequiringBinding.Any())
+                {
+                    var newPresenters = PerformBinding(
+                        viewInstancesRequiringBinding.Distinct(),
+                        discoveryStrategy,
+                        httpContext,
+                        messageCoordinator,
+                        p => OnPresenterCreated(new PresenterCreatedEventArgs(p)),
+                        Factory);
 
-                presenters.AddRange(newPresenters);
+                    presenters.AddRange(newPresenters);
 
-                viewInstancesRequiringBinding.Clear();
+                    viewInstancesRequiringBinding.Clear();
+                }
             }
-
-            initialBindingHasBeenPerformed = true;
+            finally
+            {
+                initialBindingHasBeenPerformed = true;
+            }
         }
 
         /// <summary>
