@@ -182,11 +182,6 @@ namespace WebFormsMvp.Binder
         /// </summary>
         public void Release()
         {
-            if (!initialBindingHasBeenPerformed)
-            {
-                throw new InvalidOperationException("The presenter binder is being released without PerformBinding having ever being called.");
-            }
-
             MessageCoordinator.Close();
             lock (presenters)
             {
