@@ -46,7 +46,7 @@ namespace WebFormsMvp.Binder
             //    View 1 -> Binding 1
             //    View 2 -> Binding 1, Binding 2
             var viewDefinedBindingsToViewInstances = viewInstancesToViewDefinedBindings
-                .SelectMany(map => map.ViewDefinedBindings)
+                .SelectMany(map => map.ViewDefinedBindings).Distinct()
                 .Select(binding => new
                 {
                     Binding = binding,
