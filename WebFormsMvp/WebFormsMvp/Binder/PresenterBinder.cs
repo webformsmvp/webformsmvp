@@ -69,6 +69,7 @@ namespace WebFormsMvp.Binder
         static readonly ICompositeViewTypeFactory compositeViewTypeFactory = new DefaultCompositeViewTypeFactory();
 
         readonly HttpContextBase httpContext;
+        readonly ITraceContext traceContext;
         readonly IPresenterDiscoveryStrategy discoveryStrategy;
         readonly IMessageCoordinator messageCoordinator = new MessageCoordinator();
         readonly IList<IView> viewInstancesRequiringBinding = new List<IView>();
@@ -94,17 +95,32 @@ namespace WebFormsMvp.Binder
         /// </summary>
         /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
         /// <param name="httpContext">The owning HTTP context.</param>
-        public PresenterBinder(IEnumerable<object> hosts, HttpContext httpContext)
-            : this(hosts, HttpContextAdapterFactory.Create(httpContext)) {}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1",
+            Justification="Not easy to test here yet and it always comes from the framework.")]
+        public PresenterBinder(
+            IEnumerable<object> hosts,
+            HttpContext httpContext)
+            : this(
+                hosts,
+                HttpContextAdapterFactory.Create(httpContext),
+                new TraceContextAdapter(httpContext.Trace)) {}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PresenterBinder"/> class.
         /// </summary>
         /// <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
         /// <param name="httpContext">The owning HTTP context.</param>
-        internal PresenterBinder(IEnumerable<object> hosts, HttpContextBase httpContext)
+        /// <param name="traceContext">The tracing context.</param>
+        internal PresenterBinder(IEnumerable<object> hosts, HttpContextBase httpContext, ITraceContext traceContext)
         {
             this.httpContext = httpContext;
+            this.traceContext = traceContext;
+
+            traceContext.Write("WebFormsMvp", string.Format(
+                CultureInfo.InvariantCulture,
+                "Initializing presenter binder for {0} hosts: {1}",
+                hosts.Count(),
+                string.Join(", ", hosts.Select(h => h.GetType().FullName).ToArray())));
 
             discoveryStrategy = new DefaultPresenterDiscoveryStrategy();
             foreach(var host in hosts)
@@ -136,6 +152,13 @@ namespace WebFormsMvp.Binder
         /// </summary>
         public void RegisterView(IView viewInstance)
         {
+            if (viewInstance == null) throw new ArgumentNullException("viewInstance");
+
+            traceContext.Write("WebFormsMvp", string.Format(
+                CultureInfo.InvariantCulture,
+                "Registering view instance of type {0}.",
+                viewInstance.GetType().FullName));
+
             viewInstancesRequiringBinding.Add(viewInstance);
 
             // If an initial binding has already been performed, go ahead
@@ -160,6 +183,7 @@ namespace WebFormsMvp.Binder
                         viewInstancesRequiringBinding.Distinct(),
                         discoveryStrategy,
                         httpContext,
+                        traceContext,
                         messageCoordinator,
                         p => OnPresenterCreated(new PresenterCreatedEventArgs(p)),
                         Factory);
@@ -182,12 +206,25 @@ namespace WebFormsMvp.Binder
         /// </summary>
         public void Release()
         {
+            traceContext.Write("WebFormsMvp", "Releasing presenter binder.");
+
             MessageCoordinator.Close();
             lock (presenters)
             {
                 foreach (var presenter in presenters)
                 {
+                    traceContext.Write("WebFormsMvp", string.Format(
+                        CultureInfo.InvariantCulture,
+                        "Calling ReleaseView on presenter of type {0}.",
+                        presenter.GetType().FullName));
+                    
                     presenter.ReleaseView();
+
+                    traceContext.Write("WebFormsMvp", string.Format(
+                        CultureInfo.InvariantCulture,
+                        "Releasing presenter of type {0} back to the presenter factory.",
+                        presenter.GetType().FullName));
+
                     factory.Release(presenter);
                 }
                 presenters.Clear();
@@ -202,12 +239,22 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        static IEnumerable<IPresenter> PerformBinding(IEnumerable<IView> candidates, IPresenterDiscoveryStrategy discoveryStrategy, HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory)
+        static IEnumerable<IPresenter> PerformBinding(
+            IEnumerable<IView> candidates,
+            IPresenterDiscoveryStrategy discoveryStrategy,
+            HttpContextBase httpContext,
+            ITraceContext traceContext,
+            IMessageBus messageBus,
+            Action<IPresenter> presenterCreatedCallback,
+            IPresenterFactory presenterFactory)
         {
+            traceContext.Write("WebFormsMvp", "Performing binding.");
+
             var bindingsToInstances = discoveryStrategy.MapBindingsToInstances(candidates);
 
             var newPresenters = BuildPresenters(
                 httpContext,
+                traceContext,
                 messageBus,
                 presenterCreatedCallback,
                 presenterFactory,
@@ -216,12 +263,19 @@ namespace WebFormsMvp.Binder
             return newPresenters;
         }
 
-        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory, IEnumerable<KeyValuePair<PresenterBindInfo, IEnumerable<IView>>> bindingsToInstances)
+        static IEnumerable<IPresenter> BuildPresenters(
+            HttpContextBase httpContext,
+            ITraceContext traceContext,
+            IMessageBus messageBus,
+            Action<IPresenter> presenterCreatedCallback,
+            IPresenterFactory presenterFactory,
+            IEnumerable<KeyValuePair<PresenterBindInfo, IEnumerable<IView>>> bindingsToInstances)
         {
             return bindingsToInstances
                 .SelectMany(binding =>
                     BuildPresenters(
                         httpContext,
+                        traceContext,
                         messageBus,
                         presenterCreatedCallback,
                         presenterFactory,
@@ -229,7 +283,14 @@ namespace WebFormsMvp.Binder
                         binding.Value));
         }
 
-        static IEnumerable<IPresenter> BuildPresenters(HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory, PresenterBindInfo binding, IEnumerable<IView> viewInstances)
+        static IEnumerable<IPresenter> BuildPresenters(
+            HttpContextBase httpContext,
+            ITraceContext traceContext,
+            IMessageBus messageBus,
+            Action<IPresenter> presenterCreatedCallback,
+            IPresenterFactory presenterFactory,
+            PresenterBindInfo binding,
+            IEnumerable<IView> viewInstances)
         {
             IEnumerable<IView> viewsToCreateFor;
 
@@ -241,7 +302,7 @@ namespace WebFormsMvp.Binder
                 case BindingMode.SharedPresenter:
                     viewsToCreateFor = new[]
                     {
-                        CreateCompositeView(binding.ViewType, viewInstances)
+                        CreateCompositeView(binding.ViewType, viewInstances, traceContext)
                     };
                     break;
                 default:
@@ -254,6 +315,7 @@ namespace WebFormsMvp.Binder
             return viewsToCreateFor.Select(viewInstance =>
                 BuildPresenter(
                     httpContext,
+                    traceContext,
                     messageBus,
                     presenterCreatedCallback,
                     presenterFactory,
@@ -261,8 +323,22 @@ namespace WebFormsMvp.Binder
                     viewInstance));
         }
 
-        static IPresenter BuildPresenter(HttpContextBase httpContext, IMessageBus messageBus, Action<IPresenter> presenterCreatedCallback, IPresenterFactory presenterFactory, PresenterBindInfo binding, IView viewInstance)
+        static IPresenter BuildPresenter(
+            HttpContextBase httpContext,
+            ITraceContext traceContext,
+            IMessageBus messageBus,
+            Action<IPresenter> presenterCreatedCallback,
+            IPresenterFactory presenterFactory,
+            PresenterBindInfo binding,
+            IView viewInstance)
         {
+            traceContext.Write("WebFormsMvp", string.Format(
+                CultureInfo.InvariantCulture,
+                "Creating presenter of type {0} for view of type {1}. (The actual view instance is of type {2}.)",
+                binding.PresenterType.FullName,
+                binding.ViewType.FullName,
+                viewInstance.GetType().FullName));
+
             var presenter = presenterFactory.Create(binding.PresenterType, binding.ViewType, viewInstance);
             presenter.HttpContext = httpContext;
             presenter.Messages = messageBus;
@@ -273,8 +349,15 @@ namespace WebFormsMvp.Binder
             return presenter;
         }
 
-        internal static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews)
+        internal static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews, ITraceContext traceContext)
         {
+            traceContext.Write("WebFormsMvp", string.Format(
+                CultureInfo.InvariantCulture,
+                "Creating composite view for type {0} based on {1} child views: {2}",
+                viewType.GetType().FullName,
+                childViews.Count(),
+                string.Join(", ", childViews.Select(v => v.GetType().FullName).ToArray())));
+
             var compositeViewType = compositeViewTypeFactory.BuildCompositeViewType(viewType);
             var view = (ICompositeView)Activator.CreateInstance(compositeViewType);
             foreach (var v in childViews)

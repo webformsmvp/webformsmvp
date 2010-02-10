@@ -181,9 +181,10 @@ namespace WebFormsMvp.UnitTests.Binder
             // Arrange
             var host = new object();
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
 
             // Act
-            var binder = new PresenterBinder(new[] { host }, httpContext);
+            var binder = new PresenterBinder(new[] { host }, httpContext, traceContext);
 
             // Assert
             Assert.IsNotNull(binder.MessageCoordinator);
@@ -198,9 +199,10 @@ namespace WebFormsMvp.UnitTests.Binder
                 MockRepository.GenerateMock<IView>(),
                 MockRepository.GenerateMock<IView>()
             };
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
 
             // Act
-            var compositeView = PresenterBinder.CreateCompositeView(typeof (IView), views);
+            var compositeView = PresenterBinder.CreateCompositeView(typeof (IView), views, traceContext);
 
             // Assert
             CollectionAssert.AreEquivalent(views, ((CompositeView<IView>)compositeView).Views.ToList());
@@ -215,9 +217,10 @@ namespace WebFormsMvp.UnitTests.Binder
                 MockRepository.GenerateMock<IView<object>>(),
                 MockRepository.GenerateMock<IView<object>>()
             };
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
 
             // Act
-            var compositeView = PresenterBinder.CreateCompositeView(typeof(IView<object>), views);
+            var compositeView = PresenterBinder.CreateCompositeView(typeof(IView<object>), views, traceContext);
 
             // Assert
             Assert.IsInstanceOfType(compositeView, typeof(ICompositeView));

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using WebFormsMvp.Binder;
+using System.Globalization;
 
 namespace WebFormsMvp.Web
 {
@@ -25,16 +26,29 @@ namespace WebFormsMvp.Web
             if (page == null)
                 throw new ArgumentNullException("page");
 
-            var hosts = FindHosts(page).ToArray();
+            if (httpContext == null)
+                throw new ArgumentNullException("httpContext");
+
+            httpContext.Trace.Write("WebFormsMvp", "Creating new PageViewHost instance.");
+            
+            var hosts = FindHosts(page, httpContext.Trace).ToArray();
 
             presenterBinder = new PresenterBinder(hosts, httpContext);
 
             var asyncManager = new PageAsyncTaskManagerWrapper(page);
             presenterBinder.PresenterCreated += (sender, args) =>
             {
-                args.Presenter.AsyncManager = asyncManager;
+                var presenter = args.Presenter;
+                
+                httpContext.Trace.Write("WebFormsMvp", string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Setting AsyncManager on presenter of type {0}.",
+                    presenter.GetType().FullName));
+
+                presenter.AsyncManager = asyncManager;
             };
 
+            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to page events.");
             page.Init += Page_Init;
             page.PreRenderComplete += Page_PreRenderComplete;
             page.Unload += Page_Unload;
@@ -60,8 +74,10 @@ namespace WebFormsMvp.Web
             presenterBinder.Release();
         }
 
-        internal static IEnumerable<object> FindHosts(Page page)
+        internal static IEnumerable<object> FindHosts(Page page, TraceContext traceContext)
         {
+            traceContext.Write("WebFormsMvp", "Finding hosts (pages and master pages).");
+
             yield return page;
 
             var masterHost = page.Master;
@@ -75,6 +91,8 @@ namespace WebFormsMvp.Web
         readonly static string viewHostCacheKey = typeof(PageViewHost).FullName + ".PageContextKey";
         internal static PageViewHost FindViewHost(Control control, HttpContext httpContext)
         {
+            httpContext.Trace.Write("WebFormsMvp", "Finding PageViewHost instance.");
+
             var pageContext = control.Page.Items;
 
             if (pageContext.Contains(viewHostCacheKey))

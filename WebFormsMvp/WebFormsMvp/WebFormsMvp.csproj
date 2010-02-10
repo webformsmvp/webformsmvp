@@ -111,9 +111,11 @@
     <Compile Include="IMessageCoordinator.cs" />
     <Compile Include="IPresenter.cs" />
     <Compile Include="IPresenter`T.cs" />
+    <Compile Include="ITraceContext.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="IView`T.cs" />
     <Compile Include="MessageCoordinator.cs" />
+    <Compile Include="TraceContextAdapter.cs" />
     <Compile Include="Web\MvpHttpHandler.cs" />
     <Compile Include="Web\MvpPage`T.cs">
       <SubType>ASPXCodeBehind</SubType>
