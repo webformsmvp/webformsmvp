@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WebFormsMvp
+﻿namespace WebFormsMvp
 {
     /// <summary>
     /// Defines the contract that composite view wrappers must expose.

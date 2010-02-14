@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.UI;
+﻿using System.Web.UI;
 using System.Web;
 
 namespace WebFormsMvp.Web

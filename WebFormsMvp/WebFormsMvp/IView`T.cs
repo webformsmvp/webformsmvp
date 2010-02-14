@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WebFormsMvp
+﻿namespace WebFormsMvp
 {
     /// <summary>
     /// Represents a class that is a view with a strongly typed view model in a Web Forms Model-View-Presenter application.

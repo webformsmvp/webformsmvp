@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WebFormsMvp
+﻿namespace WebFormsMvp
 {
     /// <summary>
     /// Defines the different modes through which presenters and views may be related.
