@@ -20,9 +20,9 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             var identity = MockRepository.GenerateMock<IIdentity>();
             var user = MockRepository.GenerateMock<IPrincipal>();
 
-            httpContext.Expect(h => h.User).Return(user);
-            user.Expect(u => u.Identity).Return(identity);
-            identity.Expect(i => i.IsAuthenticated).Return(false);
+            httpContext.Stub(h => h.User).Return(user);
+            user.Stub(u => u.Identity).Return(identity);
+            identity.Stub(i => i.IsAuthenticated).Return(false);
 
             var presenter = new HelloWorldPresenter(view)
             {
@@ -35,9 +35,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
 
             // Assert
             Assert.AreEqual("Hello World!", view.Model.Message);
-            httpContext.VerifyAllExpectations();
-            user.VerifyAllExpectations();
-            identity.VerifyAllExpectations();
         }
 
         [TestMethod]
@@ -49,11 +46,11 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             var identity = MockRepository.GenerateMock<IIdentity>();
             var user = MockRepository.GenerateMock<IPrincipal>();
 
-            httpContext.Expect(h => h.User).Return(user).Repeat.Twice();
-            user.Expect(u => u.Identity).Return(identity).Repeat.Twice();
-            identity.Expect(i => i.IsAuthenticated).Return(true);
+            httpContext.Stub(h => h.User).Return(user).Repeat.Twice();
+            user.Stub(u => u.Identity).Return(identity).Repeat.Twice();
+            identity.Stub(i => i.IsAuthenticated).Return(true);
             var name = "Bob";
-            identity.Expect(i => i.Name).Return(name);
+            identity.Stub(i => i.Name).Return(name);
 
             var presenter = new HelloWorldPresenter(view)
             {
@@ -65,10 +62,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             presenter.ReleaseView();
 
             // Assert
-            Assert.AreEqual(String.Format("Hello {0}!", name), view.Model.Message);
-            httpContext.VerifyAllExpectations();
-            identity.VerifyAllExpectations();
-            user.VerifyAllExpectations();
+            Assert.AreEqual(string.Format("Hello {0}!", name), view.Model.Message);
         }
     }
 }
