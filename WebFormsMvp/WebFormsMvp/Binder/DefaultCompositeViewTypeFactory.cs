@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace WebFormsMvp.Binder
 {
     internal class DefaultCompositeViewTypeFactory : ICompositeViewTypeFactory
     {
         static readonly object compositeViewTypeCacheLock = new object();
-        static readonly IDictionary<IntPtr, Type> compositeViewTypeCache = new Dictionary<IntPtr, Type>();
+        static readonly IDictionary<RuntimeTypeHandle, Type> compositeViewTypeCache = new Dictionary<RuntimeTypeHandle, Type>();
 
         public Type BuildCompositeViewType(Type viewType)
         {
-            var viewTypeHandle = viewType.TypeHandle.Value;
+            var viewTypeHandle = viewType.TypeHandle;
 
             Type compositeViewType;
             if (compositeViewTypeCache.TryGetValue(viewTypeHandle, out compositeViewType))

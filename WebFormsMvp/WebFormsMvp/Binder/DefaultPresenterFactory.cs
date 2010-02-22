@@ -67,17 +67,15 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        static readonly IDictionary<long, DynamicMethod> buildMethodCache = new Dictionary<long, DynamicMethod>();
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands",
-            Justification = "CAS protected members are not exposed, only used internally")]
+        static readonly IDictionary<string, DynamicMethod> buildMethodCache = new Dictionary<string, DynamicMethod>();
         internal static DynamicMethod GetBuildMethod(Type presenterType, Type viewType)
         {
             // We need to scope the cache against both the presenter type and the view type.
-            // Combining both type handles using a bit shift gives us a reliable but fast
-            // way to key the cache.
-            var cacheKey =
-                ((Int64)presenterType.TypeHandle.Value << 32) +
-                (Int64)viewType.TypeHandle.Value;
+            var cacheKey = string.Join("__:__", new []
+            {
+                presenterType.FullName,
+                viewType.FullName
+            });
 
             return buildMethodCache.GetOrCreateValue(cacheKey,
                 () => GetBuildMethodInternal(presenterType, viewType));

@@ -7,8 +7,8 @@ namespace WebFormsMvp.Binder
 {
     internal class DefaultPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
-        static readonly IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> typeToPresenterBindInfoCache
-            = new Dictionary<IntPtr, IEnumerable<PresenterBindInfo>>();
+        static readonly IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindInfo>> typeToPresenterBindInfoCache
+            = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindInfo>>();
 
         readonly IList<PresenterBindInfo> hostDefinedPresenterBindings = new List<PresenterBindInfo>();
 
@@ -99,12 +99,12 @@ namespace WebFormsMvp.Binder
                 );
         }
 
-        static readonly IDictionary<IntPtr, IEnumerable<Type>> implementationTypeToViewInterfacesCache = new Dictionary<IntPtr, IEnumerable<Type>>();
+        static readonly IDictionary<RuntimeTypeHandle, IEnumerable<Type>> implementationTypeToViewInterfacesCache = new Dictionary<RuntimeTypeHandle, IEnumerable<Type>>();
         internal static IEnumerable<Type> GetViewInterfaces(Type implementationType)
         {
             // We use the type handle as the cache key because they're fast
             // to search against in dictionaries.
-            var implementationTypeHandle = implementationType.TypeHandle.Value;
+            var implementationTypeHandle = implementationType.TypeHandle;
 
             // Try and pull it from the cache first
             IEnumerable<Type> viewInterfaces;
@@ -131,9 +131,9 @@ namespace WebFormsMvp.Binder
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
-        static IEnumerable<PresenterBindInfo> GetPresenterBindings(IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> cache, Type sourceType)
+        static IEnumerable<PresenterBindInfo> GetPresenterBindings(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindInfo>> cache, Type sourceType)
         {
-            var hostTypeHandle = sourceType.TypeHandle.Value;
+            var hostTypeHandle = sourceType.TypeHandle;
 
             IEnumerable<PresenterBindInfo> presenterBindInfo;
             if (cache.TryGetValue(hostTypeHandle, out presenterBindInfo))
@@ -158,9 +158,9 @@ namespace WebFormsMvp.Binder
             return presenterBindInfo;
         }
 
-        static IEnumerable<PresenterBindInfo> GetPresenterBindingsFromView(IDictionary<IntPtr, IEnumerable<PresenterBindInfo>> cache, Type viewType)
+        static IEnumerable<PresenterBindInfo> GetPresenterBindingsFromView(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindInfo>> cache, Type viewType)
         {
-            var viewTypeHandle = viewType.TypeHandle.Value;
+            var viewTypeHandle = viewType.TypeHandle;
 
             IEnumerable<PresenterBindInfo> presenterBindInfo;
             if (cache.TryGetValue(viewTypeHandle, out presenterBindInfo))
