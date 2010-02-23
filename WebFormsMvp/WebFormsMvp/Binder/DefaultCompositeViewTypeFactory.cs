@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Security;
 
 namespace WebFormsMvp.Binder
 {
@@ -129,8 +130,18 @@ public class TestViewComposite
 
         static AssemblyBuilder BuildAssembly(AssemblyName assemblyName, AppDomain appDomain)
         {
-            var assembly = appDomain.DefineDynamicAssembly(assemblyName,
-                AssemblyBuilderAccess.Run);
+            var attributeBuilders = new[]
+            {
+                new CustomAttributeBuilder(typeof(SecurityTransparentAttribute).GetConstructor(Type.EmptyTypes), new object[0])
+            };
+
+            var assembly = appDomain.DefineDynamicAssembly
+            (
+                assemblyName,
+                AssemblyBuilderAccess.Run,
+                attributeBuilders
+            );
+            
             return assembly;
         }
 
