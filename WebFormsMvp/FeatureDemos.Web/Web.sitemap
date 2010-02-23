@@ -10,5 +10,6 @@
     <siteMapNode url="~/SharedPresenter.aspx" title="Shared Presenter Demo" description="" />
     <siteMapNode url="~/Messaging.aspx" title="Cross Presenter Messaging Demo" description="" />
     <siteMapNode url="~/PageView.aspx" title="Page View Demo" description="" />
+    <siteMapNode url="~/ViewsAddedInPageInit.aspx" title="Views Dynamically Loaded in Page_Init Demo" description="" />
   </siteMapNode>
 </siteMap>

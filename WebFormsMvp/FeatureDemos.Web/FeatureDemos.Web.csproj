@@ -71,7 +71,9 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\DynamicallyLoadedControl.ascx" />
     <Content Include="PageView.aspx" />
+    <Content Include="ViewsAddedInPageInit.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +86,13 @@
     </Compile>
     <Compile Include="AsyncMessages.aspx.designer.cs">
       <DependentUpon>AsyncMessages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DynamicallyLoadedControl.ascx.cs">
+      <DependentUpon>DynamicallyLoadedControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\DynamicallyLoadedControl.ascx.designer.cs">
+      <DependentUpon>DynamicallyLoadedControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\EditWidgetControl.ascx.cs">
       <DependentUpon>EditWidgetControl.ascx</DependentUpon>
@@ -207,6 +216,13 @@
     <Compile Include="TimeService.asmx.cs">
       <DependentUpon>TimeService.asmx</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ViewsAddedInPageInit.aspx.cs">
+      <DependentUpon>ViewsAddedInPageInit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewsAddedInPageInit.aspx.designer.cs">
+      <DependentUpon>ViewsAddedInPageInit.aspx</DependentUpon>
     </Compile>
     <Compile Include="WidgetEdit.aspx.cs">
       <DependentUpon>WidgetEdit.aspx</DependentUpon>

@@ -77,3 +77,18 @@ a:hover {
 	.lookup-widget .AspNet-DetailsView span[class$='-Name']:after {
 		content: ':';
 	}
+
+.dynamically-loaded {
+    margin: 10px;
+    border: 1px solid #888;
+    padding: 10px;
+    text-align: center;
+}
+
+    .dynamically-loaded .success {
+        color: Green;
+    }
+
+    .dynamically-loaded .failed {
+        color: Red;
+    }
