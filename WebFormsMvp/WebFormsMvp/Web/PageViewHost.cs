@@ -48,9 +48,13 @@ namespace WebFormsMvp.Web
                 presenter.AsyncManager = asyncManager;
             };
 
-            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to page events.");
+            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to Page.InitComplete event.");
             page.InitComplete += Page_InitComplete;
+            
+            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to Page.PreRenderComplete event.");
             page.PreRenderComplete += Page_PreRenderComplete;
+
+            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to Page.Unload event.");
             page.Unload += Page_Unload;
         }
 
