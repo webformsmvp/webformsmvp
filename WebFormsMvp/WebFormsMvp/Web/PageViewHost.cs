@@ -49,7 +49,7 @@ namespace WebFormsMvp.Web
             };
 
             httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to page events.");
-            page.Init += Page_Init;
+            page.InitComplete += Page_InitComplete;
             page.PreRenderComplete += Page_PreRenderComplete;
             page.Unload += Page_Unload;
         }
@@ -59,7 +59,7 @@ namespace WebFormsMvp.Web
             presenterBinder.RegisterView(view);
         }
 
-        void Page_Init(object sender, EventArgs e)
+        void Page_InitComplete(object sender, EventArgs e)
         {
             presenterBinder.PerformBinding();
         }
