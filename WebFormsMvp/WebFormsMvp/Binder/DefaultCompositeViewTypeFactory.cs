@@ -175,7 +175,7 @@ public class TestViewComposite
                 .Union
                 (
                     type.GetInterfaces()
-                        .SelectMany(DiscoverProperties)
+                        .SelectMany<Type, PropertyInfo>(DiscoverProperties)
                 );
         }
 
@@ -544,7 +544,7 @@ set
                 .Union
                 (
                     type.GetInterfaces()
-                        .SelectMany(DiscoverEvents)
+                        .SelectMany<Type, EventInfo>(DiscoverEvents)
                 );
         }
 

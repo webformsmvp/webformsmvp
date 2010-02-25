@@ -5,7 +5,6 @@ namespace WebFormsMvp.Web
     /// <summary>
     /// Represents a page that is a view with a strongly typed model in a Web Forms Model-View-Presenter application.
     /// </summary>
-    /// <typeparam name="TModel">The type of the view model.</typeparam>
     public class MvpPage<TModel> : MvpPage, IView<TModel>
         where TModel : class, new()
     {
