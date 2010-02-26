@@ -122,7 +122,7 @@ namespace WebFormsMvp.Binder
                 hosts.Count(),
                 string.Join(", ", hosts.Select(h => h.GetType().FullName).ToArray())));
 
-            discoveryStrategy = new DefaultPresenterDiscoveryStrategy();
+            discoveryStrategy = new AttributeBasedPresenterDiscoveryStrategy();
             foreach(var host in hosts)
                 discoveryStrategy.AddHost(host);
 
@@ -250,7 +250,7 @@ namespace WebFormsMvp.Binder
         {
             traceContext.Write("WebFormsMvp", "Performing binding.");
 
-            var bindingsToInstances = discoveryStrategy.MapBindingsToInstances(candidates);
+            var bindings = discoveryStrategy.GetBindings(candidates);
 
             var newPresenters = BuildPresenters(
                 httpContext,
@@ -258,7 +258,7 @@ namespace WebFormsMvp.Binder
                 messageBus,
                 presenterCreatedCallback,
                 presenterFactory,
-                bindingsToInstances);
+                bindings);
 
             return newPresenters;
         }
@@ -269,9 +269,9 @@ namespace WebFormsMvp.Binder
             IMessageBus messageBus,
             Action<IPresenter> presenterCreatedCallback,
             IPresenterFactory presenterFactory,
-            IEnumerable<KeyValuePair<PresenterBindInfo, IEnumerable<IView>>> bindingsToInstances)
+            IEnumerable<PresenterBinding> bindings)
         {
-            return bindingsToInstances
+            return bindings
                 .SelectMany(binding =>
                     BuildPresenters(
                         httpContext,
@@ -279,8 +279,7 @@ namespace WebFormsMvp.Binder
                         messageBus,
                         presenterCreatedCallback,
                         presenterFactory,
-                        binding.Key,
-                        binding.Value));
+                        binding));
         }
 
         static IEnumerable<IPresenter> BuildPresenters(
@@ -289,20 +288,19 @@ namespace WebFormsMvp.Binder
             IMessageBus messageBus,
             Action<IPresenter> presenterCreatedCallback,
             IPresenterFactory presenterFactory,
-            PresenterBindInfo binding,
-            IEnumerable<IView> viewInstances)
+            PresenterBinding binding)
         {
             IEnumerable<IView> viewsToCreateFor;
 
             switch (binding.BindingMode)
             {
                 case BindingMode.Default:
-                    viewsToCreateFor = viewInstances;
+                    viewsToCreateFor = binding.ViewInstances;
                     break;
                 case BindingMode.SharedPresenter:
                     viewsToCreateFor = new[]
                     {
-                        CreateCompositeView(binding.ViewType, viewInstances, traceContext)
+                        CreateCompositeView(binding.ViewType, binding.ViewInstances, traceContext)
                     };
                     break;
                 default:
@@ -329,7 +327,7 @@ namespace WebFormsMvp.Binder
             IMessageBus messageBus,
             Action<IPresenter> presenterCreatedCallback,
             IPresenterFactory presenterFactory,
-            PresenterBindInfo binding,
+            PresenterBinding binding,
             IView viewInstance)
         {
             traceContext.Write("WebFormsMvp", string.Format(

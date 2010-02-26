@@ -8,11 +8,10 @@ using WebFormsMvp.Binder;
 namespace WebFormsMvp.UnitTests.Binder
 {
     [TestClass]
-    public class DefaultPresenterDiscoveryStrategyTests
+    public class AttributeBasedPresenterDiscoveryStrategyTests
     {
-
         [TestMethod]
-        public void DefaultPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForIView()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForIView()
         {
             // Arrange
             var instanceType = MockRepository
@@ -20,7 +19,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 .GetType();
 
             // Act
-            var actual = DefaultPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
+            var actual = AttributeBasedPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
 
             // Assert
             var expected = new[] { typeof(IView) };
@@ -28,7 +27,7 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         [TestMethod]
-        public void DefaultPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForIViewT()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForIViewT()
         {
             // Arrange
             var instanceType = MockRepository
@@ -36,7 +35,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 .GetType();
 
             // Act
-            var actual = DefaultPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
+            var actual = AttributeBasedPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
 
             // Assert
             var expected = new[] { typeof(IView), typeof(IView<object>) };
@@ -45,7 +44,7 @@ namespace WebFormsMvp.UnitTests.Binder
 
         public interface GetViewInterfaces_CustomIView : IView { }
         [TestMethod]
-        public void DefaultPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForCustomIView()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForCustomIView()
         {
             // Arrange
             var instanceType = MockRepository
@@ -53,7 +52,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 .GetType();
 
             // Act
-            var actual = DefaultPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
+            var actual = AttributeBasedPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
 
             // Assert
             var expected = new[] { typeof(IView), typeof(GetViewInterfaces_CustomIView) };
@@ -62,7 +61,7 @@ namespace WebFormsMvp.UnitTests.Binder
 
         public interface GetViewInterfaces_CustomIViewT : IView<object> { }
         [TestMethod]
-        public void DefaultPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForCustomIViewT()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForCustomIViewT()
         {
             // Arrange
             var instanceType = MockRepository
@@ -70,7 +69,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 .GetType();
 
             // Act
-            var actual = DefaultPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
+            var actual = AttributeBasedPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
 
             // Assert
             var expected = new[] {
@@ -83,7 +82,7 @@ namespace WebFormsMvp.UnitTests.Binder
         public interface GetViewInterfaces_ChainedCustomIView
             : GetViewInterfaces_CustomIView { }
         [TestMethod]
-        public void DefaultPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForChainedCustomIView()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForChainedCustomIView()
         {
             // Arrange
             var instanceType = MockRepository
@@ -91,7 +90,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 .GetType();
 
             // Act
-            var actual = DefaultPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
+            var actual = AttributeBasedPresenterDiscoveryStrategy.GetViewInterfaces(instanceType);
 
             // Assert
             var expected = new[] {
@@ -102,7 +101,7 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         [TestMethod]
-        public void DefaultPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnAnEntryPerInstance()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnAnEntryPerInstance()
         {
             // Arrange
             var view1 = MockRepository.GenerateMock<IView>();
@@ -110,7 +109,7 @@ namespace WebFormsMvp.UnitTests.Binder
             var instanceTypes = new[] { view1, view2 };
 
             // Act
-            var actual = DefaultPresenterDiscoveryStrategy.GetViewInterfaces(instanceTypes);
+            var actual = AttributeBasedPresenterDiscoveryStrategy.GetViewInterfaces(instanceTypes);
 
             // Assert
             var expected = new Dictionary<IView, IEnumerable<Type>>
