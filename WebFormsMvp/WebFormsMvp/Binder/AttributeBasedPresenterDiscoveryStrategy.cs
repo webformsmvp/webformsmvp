@@ -18,7 +18,7 @@ namespace WebFormsMvp.Binder
                 throw new ArgumentNullException("host");
 
             hostDefinedAttributes.AddRange(
-                GetAttributes(typeToAttributeCache, host.GetType())
+                GetAttributes(typeToAttributeCache, host.GetType(), false)
             );
         }
 
@@ -38,7 +38,7 @@ namespace WebFormsMvp.Binder
                 .Select(viewInstance => new
                 {
                     ViewInstance = viewInstance,
-                    ViewDefinedBindings = GetAttributesFromView(typeToAttributeCache, viewInstance.GetType())
+                    ViewDefinedBindings = GetAttributes(typeToAttributeCache, viewInstance.GetType(), true)
                 });
 
             // Flip the view defined bindings, for example:
@@ -130,17 +130,17 @@ namespace WebFormsMvp.Binder
             return viewInterfaces;
         }
 
-        static IEnumerable<PresenterBindingAttribute> GetAttributes(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> cache, Type sourceType)
+        internal static IEnumerable<PresenterBindingAttribute> GetAttributes(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> cache, Type sourceType, bool restrictBindingMode)
         {
             var hostTypeHandle = sourceType.TypeHandle;
 
-            IEnumerable<PresenterBindingAttribute> presenterBindInfo;
-            if (cache.TryGetValue(hostTypeHandle, out presenterBindInfo))
+            IEnumerable<PresenterBindingAttribute> attributes;
+            if (cache.TryGetValue(hostTypeHandle, out attributes))
             {
-                return presenterBindInfo;
+                return attributes;
             }
 
-            presenterBindInfo = sourceType
+            attributes = sourceType
                 .GetCustomAttributes(typeof(PresenterBindingAttribute), true)
                 .OfType<PresenterBindingAttribute>()
                 .Select(pba =>
@@ -151,43 +151,24 @@ namespace WebFormsMvp.Binder
                     })
                 .ToArray();
 
-            lock (cache)
-            {
-                cache[hostTypeHandle] = presenterBindInfo;
-            }
-
-            return presenterBindInfo;
-        }
-
-        static IEnumerable<PresenterBindingAttribute> GetAttributesFromView(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> cache, Type viewType)
-        {
-            var viewTypeHandle = viewType.TypeHandle;
-
-            IEnumerable<PresenterBindingAttribute> presenterBindingAttributes;
-            if (cache.TryGetValue(viewTypeHandle, out presenterBindingAttributes))
-            {
-                return presenterBindingAttributes;
-            }
-
-            presenterBindingAttributes = GetAttributes(cache, viewType);
-
-            if (presenterBindingAttributes.Any(pbi => pbi.BindingMode != BindingMode.Default))
+            if (restrictBindingMode &&
+                attributes.Any(a => a.BindingMode != BindingMode.Default))
             {
                 throw new NotSupportedException(string.Format(
                     CultureInfo.InvariantCulture,
                     "When a {1} is applied directly to the view type, only the default binding mode is supported. One of the bindings on {0} violates this restriction. To use an alternative binding mode, such as {2}, apply the {1} to one of the hosts instead (such as the page, or master page).",
-                    viewType.FullName,
+                    sourceType.FullName,
                     typeof(PresenterBindingAttribute).FullName,
                     Enum.GetName(typeof(BindingMode), BindingMode.SharedPresenter)
-                    ));
+                ));
             }
 
             lock (cache)
             {
-                cache[viewTypeHandle] = presenterBindingAttributes;
+                cache[hostTypeHandle] = attributes;
             }
 
-            return presenterBindingAttributes;
+            return attributes;
         }
     }
 }
