@@ -11,6 +11,44 @@ namespace WebFormsMvp.UnitTests.Binder
     public class AttributeBasedPresenterDiscoveryStrategyTests
     {
         [TestMethod]
+        public void AttributeBasedPresenterDiscoveryStrategy_AddHost_ShouldGuardNullHost()
+        {
+            // Arrange
+            var strategy = new AttributeBasedPresenterDiscoveryStrategy();
+
+            try
+            {
+                // Act
+                strategy.AddHost(null);
+
+                // Assert
+                Assert.Fail("Expected exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+            }
+        }
+
+        [TestMethod]
+        public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_ShouldGuardNullViewInstances()
+        {
+            // Arrange
+            var strategy = new AttributeBasedPresenterDiscoveryStrategy();
+
+            try
+            {
+                // Act
+                strategy.GetBindings(null);
+
+                // Assert
+                Assert.Fail("Expected exception not thrown");
+            }
+            catch (ArgumentNullException)
+            {
+            }
+        }
+
+        [TestMethod]
         public void AttributeBasedPresenterDiscoveryStrategy_GetViewInterfaces_ShouldReturnForIView()
         {
             // Arrange
