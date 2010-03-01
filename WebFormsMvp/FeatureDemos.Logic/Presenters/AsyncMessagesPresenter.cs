@@ -1,13 +1,13 @@
 ﻿using System;
-using WebFormsMvp.FeatureDemos.Logic.Views;
 using System.Threading;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 {
     public class AsyncMessagesPresenter
-        : Presenter<IAsyncMessagesView>
+        : Presenter<IView<AsyncMessagesModel>>
     {
-        public AsyncMessagesPresenter(IAsyncMessagesView view)
+        public AsyncMessagesPresenter(IView<AsyncMessagesModel> view)
             : base(view)
         {
             View.Load += View_Load;

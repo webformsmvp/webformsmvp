@@ -91,7 +91,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Views\IAsyncMessagesView.cs" />
     <Compile Include="Views\IDynamicallyLoadedView.cs" />
     <Compile Include="Views\IEditWidgetView.cs" />
     <Compile Include="Views\ILookupWidgetView.cs" />

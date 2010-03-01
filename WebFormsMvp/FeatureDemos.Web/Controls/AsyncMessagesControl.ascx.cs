@@ -1,16 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using WebFormsMvp.Web;
+﻿using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
-using WebFormsMvp.FeatureDemos.Logic.Views;
+using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web.Controls
 {
-    public partial class AsyncMessagesControl : MvpUserControl<AsyncMessagesModel>, IAsyncMessagesView
-    {
-        
+    [PresenterBinding(typeof(AsyncMessagesPresenter))]
+    public partial class AsyncMessagesControl : MvpUserControl<AsyncMessagesModel>
+    {        
     }
 }
