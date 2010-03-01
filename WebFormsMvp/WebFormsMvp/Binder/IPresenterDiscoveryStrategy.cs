@@ -4,7 +4,6 @@ namespace WebFormsMvp.Binder
 {
     internal interface IPresenterDiscoveryStrategy
     {
-        void AddHost(object host);
-        IEnumerable<PresenterBinding> GetBindings(IEnumerable<IView> viewInstances);
+        IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances);
     }
 }

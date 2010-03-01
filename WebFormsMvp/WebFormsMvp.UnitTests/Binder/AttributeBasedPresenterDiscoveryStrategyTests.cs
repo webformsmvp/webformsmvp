@@ -11,7 +11,7 @@ namespace WebFormsMvp.UnitTests.Binder
     public class AttributeBasedPresenterDiscoveryStrategyTests
     {
         [TestMethod]
-        public void AttributeBasedPresenterDiscoveryStrategy_AddHost_ShouldGuardNullHost()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_ShouldGuardNullHosts()
         {
             // Arrange
             var strategy = new AttributeBasedPresenterDiscoveryStrategy();
@@ -19,13 +19,15 @@ namespace WebFormsMvp.UnitTests.Binder
             try
             {
                 // Act
-                strategy.AddHost(null);
+                strategy.GetBindings(null, new IView[0]);
 
                 // Assert
                 Assert.Fail("Expected exception not thrown");
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException ex)
             {
+                // Assert
+                Assert.AreEqual("hosts", ex.ParamName);
             }
         }
 
@@ -38,13 +40,15 @@ namespace WebFormsMvp.UnitTests.Binder
             try
             {
                 // Act
-                strategy.GetBindings(null);
+                strategy.GetBindings(new object[0], null);
 
                 // Assert
                 Assert.Fail("Expected exception not thrown");
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException ex)
             {
+                // Assert
+                Assert.AreEqual("viewInstances", ex.ParamName);
             }
         }
 

@@ -10,22 +10,16 @@ namespace WebFormsMvp.Binder
         static readonly IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> typeToAttributeCache
             = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
 
-        readonly IList<PresenterBindingAttribute> hostDefinedAttributes = new List<PresenterBindingAttribute>();
-
-        public void AddHost(object host)
+        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
-            if (host == null)
-                throw new ArgumentNullException("host");
-
-            hostDefinedAttributes.AddRange(
-                GetAttributes(typeToAttributeCache, host.GetType(), false)
-            );
-        }
-
-        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<IView> viewInstances)
-        {
+            if (hosts == null)
+                throw new ArgumentNullException("hosts");
+            
             if (viewInstances == null)
                 throw new ArgumentNullException("viewInstances");
+
+            var hostDefinedAttributes = hosts
+                .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType(), false));
 
             var instancesToInterfaces = GetViewInterfaces(
                 viewInstances);

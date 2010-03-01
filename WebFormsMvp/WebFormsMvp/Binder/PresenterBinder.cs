@@ -44,6 +44,28 @@ namespace WebFormsMvp.Binder
             }
         }
 
+        static IPresenterDiscoveryStrategy discoveryStrategy;
+        ///<summary>
+        /// Gets or sets the strategy that the binder will use to discover which presenters should be bound to which views.
+        /// This is pre-initialized to a default implementation but can be overriden if desired.
+        ///</summary>
+        ///<exception cref="ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
+        internal static IPresenterDiscoveryStrategy DiscoveryStrategy
+        {
+            get
+            {
+                return discoveryStrategy ?? (discoveryStrategy = new AttributeBasedPresenterDiscoveryStrategy());
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+                discoveryStrategy = value;
+            }
+        }
+
         static IHttpContextAdapterFactory httpContextAdapterFactory;
         ///<summary>
         /// Gets or sets the factory that the binder will use to build adapters for concrete <see cref="HttpContext"/> instances.
@@ -70,8 +92,8 @@ namespace WebFormsMvp.Binder
 
         readonly HttpContextBase httpContext;
         readonly ITraceContext traceContext;
-        readonly IPresenterDiscoveryStrategy discoveryStrategy;
         readonly IMessageCoordinator messageCoordinator = new MessageCoordinator();
+        readonly IEnumerable<object> hosts;
         readonly IList<IView> viewInstancesRequiringBinding = new List<IView>();
         readonly IList<IPresenter> presenters = new List<IPresenter>();
         bool initialBindingHasBeenPerformed;
@@ -122,9 +144,7 @@ namespace WebFormsMvp.Binder
                 hosts.Count(),
                 string.Join(", ", hosts.Select(h => h.GetType().FullName).ToArray())));
 
-            discoveryStrategy = new AttributeBasedPresenterDiscoveryStrategy();
-            foreach(var host in hosts)
-                discoveryStrategy.AddHost(host);
+            this.hosts = hosts.ToList();
 
             foreach (var selfHostedView in hosts.OfType<IView>())
             {
@@ -180,8 +200,9 @@ namespace WebFormsMvp.Binder
                 if (viewInstancesRequiringBinding.Any())
                 {
                     var newPresenters = PerformBinding(
+                        hosts,
                         viewInstancesRequiringBinding.Distinct(),
-                        discoveryStrategy,
+                        DiscoveryStrategy,
                         httpContext,
                         traceContext,
                         messageCoordinator,
@@ -240,8 +261,9 @@ namespace WebFormsMvp.Binder
         }
 
         static IEnumerable<IPresenter> PerformBinding(
+            IEnumerable<object> hosts,
             IEnumerable<IView> candidates,
-            IPresenterDiscoveryStrategy discoveryStrategy,
+            IPresenterDiscoveryStrategy presenterDiscoveryStrategy,
             HttpContextBase httpContext,
             ITraceContext traceContext,
             IMessageBus messageBus,
@@ -250,7 +272,7 @@ namespace WebFormsMvp.Binder
         {
             traceContext.Write("WebFormsMvp", "Performing binding.");
 
-            var bindings = discoveryStrategy.GetBindings(candidates);
+            var bindings = presenterDiscoveryStrategy.GetBindings(hosts, candidates);
 
             var newPresenters = BuildPresenters(
                 httpContext,
