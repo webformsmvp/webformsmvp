@@ -1,5 +1,4 @@
-﻿using System;
-using WebFormsMvp.Web;
+﻿using WebFormsMvp.Web;
 using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 

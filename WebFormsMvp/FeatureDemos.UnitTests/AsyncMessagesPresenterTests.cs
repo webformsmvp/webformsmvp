@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using Rhino.Mocks;
-using WebFormsMvp.FeatureDemos.Logic.Views;
+using WebFormsMvp.FeatureDemos.Logic.Presenters;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 using WebFormsMvp.Testing;
 
 namespace WebFormsMvp.FeatureDemos.UnitTests
@@ -12,10 +12,10 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
     public class AsyncMessagesPresenterTests
     {
         [TestMethod]
-        public void AsyncMessagesPresenterAddsMessagesToViewOnLoad()
+        public void AsyncMessagesPresenter_Load_AddsMessagesToView()
         {
             // Arrange
-            var view = MockRepository.GenerateStub<IAsyncMessagesView>();
+            var view = MockRepository.GenerateStub<IView<AsyncMessagesModel>>();
             var asyncManager = new TestAsyncTaskManager();
 
             var presenter = new AsyncMessagesPresenter(view)
