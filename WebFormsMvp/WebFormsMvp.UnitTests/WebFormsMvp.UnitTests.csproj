@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\CompositePresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultCompositeViewTypeFactoryTests.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultPresenterFactoryTests.cs" />

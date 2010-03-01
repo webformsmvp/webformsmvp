@@ -47,14 +47,17 @@ namespace WebFormsMvp.Binder
         static IPresenterDiscoveryStrategy discoveryStrategy;
         ///<summary>
         /// Gets or sets the strategy that the binder will use to discover which presenters should be bound to which views.
-        /// This is pre-initialized to a default implementation but can be overriden if desired.
+        /// This is pre-initialized to a default implementation but can be overriden if desired. To combine multiple
+        /// strategies in a fallthrough approach, use <see cref="CompositePresenterDiscoveryStrategy"/>.
         ///</summary>
         ///<exception cref="ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
         internal static IPresenterDiscoveryStrategy DiscoveryStrategy
         {
             get
             {
-                return discoveryStrategy ?? (discoveryStrategy = new AttributeBasedPresenterDiscoveryStrategy());
+                return discoveryStrategy ?? (discoveryStrategy = new CompositePresenterDiscoveryStrategy(
+                    new AttributeBasedPresenterDiscoveryStrategy()
+                ));
             }
             set
             {

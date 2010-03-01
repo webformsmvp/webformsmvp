@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\CompositePresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\DefaultCompositeViewTypeFactory.cs" />
     <Compile Include="Binder\DefaultHttpContextAdapterFactory.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategy.cs" />
