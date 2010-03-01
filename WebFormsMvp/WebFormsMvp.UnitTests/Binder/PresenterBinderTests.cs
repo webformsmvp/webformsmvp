@@ -117,6 +117,46 @@ namespace WebFormsMvp.UnitTests.Binder
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        public void PresenterBinder_DiscoveryStrategy_ThrowsArgumentNullException()
+        {
+            TestContext.Isolate(() =>
+            {
+                // Act
+                PresenterBinder.DiscoveryStrategy = null;
+            });
+        }
+
+        [TestMethod]
+        public void PresenterBinder_DiscoveryStrategy_ReturnsDefaultCompositeWhenNoneIsSet()
+        {
+            TestContext.Isolate(() =>
+            {
+                // Act
+                var strategyType = PresenterBinder.DiscoveryStrategy.GetType();
+
+                // Assert
+                Assert.AreEqual(strategyType, typeof(CompositePresenterDiscoveryStrategy));
+            });
+        }
+
+        [TestMethod]
+        public void PresenterBinder_DiscoveryStrategy_CanBeReplacedWithCustom()
+        {
+            TestContext.Isolate(() =>
+            {
+                // Arrange
+                var customStrategy = MockRepository.GenerateMock<IPresenterDiscoveryStrategy>();
+
+                // Act
+                PresenterBinder.DiscoveryStrategy = customStrategy;
+
+                // Assert
+                Assert.AreEqual(customStrategy, PresenterBinder.DiscoveryStrategy);
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void PresenterBinder_HttpContextAdapterFactory_ThrowsArgumentNullException()
         {
             TestContext.Isolate(() =>
