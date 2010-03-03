@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Globalization;
+using WebFormsMvp.Web;
 
 namespace WebFormsMvp.Binder
 {
@@ -57,7 +58,7 @@ namespace WebFormsMvp.Binder
             {
                 return discoveryStrategy ?? (discoveryStrategy = new CompositePresenterDiscoveryStrategy(
                     new AttributeBasedPresenterDiscoveryStrategy(),
-                    new ConventionBasedPresenterDiscoveryStrategy()
+                    new ConventionBasedPresenterDiscoveryStrategy(new BuildManagerWrapper())
                 ));
             }
             set
