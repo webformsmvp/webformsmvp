@@ -15,11 +15,12 @@ namespace WebFormsMvp.UnitTests.Binder
         {
             // Arrange
             var strategy = new AttributeBasedPresenterDiscoveryStrategy();
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
 
             try
             {
                 // Act
-                strategy.GetBindings(null, new IView[0]);
+                strategy.GetBindings(null, new IView[0], traceContext);
 
                 // Assert
                 Assert.Fail("Expected exception not thrown");
@@ -36,11 +37,12 @@ namespace WebFormsMvp.UnitTests.Binder
         {
             // Arrange
             var strategy = new AttributeBasedPresenterDiscoveryStrategy();
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
 
             try
             {
                 // Act
-                strategy.GetBindings(new object[0], null);
+                strategy.GetBindings(new object[0], null, traceContext);
 
                 // Assert
                 Assert.Fail("Expected exception not thrown");

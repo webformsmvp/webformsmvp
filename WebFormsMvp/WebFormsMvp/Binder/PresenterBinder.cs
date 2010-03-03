@@ -56,7 +56,8 @@ namespace WebFormsMvp.Binder
             get
             {
                 return discoveryStrategy ?? (discoveryStrategy = new CompositePresenterDiscoveryStrategy(
-                    new AttributeBasedPresenterDiscoveryStrategy()
+                    new AttributeBasedPresenterDiscoveryStrategy(),
+                    new ConventionBasedPresenterDiscoveryStrategy()
                 ));
             }
             set
@@ -273,9 +274,27 @@ namespace WebFormsMvp.Binder
             Action<IPresenter> presenterCreatedCallback,
             IPresenterFactory presenterFactory)
         {
-            traceContext.Write("WebFormsMvp", "Performing binding.");
+            traceContext.Write("WebFormsMvp", string.Format(
+                CultureInfo.InvariantCulture,
+                "Getting presenter bindings for {0} view instances ({1}) using {2}.",
+                candidates.Count(),
+                string.Join(", ", candidates.Select(v => v.GetType().FullName).ToArray()),
+                presenterDiscoveryStrategy.GetType().FullName
+            ));
 
-            var bindings = presenterDiscoveryStrategy.GetBindings(hosts, candidates);
+            var bindings = presenterDiscoveryStrategy.GetBindings(hosts, candidates, traceContext);
+
+            var viewsBound = bindings
+                .SelectMany(b => b.ViewInstances)
+                .Distinct();
+            traceContext.Write("WebFormsMvp", string.Format(
+                CultureInfo.InvariantCulture,
+                "Retrieved {0} presenter bindings for {1} view instances ({2}) using {3}.",
+                bindings.Count(),
+                viewsBound.Count(),
+                string.Join(", ", viewsBound.Select(v => v.GetType().FullName).ToArray()),
+                presenterDiscoveryStrategy.GetType().FullName
+            ));
 
             var newPresenters = BuildPresenters(
                 httpContext,

@@ -52,6 +52,7 @@ namespace WebFormsMvp.UnitTests.Binder
         {
             // Arrange
             var strategy = MockRepository.GenerateMock<IPresenterDiscoveryStrategy>();
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
             var composite = new CompositePresenterDiscoveryStrategy(strategy);
             var hosts = new object[0];
             var viewInstances = new[]
@@ -61,11 +62,11 @@ namespace WebFormsMvp.UnitTests.Binder
 
             var binding1 = TestBinding();
             strategy.Stub(s => s
-                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything))
+                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything, Arg<ITraceContext>.Is.Equal(traceContext)))
                 .Return(new[] { binding1 });
 
             // Act
-            var bindings = composite.GetBindings(hosts, viewInstances);
+            var bindings = composite.GetBindings(hosts, viewInstances, traceContext);
             
             // Assert
             CollectionAssert.AreEqual(
@@ -78,6 +79,8 @@ namespace WebFormsMvp.UnitTests.Binder
         public void CompositePresenterDiscoveryStrategyTests_GetBindings_ShouldNotPassMatchedViewsToSubsequentStrategies()
         {
             // Arrange
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
+
             var hosts = new object[0];
 
             var view1 = MockRepository.GenerateMock<IView>();
@@ -88,23 +91,23 @@ namespace WebFormsMvp.UnitTests.Binder
             var strategy1 = MockRepository.GenerateMock<IPresenterDiscoveryStrategy>();
             var binding1 = TestBinding(view1, view2);
             strategy1.Stub(s => s
-                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything))
+                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything, Arg<ITraceContext>.Is.Equal(traceContext)))
                 .Return(new[] { binding1 });
 
             var strategy2 = MockRepository.GenerateMock<IPresenterDiscoveryStrategy>();
             strategy2.Stub(s => s
-                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything))
+                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything, Arg<ITraceContext>.Is.Equal(traceContext)))
                 .Return(new PresenterBinding[0]);
 
             var composite = new CompositePresenterDiscoveryStrategy(strategy1, strategy2);
 
             // Act
-            composite.GetBindings(hosts, viewInstances).ToArray();
+            composite.GetBindings(hosts, viewInstances, traceContext).ToArray();
 
             // Assert
             var strategy2ViewInstances = (IEnumerable<IView>)strategy2
                 .GetArgumentsForCallsMadeOn(s => s
-                    .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything))
+                    .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything, Arg<ITraceContext>.Is.Equal(traceContext)))
                 .Single()
                 .ElementAt(1);
             CollectionAssert.AreEqual(new[] { view3 }, strategy2ViewInstances.ToArray());
@@ -114,6 +117,8 @@ namespace WebFormsMvp.UnitTests.Binder
         public void CompositePresenterDiscoveryStrategyTests_GetBindings_ShouldFallThroughChildStrategiesInOrder()
         {
             // Arrange
+            var traceContext = MockRepository.GenerateMock<ITraceContext>();
+
             var hosts = new object[0];
 
             var view1 = MockRepository.GenerateMock<IView>();
@@ -124,13 +129,13 @@ namespace WebFormsMvp.UnitTests.Binder
             var strategy1 = MockRepository.GenerateMock<IPresenterDiscoveryStrategy>();
             var binding1 = TestBinding(view1);
             strategy1.Stub(s => s
-                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything))
+                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything, Arg<ITraceContext>.Is.Equal(traceContext)))
                 .Return(new[] { binding1 });
 
             var strategy2 = MockRepository.GenerateMock<IPresenterDiscoveryStrategy>();
             var binding2 = TestBinding(view2, view3);
             strategy2.Stub(s => s
-                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything))
+                .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything, Arg<ITraceContext>.Is.Equal(traceContext)))
                 .Return(new[] { binding2 });
 
             var strategy3 = MockRepository.GenerateMock<IPresenterDiscoveryStrategy>();
@@ -138,7 +143,7 @@ namespace WebFormsMvp.UnitTests.Binder
             var composite = new CompositePresenterDiscoveryStrategy(strategy1, strategy2, strategy3);
 
             // Act
-            var bindings = composite.GetBindings(hosts, viewInstances);
+            var bindings = composite.GetBindings(hosts, viewInstances, traceContext);
 
             // Assert
             CollectionAssert.AreEqual(new[] { binding1, binding2 }, bindings.ToArray());

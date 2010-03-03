@@ -10,7 +10,7 @@ namespace WebFormsMvp.Binder
         static readonly IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> typeToAttributeCache
             = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
 
-        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
+        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances, ITraceContext traceContext)
         {
             if (hosts == null)
                 throw new ArgumentNullException("hosts");

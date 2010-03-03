@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace WebFormsMvp.Binder
@@ -26,26 +27,59 @@ namespace WebFormsMvp.Binder
                 throw new ArgumentException("You must supply at least one strategy.", "strategies");
         }
 
-        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
+        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances, ITraceContext traceContext)
         {
+            if (traceContext == null)
+                throw new ArgumentNullException("traceContext");
+
+            var bindings = new List<PresenterBinding>();
+
             var pendingViewInstances = viewInstances;
             foreach (var strategy in strategies)
             {
                 if (!pendingViewInstances.Any())
-                    yield break;
+                    break;
 
-                var bindings = strategy.GetBindings(hosts, pendingViewInstances);
+                traceContext.Write("WebFormsMvp", string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Getting presenter bindings for {0} view instances ({1}) using {2}.",
+                    pendingViewInstances.Count(),
+                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray()),
+                    strategy.GetType().FullName
+                ));
 
-                foreach (var binding in bindings)
-                    yield return binding;
+                var bindingsThisRound = strategy.GetBindings(hosts, pendingViewInstances, traceContext);
 
-                var viewsBoundThisRound = bindings
+                bindings.AddRange(bindingsThisRound);
+
+                var viewsBoundThisRound = bindingsThisRound
                     .SelectMany(b => b.ViewInstances)
                     .Distinct();
+
+                traceContext.Write("WebFormsMvp", string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Retrieved {0} presenter bindings for {1} view instances ({2}) using {3}.",
+                    bindingsThisRound.Count(),
+                    viewsBoundThisRound.Count(),
+                    string.Join(", ", viewsBoundThisRound.Select(v => v.GetType().FullName).ToArray()),
+                    strategy.GetType().FullName
+                ));
                 
                 pendingViewInstances = pendingViewInstances
                     .Except(viewsBoundThisRound);
             }
+
+            if (pendingViewInstances.Any())
+            {
+                traceContext.Write("WebFormsMvp", string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Presenter bindings were not found for {0} view instances ({1}).",
+                    pendingViewInstances.Count(),
+                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray())
+                ));
+            }
+
+            return bindings;
         }
     }
 }
