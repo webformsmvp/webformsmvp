@@ -142,7 +142,7 @@ namespace WebFormsMvp.Binder
             this.httpContext = httpContext;
             this.traceContext = traceContext;
 
-            traceContext.Write("WebFormsMvp", string.Format(
+            traceContext.Write(this, () => string.Format(
                 CultureInfo.InvariantCulture,
                 "Initializing presenter binder for {0} hosts: {1}",
                 hosts.Count(),
@@ -178,7 +178,7 @@ namespace WebFormsMvp.Binder
         {
             if (viewInstance == null) throw new ArgumentNullException("viewInstance");
 
-            traceContext.Write("WebFormsMvp", string.Format(
+            traceContext.Write(this, () => string.Format(
                 CultureInfo.InvariantCulture,
                 "Registering view instance of type {0}.",
                 viewInstance.GetType().FullName));
@@ -231,21 +231,21 @@ namespace WebFormsMvp.Binder
         /// </summary>
         public void Release()
         {
-            traceContext.Write("WebFormsMvp", "Releasing presenter binder.");
+            traceContext.Write(this, () => "Releasing presenter binder.");
 
             MessageCoordinator.Close();
             lock (presenters)
             {
                 foreach (var presenter in presenters)
                 {
-                    traceContext.Write("WebFormsMvp", string.Format(
+                    traceContext.Write(this, () => string.Format(
                         CultureInfo.InvariantCulture,
                         "Calling ReleaseView on presenter of type {0}.",
                         presenter.GetType().FullName));
                     
                     presenter.ReleaseView();
 
-                    traceContext.Write("WebFormsMvp", string.Format(
+                    traceContext.Write(this, () => string.Format(
                         CultureInfo.InvariantCulture,
                         "Releasing presenter of type {0} back to the presenter factory.",
                         presenter.GetType().FullName));
@@ -274,27 +274,51 @@ namespace WebFormsMvp.Binder
             Action<IPresenter> presenterCreatedCallback,
             IPresenterFactory presenterFactory)
         {
-            traceContext.Write("WebFormsMvp", string.Format(
+            traceContext.Write(typeof(PresenterBinder), () => string.Format(
                 CultureInfo.InvariantCulture,
-                "Getting presenter bindings for {0} view instances ({1}) using {2}.",
+                "Finding presenter bindings using {0} for {1} view {2}: {3}",
+                presenterDiscoveryStrategy.GetType().Name,
                 candidates.Count(),
-                string.Join(", ", candidates.Select(v => v.GetType().FullName).ToArray()),
-                presenterDiscoveryStrategy.GetType().FullName
+                candidates.Count() == 1 ? "instance" : "instances",
+                string.Join(", ", candidates.Select(v => v.GetType().FullName).ToArray())
             ));
 
             var bindings = presenterDiscoveryStrategy.GetBindings(hosts, candidates, traceContext);
 
-            var viewsBound = bindings
-                .SelectMany(b => b.ViewInstances)
-                .Distinct();
-            traceContext.Write("WebFormsMvp", string.Format(
-                CultureInfo.InvariantCulture,
-                "Retrieved {0} presenter bindings for {1} view instances ({2}) using {3}.",
-                bindings.Count(),
-                viewsBound.Count(),
-                string.Join(", ", viewsBound.Select(v => v.GetType().FullName).ToArray()),
-                presenterDiscoveryStrategy.GetType().FullName
-            ));
+            traceContext.Write(typeof(PresenterBinder), () =>
+            {
+                var boundViews = bindings
+                    .SelectMany(b => b.ViewInstances)
+                    .Distinct();
+                return string.Format(
+                    CultureInfo.InvariantCulture,
+                    boundViews.Any()
+                        ? "Found {0} presenter bindings using {1} for {2} view {3}: {4}"
+                        : "Found 0 presenter bindings using {1}.",
+                    boundViews.Count(),
+                    presenterDiscoveryStrategy.GetType().Name,
+                    boundViews.Count(),
+                    boundViews.Count() == 1 ? "instance" : "instances",
+                    string.Join(", ", boundViews.Select(v => v.GetType().FullName).ToArray())
+                );
+            });
+
+            traceContext.Write(typeof(PresenterBinder), () =>
+            {
+                var boundViews = bindings
+                    .SelectMany(b => b.ViewInstances)
+                    .Distinct();
+                var pendingViewInstances = candidates
+                    .Except(boundViews);
+                return pendingViewInstances.Any()
+                    ? string.Format(
+                        CultureInfo.InvariantCulture,
+                        "WARNING: Presenter bindings were not found for {0} view {1}: {2}",
+                        pendingViewInstances.Count(),
+                        pendingViewInstances.Count() == 1 ? "instance" : "instances",
+                        string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray()))
+                    : null;
+            });
 
             var newPresenters = BuildPresenters(
                 httpContext,
@@ -374,7 +398,7 @@ namespace WebFormsMvp.Binder
             PresenterBinding binding,
             IView viewInstance)
         {
-            traceContext.Write("WebFormsMvp", string.Format(
+            traceContext.Write(typeof(PresenterBinder), () => string.Format(
                 CultureInfo.InvariantCulture,
                 "Creating presenter of type {0} for view of type {1}. (The actual view instance is of type {2}.)",
                 binding.PresenterType.FullName,
@@ -393,7 +417,7 @@ namespace WebFormsMvp.Binder
 
         internal static IView CreateCompositeView(Type viewType, IEnumerable<IView> childViews, ITraceContext traceContext)
         {
-            traceContext.Write("WebFormsMvp", string.Format(
+            traceContext.Write(typeof(PresenterBinder), () => string.Format(
                 CultureInfo.InvariantCulture,
                 "Creating composite view for type {0} based on {1} child views: {2}",
                 viewType.GetType().FullName,

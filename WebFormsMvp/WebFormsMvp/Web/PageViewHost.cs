@@ -29,9 +29,11 @@ namespace WebFormsMvp.Web
             if (httpContext == null)
                 throw new ArgumentNullException("httpContext");
 
-            httpContext.Trace.Write("WebFormsMvp", "Creating new PageViewHost instance.");
+            var traceContext = new TraceContextAdapter(httpContext.Trace);
+
+            traceContext.Write(this, () => "Creating new PageViewHost instance.");
             
-            var hosts = FindHosts(page, httpContext.Trace).ToArray();
+            var hosts = FindHosts(page, traceContext).ToArray();
 
             presenterBinder = new PresenterBinder(hosts, httpContext);
 
@@ -39,8 +41,8 @@ namespace WebFormsMvp.Web
             presenterBinder.PresenterCreated += (sender, args) =>
             {
                 var presenter = args.Presenter;
-                
-                httpContext.Trace.Write("WebFormsMvp", string.Format(
+
+                traceContext.Write(this, () => string.Format(
                     CultureInfo.InvariantCulture,
                     "Setting AsyncManager on presenter of type {0}.",
                     presenter.GetType().FullName));
@@ -48,13 +50,13 @@ namespace WebFormsMvp.Web
                 presenter.AsyncManager = asyncManager;
             };
 
-            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to Page.InitComplete event.");
+            traceContext.Write(this, () => "Subscribing PageViewHost to Page.InitComplete event.");
             page.InitComplete += Page_InitComplete;
-            
-            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to Page.PreRenderComplete event.");
+
+            traceContext.Write(this, () => "Subscribing PageViewHost to Page.PreRenderComplete event.");
             page.PreRenderComplete += Page_PreRenderComplete;
 
-            httpContext.Trace.Write("WebFormsMvp", "Subscribing PageViewHost to Page.Unload event.");
+            traceContext.Write(this, () => "Subscribing PageViewHost to Page.Unload event.");
             page.Unload += Page_Unload;
         }
 
@@ -78,9 +80,9 @@ namespace WebFormsMvp.Web
             presenterBinder.Release();
         }
 
-        internal static IEnumerable<object> FindHosts(Page page, TraceContext traceContext)
+        internal static IEnumerable<object> FindHosts(Page page, ITraceContext traceContext)
         {
-            traceContext.Write("WebFormsMvp", "Finding hosts (pages and master pages).");
+            traceContext.Write(typeof(PageViewHost), () => "Finding hosts (pages and master pages).");
 
             yield return page;
 
@@ -93,9 +95,9 @@ namespace WebFormsMvp.Web
         }
 
         readonly static string viewHostCacheKey = typeof(PageViewHost).FullName + ".PageContextKey";
-        internal static PageViewHost FindViewHost(Control control, HttpContext httpContext)
+        internal static PageViewHost FindViewHost(Control control, HttpContext httpContext, ITraceContext traceContext)
         {
-            httpContext.Trace.Write("WebFormsMvp", "Finding PageViewHost instance.");
+            traceContext.Write(typeof(PageViewHost), () => "Finding PageViewHost instance.");
 
             var pageContext = control.Page.Items;
 
@@ -126,7 +128,12 @@ namespace WebFormsMvp.Web
             if (control.Page == null)
                 throw new InvalidOperationException("Controls can only be registered once they have been added to the live control tree. The best place to register them is within the control's Init event.");
 
-            var viewHost = FindViewHost(control, httpContext);
+            if (httpContext == null)
+                throw new ArgumentNullException("httpContext");
+
+            var traceContext = new TraceContextAdapter(httpContext.Trace);
+
+            var viewHost = FindViewHost(control, httpContext, traceContext);
             viewHost.RegisterView(control);
         }
     }

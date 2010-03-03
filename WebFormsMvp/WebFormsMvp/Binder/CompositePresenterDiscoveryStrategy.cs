@@ -40,12 +40,13 @@ namespace WebFormsMvp.Binder
                 if (!pendingViewInstances.Any())
                     break;
 
-                traceContext.Write("WebFormsMvp", string.Format(
+                traceContext.Write(this, () => string.Format(
                     CultureInfo.InvariantCulture,
-                    "Getting presenter bindings for {0} view instances ({1}) using {2}.",
+                    "Finding presenter bindings using {0} for {1} view {2}: {3}",
+                    strategy.GetType().Name,
                     pendingViewInstances.Count(),
-                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray()),
-                    strategy.GetType().FullName
+                    pendingViewInstances.Count() == 1 ? "instance" : "instances",
+                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray())
                 ));
 
                 var bindingsThisRound = strategy.GetBindings(hosts, pendingViewInstances, traceContext);
@@ -56,27 +57,20 @@ namespace WebFormsMvp.Binder
                     .SelectMany(b => b.ViewInstances)
                     .Distinct();
 
-                traceContext.Write("WebFormsMvp", string.Format(
+                traceContext.Write(this, () => string.Format(
                     CultureInfo.InvariantCulture,
-                    "Retrieved {0} presenter bindings for {1} view instances ({2}) using {3}.",
+                    bindingsThisRound.Any()
+                        ? "Found {0} presenter bindings using {1} for {2} view {3}: {4}"
+                        : "Found 0 presenter bindings using {1}.",
                     bindingsThisRound.Count(),
+                    strategy.GetType().Name,
                     viewsBoundThisRound.Count(),
-                    string.Join(", ", viewsBoundThisRound.Select(v => v.GetType().FullName).ToArray()),
-                    strategy.GetType().FullName
+                    viewsBoundThisRound.Count() == 1 ? "instance" : "instances",
+                    string.Join(", ", viewsBoundThisRound.Select(v => v.GetType().FullName).ToArray())
                 ));
                 
                 pendingViewInstances = pendingViewInstances
                     .Except(viewsBoundThisRound);
-            }
-
-            if (pendingViewInstances.Any())
-            {
-                traceContext.Write("WebFormsMvp", string.Format(
-                    CultureInfo.InvariantCulture,
-                    "Presenter bindings were not found for {0} view instances ({1}).",
-                    pendingViewInstances.Count(),
-                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray())
-                ));
             }
 
             return bindings;
