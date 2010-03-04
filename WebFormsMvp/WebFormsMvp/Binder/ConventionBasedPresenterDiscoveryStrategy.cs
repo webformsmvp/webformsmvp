@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
-using System.Web.Services;
+using System.Web.UI;
 
 namespace WebFormsMvp.Binder
 {
     /// <summary />
     public class ConventionBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
-        static readonly IDictionary<RuntimeTypeHandle, Type> viewTypeToPresenterTypeCache
-            = new Dictionary<RuntimeTypeHandle, Type>();
-
         readonly IBuildManager buildManager;
 
         ///<summary>
@@ -62,7 +58,7 @@ namespace WebFormsMvp.Binder
             get { return defaultViewInstanceSuffixes; }
         }
 
-        // The order of these format strings is kind of important as we yield return to facilitate short circuiting
+        // The order of these format strings is important as we yield return to facilitate short circuiting
         // the enumerator as soon as we find a matching type name. The list should be ordered such that the most
         // commonly used naming pattern is at the top and the least used at the bottom.
         static readonly IEnumerable<string> defaultCandidatePresenterTypeFullNameFormats =
@@ -81,24 +77,24 @@ namespace WebFormsMvp.Binder
             get { return defaultCandidatePresenterTypeFullNameFormats; }
         }
 
+        static readonly IDictionary<RuntimeTypeHandle, Type> viewTypeToPresenterTypeCache = new Dictionary<RuntimeTypeHandle, Type>();
         internal static PresenterBinding GetBinding(IView viewInstance, IBuildManager buildManager, IEnumerable<string> viewInstanceSuffixes, IEnumerable<string> presenterTypeFullNameFormats, ITraceContext traceContext)
         {
             var viewType = viewInstance.GetType();
-            if (!typeof(IHttpHandler).IsAssignableFrom(viewType) && !typeof(WebService).IsAssignableFrom(viewType))
+
+            var cachedPresenterType = viewTypeToPresenterTypeCache.GetOrCreateValue(viewType.TypeHandle, () =>
             {
+                viewType = viewInstance.GetType();
+                var presenterType = default(Type);
+
                 // Use the base type for pages & user controls as that is the code-behind file
                 // TODO: Ensure using BaseType still works in WebSite projects with code-beside files instead of code-behind files
-                viewType = viewType.BaseType;
-            }
-            Type presenterType = null;
+                if (viewType.Namespace == "ASP" &&
+                    (typeof(Page).IsAssignableFrom(viewType) || typeof(Control).IsAssignableFrom(viewType)))
+                {
+                    viewType = viewType.BaseType;
+                }
 
-            if (viewTypeToPresenterTypeCache.ContainsKey(viewType.TypeHandle))
-            {
-                // Get presenter type from cache
-                presenterType = viewTypeToPresenterTypeCache[viewType.TypeHandle];
-            }
-            else
-            {
                 // Get presenter type name from view instance type name
                 var presenterTypeNames = new List<string> { GetPresenterTypeNameFromViewTypeName(viewType, viewInstanceSuffixes) };
 
@@ -112,7 +108,7 @@ namespace WebFormsMvp.Binder
                 foreach (var typeFullName in candidatePresenterTypeFullNames.Distinct())
                 {
                     presenterType = buildManager.GetType(typeFullName, false);
-                    
+
                     if (presenterType == null)
                     {
                         traceContext.Write(typeof(ConventionBasedPresenterDiscoveryStrategy), () => string.Format(CultureInfo.InvariantCulture,
@@ -140,15 +136,12 @@ namespace WebFormsMvp.Binder
                     }
                 }
 
-                // Add to cache
-                lock (viewTypeToPresenterTypeCache)
-                {
-                    viewTypeToPresenterTypeCache[viewType.TypeHandle] = presenterType;
-                }
-            }
-            
-            return presenterType == null ? null :
-                new PresenterBinding(presenterType, viewType, BindingMode.Default, new[] { viewInstance });
+                return presenterType;
+            });
+
+            return cachedPresenterType == null
+                ? null
+                : new PresenterBinding(cachedPresenterType, viewType, BindingMode.Default, new[] { viewInstance });
         }
 
         internal static IEnumerable<string> GetPresenterTypeNamesFromViewInterfaceTypeNames(IEnumerable<Type> viewInterfaces)
