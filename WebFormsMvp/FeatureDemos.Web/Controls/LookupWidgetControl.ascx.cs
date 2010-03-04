@@ -1,14 +1,11 @@
 ﻿using System;
-using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web.Controls
 {
-    [PresenterBinding(typeof(LookupWidgetPresenter))]
-    public partial class LookupWidgetControl
-        : MvpUserControl<LookupWidgetModel>, ILookupWidgetView
+    public partial class LookupWidgetControl : MvpUserControl<LookupWidgetModel>, ILookupWidgetView
     {
         protected void Find_Click(object sender, EventArgs e)
         {

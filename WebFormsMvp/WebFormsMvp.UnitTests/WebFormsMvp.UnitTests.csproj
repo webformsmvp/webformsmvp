@@ -83,6 +83,7 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Binder\CompositePresenterDiscoveryStrategyTests.cs" />
+    <Compile Include="Binder\ConventionBasedPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultCompositeViewTypeFactoryTests.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultPresenterFactoryTests.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Presenter`TViewTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="Web\MvpHttpHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup>

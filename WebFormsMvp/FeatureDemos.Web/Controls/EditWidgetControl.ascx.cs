@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using WebFormsMvp.FeatureDemos.Logic.Data;
-using WebFormsMvp.FeatureDemos.Logic.Presenters;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 using WebFormsMvp.FeatureDemos.Logic.Views.Models;
 using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web.Controls
 {
-    [PresenterBinding(typeof(EditWidgetPresenter))]
     public partial class EditWidgetControl : MvpUserControl<EditWidgetModel>, IEditWidgetView
     {
         public EditWidgetControl()

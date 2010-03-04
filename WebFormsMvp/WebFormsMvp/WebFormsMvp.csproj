@@ -117,7 +117,9 @@
     <Compile Include="IView.cs" />
     <Compile Include="IView`T.cs" />
     <Compile Include="MessageCoordinator.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="TraceContextAdapter.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="Web\BuildManagerWrapper.cs" />
     <Compile Include="IBuildManager.cs" />
     <Compile Include="Web\MvpHttpHandler.cs" />
