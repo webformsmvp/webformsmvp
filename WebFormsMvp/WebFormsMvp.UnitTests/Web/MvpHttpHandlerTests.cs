@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.Web;
@@ -63,6 +62,9 @@ namespace WebFormsMvp.UnitTests.Web
 
         class TestHandler : MvpHttpHandler
         {
+            public TestHandler()
+                : base(false)
+            {}
         }
 
         [PresenterBinding(typeof(TestPresenter))]

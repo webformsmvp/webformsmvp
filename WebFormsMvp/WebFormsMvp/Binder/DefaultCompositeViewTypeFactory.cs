@@ -176,7 +176,17 @@ public class TestViewComposite
                 (
                     type.GetInterfaces()
                         .SelectMany<Type, PropertyInfo>(DiscoverProperties)
-                );
+                )
+                .Select(p => new
+                {
+                    PropertyInfo = p,
+                    PropertyInfoFromCompositeViewBase = typeof(CompositeView<>).GetProperty(p.Name)
+                })
+                .Where(p =>
+                    p.PropertyInfoFromCompositeViewBase == null ||
+                    (p.PropertyInfoFromCompositeViewBase.GetGetMethod() == null && p.PropertyInfoFromCompositeViewBase.GetSetMethod() == null)
+                )
+                .Select(p => p.PropertyInfo);
         }
 
         static MethodBuilder BuildMethod(TypeBuilder type, string methodNamePrefix, string methodName, Type returnType, Type[] parameterTypes)

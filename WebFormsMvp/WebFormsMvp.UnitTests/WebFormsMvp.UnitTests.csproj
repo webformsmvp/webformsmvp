@@ -97,6 +97,8 @@
     <Compile Include="TestHelper.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="Web\MvpHttpHandlerTests.cs" />
+    <Compile Include="Web\MvpPageTests.cs" />
+    <Compile Include="Web\MvpUserControlTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">

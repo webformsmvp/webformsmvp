@@ -239,17 +239,19 @@ namespace WebFormsMvp.Binder
             {
                 foreach (var presenter in presenters)
                 {
+                    var presenter1 = presenter;
+
                     traceContext.Write(this, () => string.Format(
                         CultureInfo.InvariantCulture,
                         "Calling ReleaseView on presenter of type {0}.",
-                        presenter.GetType().FullName));
+                        presenter1.GetType().FullName));
                     
                     presenter.ReleaseView();
 
                     traceContext.Write(this, () => string.Format(
                         CultureInfo.InvariantCulture,
                         "Releasing presenter of type {0} back to the presenter factory.",
-                        presenter.GetType().FullName));
+                        presenter1.GetType().FullName));
 
                     factory.Release(presenter);
                 }
@@ -275,51 +277,11 @@ namespace WebFormsMvp.Binder
             Action<IPresenter> presenterCreatedCallback,
             IPresenterFactory presenterFactory)
         {
-            traceContext.Write(typeof(PresenterBinder), () => string.Format(
-                CultureInfo.InvariantCulture,
-                "Finding presenter bindings using {0} for {1} view {2}: {3}",
-                presenterDiscoveryStrategy.GetType().Name,
-                candidates.Count(),
-                candidates.Count() == 1 ? "instance" : "instances",
-                string.Join(", ", candidates.Select(v => v.GetType().FullName).ToArray())
-            ));
-
-            var bindings = presenterDiscoveryStrategy.GetBindings(hosts, candidates, traceContext);
-
-            traceContext.Write(typeof(PresenterBinder), () =>
-            {
-                var boundViews = bindings
-                    .SelectMany(b => b.ViewInstances)
-                    .Distinct();
-                return string.Format(
-                    CultureInfo.InvariantCulture,
-                    boundViews.Any()
-                        ? "Found {0} presenter bindings using {1} for {2} view {3}: {4}"
-                        : "Found 0 presenter bindings using {1}.",
-                    boundViews.Count(),
-                    presenterDiscoveryStrategy.GetType().Name,
-                    boundViews.Count(),
-                    boundViews.Count() == 1 ? "instance" : "instances",
-                    string.Join(", ", boundViews.Select(v => v.GetType().FullName).ToArray())
-                );
-            });
-
-            traceContext.Write(typeof(PresenterBinder), () =>
-            {
-                var boundViews = bindings
-                    .SelectMany(b => b.ViewInstances)
-                    .Distinct();
-                var pendingViewInstances = candidates
-                    .Except(boundViews);
-                return pendingViewInstances.Any()
-                    ? string.Format(
-                        CultureInfo.InvariantCulture,
-                        "WARNING: Presenter bindings were not found for {0} view {1}: {2}",
-                        pendingViewInstances.Count(),
-                        pendingViewInstances.Count() == 1 ? "instance" : "instances",
-                        string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray()))
-                    : null;
-            });
+            var bindings = GetBindings(
+                hosts,
+                candidates,
+                presenterDiscoveryStrategy,
+                traceContext);
 
             var newPresenters = BuildPresenters(
                 httpContext,
@@ -330,6 +292,62 @@ namespace WebFormsMvp.Binder
                 bindings);
 
             return newPresenters;
+        }
+
+        static IEnumerable<PresenterBinding> GetBindings(
+            IEnumerable<object> hosts,
+            IEnumerable<IView> candidates,
+            IPresenterDiscoveryStrategy presenterDiscoveryStrategy,
+            ITraceContext traceContext)
+        {
+            traceContext.Write(typeof(PresenterBinder), () => string.Format(
+                CultureInfo.InvariantCulture,
+                "Finding presenter bindings using {0} for {1} view {2}: {3}",
+                presenterDiscoveryStrategy.GetType().Name,
+                candidates.Count(),
+                candidates.Count() == 1 ? "instance" : "instances",
+                string.Join(", ", candidates.Select(v => v.GetType().FullName).ToArray())
+            ));
+
+            var bindings = presenterDiscoveryStrategy
+                .GetBindings(hosts, candidates, traceContext);
+
+            var boundViews = bindings
+                .SelectMany(b => b.ViewInstances)
+                .Distinct();
+
+            traceContext.Write(typeof(PresenterBinder), () => string.Format(
+                CultureInfo.InvariantCulture,
+                boundViews.Any()
+                    ? "Found {0} presenter bindings using {1} for {2} view {3}: {4}"
+                    : "Found 0 presenter bindings using {1}.",
+                boundViews.Count(),
+                presenterDiscoveryStrategy.GetType().Name,
+                boundViews.Count(),
+                boundViews.Count() == 1 ? "instance" : "instances",
+                string.Join(", ", boundViews.Select(v => v.GetType().FullName).ToArray())
+            ));
+
+            var pendingViewInstances = candidates
+                .Except(boundViews);
+
+            var viewInstancesToThrowExceptionsFor = pendingViewInstances
+                .Where(v => v.ThrowExceptionIfNoPresenterBound);
+
+            if (viewInstancesToThrowExceptionsFor.Any())
+                throw new InvalidOperationException("Failed to bind presenter. Check ~/Trace.axd for more information.");
+            
+            traceContext.Write(typeof(PresenterBinder), () => pendingViewInstances.Any()
+                ? string.Format(
+                    CultureInfo.InvariantCulture,
+                    "WARNING: Presenter bindings were not found for {0} view {1}: {2}",
+                    pendingViewInstances.Count(),
+                    pendingViewInstances.Count() == 1 ? "instance" : "instances",
+                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray()))
+                : null
+            );
+
+            return bindings;
         }
 
         static IEnumerable<IPresenter> BuildPresenters(
