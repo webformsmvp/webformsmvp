@@ -13,28 +13,12 @@ namespace WebFormsMvp
             // to search against in dictionaries.
             var implementationTypeHandle = implementationType.TypeHandle;
 
-            // Try and pull it from the cache first
-            IEnumerable<Type> viewInterfaces;
-            if (implementationTypeToViewInterfacesCache.TryGetValue(implementationTypeHandle,
-                out viewInterfaces))
-            {
-                return viewInterfaces;
-            }
-
-            // Find all of the interfaces that this type implements which are
-            // derived from IView
-            viewInterfaces = implementationType
-                .GetInterfaces()
-                .Where(i => typeof(IView).IsAssignableFrom(i))
-                .ToArray();
-
-            // Push it back to the cache
-            lock (implementationTypeToViewInterfacesCache)
-            {
-                implementationTypeToViewInterfacesCache[implementationTypeHandle] = viewInterfaces;
-            }
-
-            return viewInterfaces;
+            return implementationTypeToViewInterfacesCache.GetOrCreateValue(implementationTypeHandle, () =>
+                implementationType
+                    .GetInterfaces()
+                    .Where(i => typeof(IView).IsAssignableFrom(i))
+                    .ToArray()
+            );
         }
     }
 }

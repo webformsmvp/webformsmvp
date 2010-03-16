@@ -6,9 +6,8 @@ namespace WebFormsMvp.Binder
     public interface IPresenterDiscoveryStrategy
     {
         /// <summary />
-        IEnumerable<PresenterBinding> GetBindings(
+        IEnumerable<PresenterDiscoveryResult> GetBindings(
             IEnumerable<object> hosts,
-            IEnumerable<IView> viewInstances,
-            ITraceContext traceContext);
+            IEnumerable<IView> viewInstances);
     }
 }

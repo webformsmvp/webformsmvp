@@ -8,6 +8,7 @@ namespace WebFormsMvp.Binder
     internal class CompositePresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         readonly IEnumerable<IPresenterDiscoveryStrategy> strategies;
+        readonly IEqualityComparer<IEnumerable<IView>> viewInstanceListComparer = new TypeListComparer<IView>();
 
         public CompositePresenterDiscoveryStrategy(params IPresenterDiscoveryStrategy[] strategies)
             : this((IEnumerable<IPresenterDiscoveryStrategy>)strategies)
@@ -27,12 +28,9 @@ namespace WebFormsMvp.Binder
                 throw new ArgumentException("You must supply at least one strategy.", "strategies");
         }
 
-        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances, ITraceContext traceContext)
+        public IEnumerable<PresenterDiscoveryResult> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
-            if (traceContext == null)
-                throw new ArgumentNullException("traceContext");
-
-            var bindings = new List<PresenterBinding>();
+            var results = new List<PresenterDiscoveryResult>();
 
             var pendingViewInstances = viewInstances;
             foreach (var strategy in strategies)
@@ -40,40 +38,36 @@ namespace WebFormsMvp.Binder
                 if (!pendingViewInstances.Any())
                     break;
 
-                traceContext.Write(this, () => string.Format(
-                    CultureInfo.InvariantCulture,
-                    "Finding presenter bindings using {0} for {1} view {2}: {3}",
-                    strategy.GetType().Name,
-                    pendingViewInstances.Count(),
-                    pendingViewInstances.Count() == 1 ? "instance" : "instances",
-                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray())
-                ));
+                var resultsThisRound = strategy.GetBindings(hosts, pendingViewInstances);
 
-                var bindingsThisRound = strategy.GetBindings(hosts, pendingViewInstances, traceContext);
+                results.AddRange(resultsThisRound);
 
-                bindings.AddRange(bindingsThisRound);
-
-                var viewsBoundThisRound = bindingsThisRound
+                var viewsBoundThisRound = resultsThisRound
+                    .Where(r => r.Bindings.Any())
                     .SelectMany(b => b.ViewInstances)
                     .Distinct();
 
-                traceContext.Write(this, () => string.Format(
-                    CultureInfo.InvariantCulture,
-                    bindingsThisRound.Any()
-                        ? "Found {0} presenter bindings using {1} for {2} view {3}: {4}"
-                        : "Found 0 presenter bindings using {1}.",
-                    bindingsThisRound.Count(),
-                    strategy.GetType().Name,
-                    viewsBoundThisRound.Count(),
-                    viewsBoundThisRound.Count() == 1 ? "instance" : "instances",
-                    string.Join(", ", viewsBoundThisRound.Select(v => v.GetType().FullName).ToArray())
-                ));
-                
                 pendingViewInstances = pendingViewInstances
                     .Except(viewsBoundThisRound);
             }
 
-            return bindings;
+            return results
+                .GroupBy(r => r.ViewInstances, viewInstanceListComparer)
+                .Select(r => BuildMergedResult(r.Key, r));
+        }
+
+        static PresenterDiscoveryResult BuildMergedResult(IEnumerable<IView> viewInstances, IEnumerable<PresenterDiscoveryResult> results)
+        {
+            return new PresenterDiscoveryResult
+            (
+                viewInstances,
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "CompositePresenterDiscoveryStrategy:\r\n\r\n{0}",
+                    string.Join("\r\n\r\n", results.Select(r => r.Message).ToArray())
+                ),
+                results.SelectMany(r => r.Bindings)
+            );
         }
     }
 }

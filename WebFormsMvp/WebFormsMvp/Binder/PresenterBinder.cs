@@ -309,45 +309,79 @@ namespace WebFormsMvp.Binder
                 string.Join(", ", candidates.Select(v => v.GetType().FullName).ToArray())
             ));
 
-            var bindings = presenterDiscoveryStrategy
-                .GetBindings(hosts, candidates, traceContext);
+            var results = presenterDiscoveryStrategy
+                .GetBindings(hosts, candidates);
 
-            var boundViews = bindings
-                .SelectMany(b => b.ViewInstances)
-                .Distinct();
+            traceContext.Write(typeof(PresenterBinder), () =>
+                BuildTraceMessagesForBindings(presenterDiscoveryStrategy, results));
 
-            traceContext.Write(typeof(PresenterBinder), () => string.Format(
-                CultureInfo.InvariantCulture,
-                boundViews.Any()
-                    ? "Found {0} presenter bindings using {1} for {2} view {3}: {4}"
-                    : "Found 0 presenter bindings using {1}.",
-                boundViews.Count(),
-                presenterDiscoveryStrategy.GetType().Name,
-                boundViews.Count(),
-                boundViews.Count() == 1 ? "instance" : "instances",
-                string.Join(", ", boundViews.Select(v => v.GetType().FullName).ToArray())
-            ));
+            ThrowExceptionsForViewsWithNoPresenterBound(results);
 
-            var pendingViewInstances = candidates
-                .Except(boundViews);
+            return results
+                .SelectMany(r => r.Bindings);
+        }
 
-            var viewInstancesToThrowExceptionsFor = pendingViewInstances
-                .Where(v => v.ThrowExceptionIfNoPresenterBound);
+        static void ThrowExceptionsForViewsWithNoPresenterBound(IEnumerable<PresenterDiscoveryResult> results)
+        {
+            var resultToThrowExceptionsFor = results
+                .Where(r => r.Bindings.Empty())
+                .Where(r => r
+                    .ViewInstances
+                    .Where(v => v.ThrowExceptionIfNoPresenterBound)
+                    .Any())
+                .FirstOrDefault();
 
-            if (viewInstancesToThrowExceptionsFor.Any())
-                throw new InvalidOperationException("Failed to bind presenter. Check ~/Trace.axd for more information.");
+            if (resultToThrowExceptionsFor == null) return;
             
-            traceContext.Write(typeof(PresenterBinder), () => pendingViewInstances.Any()
-                ? string.Format(
-                    CultureInfo.InvariantCulture,
-                    "WARNING: Presenter bindings were not found for {0} view {1}: {2}",
-                    pendingViewInstances.Count(),
-                    pendingViewInstances.Count() == 1 ? "instance" : "instances",
-                    string.Join(", ", pendingViewInstances.Select(v => v.GetType().FullName).ToArray()))
-                : null
-            );
+            throw new InvalidOperationException(string.Format(
+                CultureInfo.InvariantCulture,
+                @"Failed to find presenter for view instance of {0}.
 
-            return bindings;
+{1}
+
+If you do not want this exception to be thrown, set ThrowExceptionIfNoPresenterBound to false on your view.",
+                resultToThrowExceptionsFor
+                    .ViewInstances
+                    .Where(v => v.ThrowExceptionIfNoPresenterBound)
+                    .First()
+                    .GetType()
+                    .FullName,
+                resultToThrowExceptionsFor.Message
+            ));
+        }
+
+        static IEnumerable<string> BuildTraceMessagesForBindings(IPresenterDiscoveryStrategy presenterDiscoveryStrategy, IEnumerable<PresenterDiscoveryResult> results)
+        {
+            var strategyName = presenterDiscoveryStrategy.GetType().FullName;
+            return results
+                .Where(r => r.Bindings.Any())
+                .Select(result => string.Format(
+                    CultureInfo.InvariantCulture,
+                    @"Found {0} presenter {1} for {2} using {3}.
+
+{4}
+
+{5}",
+                    result.Bindings.Count(),
+                    result.Bindings.Count() == 1 ? "binding" : "bindings",
+                    string.Join(", ", result.ViewInstances.Select(v => v.GetType().FullName).ToArray()),
+                    strategyName,
+                    result.Message,
+                    string.Join("\r\n\r\n",
+                        result
+                            .Bindings
+                            .Select(b => string.Format(
+                                CultureInfo.InvariantCulture,
+                                @"Presenter type: {0}
+    View type: {1}
+    Binding mode: {2}",
+                                b.PresenterType.FullName,
+                                b.ViewType.FullName,
+                                b.BindingMode
+                            ))
+                            .ToArray()
+                    )
+                ));
         }
 
         static IEnumerable<IPresenter> BuildPresenters(

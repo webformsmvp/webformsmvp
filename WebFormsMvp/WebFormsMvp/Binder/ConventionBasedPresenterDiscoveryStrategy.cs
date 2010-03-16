@@ -24,7 +24,7 @@ namespace WebFormsMvp.Binder
         }
 
         /// <summary />
-        public virtual IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances, ITraceContext traceContext)
+        public virtual IEnumerable<PresenterDiscoveryResult> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
             if (hosts == null)
                 throw new ArgumentNullException("hosts");
@@ -33,8 +33,7 @@ namespace WebFormsMvp.Binder
                 throw new ArgumentNullException("viewInstances");
 
             return viewInstances
-                .Select(v => GetBinding(v, buildManager, ViewInstanceSuffixes, CandidatePresenterTypeFullNameFormats, traceContext))
-                .Where(b => b != null)
+                .Select(v => GetBinding(v, buildManager, ViewInstanceSuffixes, CandidatePresenterTypeFullNameFormats))
                 .ToArray();
         }
 
@@ -73,75 +72,90 @@ namespace WebFormsMvp.Binder
         /// <summary>
         /// Override this property to extend the list of format strings used to generate candidate names for presenter types.
         /// </summary>
-        protected virtual IEnumerable<string> CandidatePresenterTypeFullNameFormats {
+        protected virtual IEnumerable<string> CandidatePresenterTypeFullNameFormats
+        {
             get { return defaultCandidatePresenterTypeFullNameFormats; }
         }
 
-        static readonly IDictionary<RuntimeTypeHandle, Type> viewTypeToPresenterTypeCache = new Dictionary<RuntimeTypeHandle, Type>();
-        internal static PresenterBinding GetBinding(IView viewInstance, IBuildManager buildManager, IEnumerable<string> viewInstanceSuffixes, IEnumerable<string> presenterTypeFullNameFormats, ITraceContext traceContext)
+        static readonly IDictionary<RuntimeTypeHandle, ConventionSearchResult> viewTypeToPresenterTypeCache = new Dictionary<RuntimeTypeHandle, ConventionSearchResult>();
+        internal static PresenterDiscoveryResult GetBinding(IView viewInstance, IBuildManager buildManager, IEnumerable<string> viewInstanceSuffixes, IEnumerable<string> presenterTypeFullNameFormats)
         {
             var viewType = viewInstance.GetType();
 
-            var cachedPresenterType = viewTypeToPresenterTypeCache.GetOrCreateValue(viewType.TypeHandle, () =>
+            var searchResult = viewTypeToPresenterTypeCache.GetOrCreateValue(viewType.TypeHandle, () =>
+                PerformSearch(viewInstance, viewInstanceSuffixes, presenterTypeFullNameFormats, buildManager));
+
+            return new PresenterDiscoveryResult(
+                new[] {viewInstance},
+                searchResult.Message,
+                searchResult.PresenterType == null
+                    ? new PresenterBinding[0]
+                    : new [] { new PresenterBinding(searchResult.PresenterType, viewType, BindingMode.Default, new[] { viewInstance }) }
+            );
+        }
+
+        static ConventionSearchResult PerformSearch(IView viewInstance, IEnumerable<string> viewInstanceSuffixes, IEnumerable<string> presenterTypeFullNameFormats, IBuildManager buildManager)
+        {
+            var viewType = viewInstance.GetType();
+            var presenterType = default(Type);
+
+            // Use the base type for pages & user controls as that is the code-behind file
+            // TODO: Ensure using BaseType still works in WebSite projects with code-beside files instead of code-behind files
+            if (viewType.Namespace == "ASP" &&
+                (typeof(Page).IsAssignableFrom(viewType) || typeof(Control).IsAssignableFrom(viewType)))
             {
-                viewType = viewInstance.GetType();
-                var presenterType = default(Type);
+                viewType = viewType.BaseType;
+            }
 
-                // Use the base type for pages & user controls as that is the code-behind file
-                // TODO: Ensure using BaseType still works in WebSite projects with code-beside files instead of code-behind files
-                if (viewType.Namespace == "ASP" &&
-                    (typeof(Page).IsAssignableFrom(viewType) || typeof(Control).IsAssignableFrom(viewType)))
+            // Get presenter type name from view instance type name
+            var presenterTypeNames = new List<string> { GetPresenterTypeNameFromViewTypeName(viewType, viewInstanceSuffixes) };
+
+            // Get presenter type names from implemented IView interfaces
+            presenterTypeNames.AddRange(GetPresenterTypeNamesFromViewInterfaceTypeNames(viewType.GetViewInterfaces()));
+
+            // Create candidate presenter type full names
+            var candidatePresenterTypeFullNames = GenerateCandidatePresenterTypeFullNames(viewType, presenterTypeNames, presenterTypeFullNameFormats);
+
+            // Ask the build manager to load each type until one is found
+            var messages = new List<string>();
+            foreach (var typeFullName in candidatePresenterTypeFullNames.Distinct())
+            {
+                presenterType = buildManager.GetType(typeFullName, false);
+
+                if (presenterType == null)
                 {
-                    viewType = viewType.BaseType;
+                    messages.Add(string.Format(
+                        CultureInfo.InvariantCulture,
+                        "could not find a presenter with type name {0}",
+                        typeFullName
+                    ));
+                    continue;
                 }
 
-                // Get presenter type name from view instance type name
-                var presenterTypeNames = new List<string> { GetPresenterTypeNameFromViewTypeName(viewType, viewInstanceSuffixes) };
-
-                // Get presenter type names from implemented IView interfaces
-                presenterTypeNames.AddRange(GetPresenterTypeNamesFromViewInterfaceTypeNames(viewType.GetViewInterfaces()));
-
-                // Create candidate presenter type full names
-                var candidatePresenterTypeFullNames = GenerateCandidatePresenterTypeFullNames(viewType, presenterTypeNames, presenterTypeFullNameFormats);
-
-                // Ask the build manager to load each type until one is found
-                foreach (var typeFullName in candidatePresenterTypeFullNames.Distinct())
+                if (!typeof(IPresenter).IsAssignableFrom(presenterType))
                 {
-                    presenterType = buildManager.GetType(typeFullName, false);
-
-                    if (presenterType == null)
-                    {
-                        traceContext.Write(typeof(ConventionBasedPresenterDiscoveryStrategy), () => string.Format(CultureInfo.InvariantCulture,
-                            "Looked for, but did not find, a presenter with type name {0}",
-                            typeFullName
-                        ));
-                        continue;
-                    }
-
-                    if (!typeof(IPresenter).IsAssignableFrom(presenterType))
-                    {
-                        traceContext.Write(typeof(ConventionBasedPresenterDiscoveryStrategy), () => string.Format(CultureInfo.InvariantCulture,
-                            "Found potential presenter with type name {0} but it does not implement IPresenter!",
-                            typeFullName
-                        ));
-                        presenterType = null;
-                    }
-                    else
-                    {
-                        traceContext.Write(typeof(ConventionBasedPresenterDiscoveryStrategy), () => string.Format(CultureInfo.InvariantCulture,
-                            "Found presenter with type name {0}",
-                            typeFullName
-                        ));
-                        break;
-                    }
+                    messages.Add(string.Format(
+                        CultureInfo.InvariantCulture,
+                        "found, but ignored, potential presenter with type name {0} because it does not implement IPresenter",
+                        typeFullName
+                    ));
+                    presenterType = null;
+                    continue;
                 }
+                    
+                messages.Add(string.Format(
+                    CultureInfo.InvariantCulture,
+                    "found presenter with type name {0}",
+                    typeFullName
+                ));
+                break;
+            }
 
-                return presenterType;
-            });
-
-            return cachedPresenterType == null
-                ? null
-                : new PresenterBinding(cachedPresenterType, viewType, BindingMode.Default, new[] { viewInstance });
+            return new ConventionSearchResult(
+                "ConventionBasedPresenterDiscoveryStrategy:\r\n"  +
+                    string.Join("\r\n", messages.Select(m => "- " + m).ToArray()),
+                presenterType
+            );
         }
 
         internal static IEnumerable<string> GetPresenterTypeNamesFromViewInterfaceTypeNames(IEnumerable<Type> viewInterfaces)
@@ -189,6 +203,21 @@ namespace WebFormsMvp.Binder
                                                .Replace("{presenter}", presenterTypeName);
                 }
             }
+        }
+
+        class ConventionSearchResult
+        {
+            readonly string message;
+            readonly Type presenterType;
+
+            public ConventionSearchResult(string message, Type presenterType)
+            {
+                this.message = message;
+                this.presenterType = presenterType;
+            }
+
+            public string Message { get { return message; } }
+            public Type PresenterType { get { return presenterType; } }
         }
     }
 }

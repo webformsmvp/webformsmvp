@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,6 +44,11 @@ namespace WebFormsMvp
                 throw new ArgumentNullException("source");
 
             return source.ToDictionary(m => m.Key, m => m.Value);
+        }
+
+        internal static bool Empty<T>(this IEnumerable<T> source)
+        {
+            return !source.Any();
         }
     }
 }

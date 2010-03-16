@@ -10,7 +10,7 @@ namespace WebFormsMvp.Binder
         static readonly IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> typeToAttributeCache
             = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
 
-        public IEnumerable<PresenterBinding> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances, ITraceContext traceContext)
+        public IEnumerable<PresenterDiscoveryResult> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
             if (hosts == null)
                 throw new ArgumentNullException("hosts");
@@ -18,120 +18,111 @@ namespace WebFormsMvp.Binder
             if (viewInstances == null)
                 throw new ArgumentNullException("viewInstances");
 
-            var hostDefinedAttributes = hosts
-                .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType(), false));
+            //var hostDefinedAttributes = hosts
+            //    .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType(), false));
 
-            var instancesToInterfaces = GetViewInterfaces(
-                viewInstances);
+            var pendingViewInstances = viewInstances.ToList();
 
-            // Build a dictionary of view defined bindings, for example:
-            //    View 1 -> Binding 1
-            //    View 2 -> Binding 1, Binding 2
-            var viewInstancesToViewDefinedBindings = instancesToInterfaces
-                .Keys
-                .Select(viewInstance => new
+            while (pendingViewInstances.Any())
+            {
+                var messages = new List<string>();
+                var bindings = new List<PresenterBinding>();
+                var viewInstance = pendingViewInstances.First();
+
+                var viewType = viewInstance.GetType();
+
+                //var relevantHostDefinedAttributes = hostDefinedAttributes
+                //    .Where(a => a.ViewType.IsAssignableFrom(viewType));
+
+                //if (relevantHostDefinedAttributes.Any())
+                //{
+                    
+                //}
+
+                var viewDefinedAttributes = GetAttributes(typeToAttributeCache, viewType, true);
+
+                if (viewDefinedAttributes.Empty())
                 {
-                    ViewInstance = viewInstance,
-                    ViewDefinedBindings = GetAttributes(typeToAttributeCache, viewInstance.GetType(), true)
-                });
-
-            // Flip the view defined bindings, for example:
-            //    View 1 -> Binding 1
-            //    View 2 -> Binding 1, Binding 2
-            var viewDefinedBindingsToViewInstances = viewInstancesToViewDefinedBindings
-                .SelectMany(map => map.ViewDefinedBindings)
-                .Distinct()
-                .Select(binding => new
+                    messages.Add(string.Format(
+                        CultureInfo.InvariantCulture,
+                        "could not found a [PresenterBinding] attribute on view instance {0}",
+                        viewType.FullName
+                    ));
+                }
+                
+                foreach (var attribute in viewDefinedAttributes)
                 {
-                    Binding = binding,
-                    ViewInstances = viewInstancesToViewDefinedBindings
-                        .Where(map => map.ViewDefinedBindings.Contains(binding))
-                        .Select(map => map.ViewInstance)
-                        .ToArray()
-                });
+                    if (!attribute.ViewType.IsAssignableFrom(viewType))
+                    {
+                        messages.Add(string.Format(
+                            CultureInfo.InvariantCulture,
+                            "found, but ignored, a [PresenterBinding] attribute on view instance {0} (presenter type: {1}, view type: {2}, binding mode: {3}) because the view type on the attribute is not compatible with the type of the view instance",
+                            viewType.FullName,
+                            attribute.PresenterType.FullName,
+                            attribute.ViewType.FullName,
+                            attribute.BindingMode
+                        ));
+                        continue;
+                    }
 
-            // Build a dictionary of presenter defined bindings to the view instances that they apply to,
-            // for example:
-            //    Binding 1 -> View 1
-            //    Binding 2 -> View 2
-            //    Binding 3 -> View 1, View 2
-            var hostDefinedBindingsToViewInstances = hostDefinedAttributes
-                .Select(binding => new
-                {
-                    Binding = binding,
-                    ViewInstances = instancesToInterfaces
-                        .Where(a => a.Value.Contains(binding.ViewType))
-                        .Select(a => a.Key)
-                        .ToArray()
-                });
-
-            var utilisedBindings =
-                viewDefinedBindingsToViewInstances.Select(map => map.Binding)
-                    .Union(hostDefinedBindingsToViewInstances.Select(map => map.Binding))
-                    .Distinct()
-                    .ToArray();
-
-            return utilisedBindings
-                .Select(binding => new PresenterBinding(
-                    binding.PresenterType,
-                    binding.ViewType,
-                    binding.BindingMode,
-                    viewDefinedBindingsToViewInstances
-                        .Union(hostDefinedBindingsToViewInstances)
-                        .Where(map => map.Binding == binding)
-                        .SelectMany(map => map.ViewInstances)
-                ));
-        }
-
-        internal static IDictionary<IView, IEnumerable<Type>> GetViewInterfaces(IEnumerable<IView> instances)
-        {
-            return instances
-                .ToDictionary
-                (
-                    instance => instance,
-                    instance => instance.GetType().GetViewInterfaces()
+                    messages.Add(string.Format(
+                        CultureInfo.InvariantCulture,
+                        "found a [PresenterBinding] attribute on view instance {0} (presenter type: {1}, view type: {2}, binding mode: {3})",
+                        viewType.FullName,
+                        attribute.PresenterType.FullName,
+                        attribute.ViewType.FullName,
+                        attribute.BindingMode
+                    ));
+                    bindings.Add(new PresenterBinding(
+                        attribute.PresenterType,
+                        attribute.ViewType,
+                        attribute.BindingMode,
+                        new[] { viewInstance }
+                    ));
+                }
+                
+                yield return new PresenterDiscoveryResult(
+                    new[] { viewInstance },
+                    "AttributeBasedPresenterDiscoveryStrategy:\r\n"  +
+                        string.Join("\r\n", messages.Select(m => "- " + m).ToArray()),
+                    bindings
                 );
+
+                pendingViewInstances.Remove(viewInstance);
+            }
         }
 
         internal static IEnumerable<PresenterBindingAttribute> GetAttributes(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> cache, Type sourceType, bool restrictBindingMode)
         {
             var hostTypeHandle = sourceType.TypeHandle;
-
-            IEnumerable<PresenterBindingAttribute> attributes;
-            if (cache.TryGetValue(hostTypeHandle, out attributes))
+            return cache.GetOrCreateValue(hostTypeHandle, () =>
             {
+                var attributes = sourceType
+                    .GetCustomAttributes(typeof(PresenterBindingAttribute), true)
+                    .OfType<PresenterBindingAttribute>()
+                    .Select(pba =>
+                        new PresenterBindingAttribute(pba.PresenterType)
+                        {
+                            ViewType = pba.ViewType ?? sourceType,
+                            BindingMode = pba.BindingMode
+                        })
+                    .ToArray();
+
+                if (restrictBindingMode &&
+                    attributes.Any(a => a.BindingMode != BindingMode.Default))
+                {
+                    throw new NotSupportedException(string.Format(
+                        CultureInfo.InvariantCulture,
+                        "When a {1} is applied directly to the view type, only the default binding mode is supported. One of the bindings on {0} violates this restriction. To use an alternative binding mode, such as {2}, apply the {1} to one of the hosts instead (such as the page, or master page).",
+                        sourceType.FullName,
+                        typeof(PresenterBindingAttribute).FullName,
+                        Enum.GetName(typeof(BindingMode),
+                        BindingMode.SharedPresenter)
+                    ));
+                }
+
                 return attributes;
-            }
-
-            attributes = sourceType
-                .GetCustomAttributes(typeof(PresenterBindingAttribute), true)
-                .OfType<PresenterBindingAttribute>()
-                .Select(pba =>
-                    new PresenterBindingAttribute(pba.PresenterType)
-                    {
-                        ViewType = pba.ViewType ?? sourceType,
-                        BindingMode = pba.BindingMode
-                    })
-                .ToArray();
-
-            if (restrictBindingMode &&
-                attributes.Any(a => a.BindingMode != BindingMode.Default))
-            {
-                throw new NotSupportedException(string.Format(
-                    CultureInfo.InvariantCulture,
-                    "When a {1} is applied directly to the view type, only the default binding mode is supported. One of the bindings on {0} violates this restriction. To use an alternative binding mode, such as {2}, apply the {1} to one of the hosts instead (such as the page, or master page).",
-                    sourceType.FullName,
-                    typeof(PresenterBindingAttribute).FullName,
-                    Enum.GetName(typeof(BindingMode), BindingMode.SharedPresenter)
-                ));
-            }
-
-            lock (cache)
-            {
-                cache[hostTypeHandle] = attributes;
-            }
-
-            return attributes;
+            });
         }
     }
 }

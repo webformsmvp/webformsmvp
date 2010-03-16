@@ -96,6 +96,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
+    <Compile Include="TypeListComparerTests.cs" />
     <Compile Include="Web\MvpHttpHandlerTests.cs" />
     <Compile Include="Web\MvpPageTests.cs" />
     <Compile Include="Web\MvpUserControlTests.cs" />
