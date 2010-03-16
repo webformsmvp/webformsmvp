@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.Binder;
 
@@ -17,7 +18,7 @@ namespace WebFormsMvp.UnitTests.Binder
             try
             {
                 // Act
-                strategy.GetBindings(null, new IView[0]);
+                strategy.GetBindings(null, new IView[0]).ToArray();
 
                 // Assert
                 Assert.Fail("Expected exception not thrown");
@@ -38,7 +39,7 @@ namespace WebFormsMvp.UnitTests.Binder
             try
             {
                 // Act
-                strategy.GetBindings(new object[0], null);
+                strategy.GetBindings(new object[0], null).ToArray();
 
                 // Assert
                 Assert.Fail("Expected exception not thrown");
