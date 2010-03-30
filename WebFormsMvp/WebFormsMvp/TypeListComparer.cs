@@ -35,7 +35,7 @@ namespace WebFormsMvp
 
             var result = obj
                 .Aggregate<T, int?>(null, (current, o) =>
-                    current == null ? o.GetHashCode() : current | o.GetHashCode());
+                    current == null ? o.GetHashCode() : current.Value | o.GetHashCode());
 
             return result ?? 0;
         }
