@@ -9,24 +9,7 @@ namespace WebFormsMvp
     {
         public bool Equals(IEnumerable<T> x, IEnumerable<T> y)
         {
-            if (x == null) throw new ArgumentNullException("x");
-            if (y == null) throw new ArgumentNullException("y");
-
-            var objectsInX = x.ToList();
-            var objectsInY = y.ToList();
-
-            if (objectsInX.Count() != objectsInY.Count())
-                return false;
-
-            foreach (var objectInY in objectsInY)
-            {
-                if (!objectsInX.Contains(objectInY))
-                    return false;
-
-                objectsInX.Remove(objectInY);
-            }
-
-            return objectsInX.Empty();
+            return x.SetEqual(y);
         }
 
         public int GetHashCode(IEnumerable<T> obj)

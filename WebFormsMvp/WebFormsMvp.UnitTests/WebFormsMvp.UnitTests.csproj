@@ -82,10 +82,16 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithSingleAttribute.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithNoAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithNoAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithMultipleAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_GuardTests.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithSingleAttribute.cs" />
     <Compile Include="Binder\CompositePresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\ConventionBasedPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultCompositeViewTypeFactoryTests.cs" />
-    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultPresenterFactoryTests.cs" />
     <Compile Include="Binder\PresenterBinderTests.cs" />
     <Compile Include="CollectionExtensionsTests.cs" />
