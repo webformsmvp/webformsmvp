@@ -43,8 +43,8 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
             );
         }
 
-        [PresenterBinding(typeof(Presenter1))]
         [PresenterBinding(typeof(Presenter2))]
+        [PresenterBinding(typeof(Presenter1))]
         public class View1 : IView
         {
             public bool ThrowExceptionIfNoPresenterBound
