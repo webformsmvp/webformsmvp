@@ -86,6 +86,8 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleAttributeOnHostScopedToViewInterface.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleAttributeOnHostScopedToViewType.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithSingleAttribute.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithNoAttributes.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithNoAttributes.cs" />

@@ -18,9 +18,6 @@ namespace WebFormsMvp.Binder
             if (viewInstances == null)
                 throw new ArgumentNullException("viewInstances");
 
-            //var hostDefinedAttributes = hosts
-            //    .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType(), false));
-
             var pendingViewInstances = viewInstances.ToList();
 
             while (pendingViewInstances.Any())
@@ -30,14 +27,6 @@ namespace WebFormsMvp.Binder
                 var viewInstance = pendingViewInstances.First();
 
                 var viewType = viewInstance.GetType();
-
-                //var relevantHostDefinedAttributes = hostDefinedAttributes
-                //    .Where(a => a.ViewType.IsAssignableFrom(viewType));
-
-                //if (relevantHostDefinedAttributes.Any())
-                //{
-                    
-                //}
 
                 var viewDefinedAttributes = GetAttributes(typeToAttributeCache, viewType, true);
 
@@ -77,6 +66,44 @@ namespace WebFormsMvp.Binder
                         attribute.PresenterType,
                         attribute.ViewType,
                         attribute.BindingMode,
+                        new[] { viewInstance }
+                    ));
+                }
+
+                var hostDefinedAttributes = hosts
+                    .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType(), false)
+                        .Select(a => new { Host = h, Attribute = a }));
+
+                var relevantHostDefinedAttributes = hostDefinedAttributes
+                    .Where(a => a.Attribute.ViewType.IsAssignableFrom(viewType));
+
+                foreach (var hostAttribute in relevantHostDefinedAttributes)
+                {
+                    if (!hostAttribute.Attribute.ViewType.IsAssignableFrom(viewType))
+                    {
+                        messages.Add(string.Format(
+                            CultureInfo.InvariantCulture,
+                            "found, but ignored, a [PresenterBinding] attribute on host instance {0} (presenter type: {1}, view type: {2}, binding mode: {3}) because the view type on the attribute is not compatible with the type of the view instance",
+                            hostAttribute.Host.GetType().FullName,
+                            hostAttribute.Attribute.PresenterType.FullName,
+                            hostAttribute.Attribute.ViewType.FullName,
+                            hostAttribute.Attribute.BindingMode
+                        ));
+                        continue;
+                    }
+
+                    messages.Add(string.Format(
+                        CultureInfo.InvariantCulture,
+                        "found a [PresenterBinding] attribute on host instance {0} (presenter type: {1}, view type: {2}, binding mode: {3})",
+                        hostAttribute.Host.GetType().FullName,
+                        hostAttribute.Attribute.PresenterType.FullName,
+                        hostAttribute.Attribute.ViewType.FullName,
+                        hostAttribute.Attribute.BindingMode
+                    ));
+                    bindings.Add(new PresenterBinding(
+                        hostAttribute.Attribute.PresenterType,
+                        hostAttribute.Attribute.ViewType,
+                        hostAttribute.Attribute.BindingMode,
                         new[] { viewInstance }
                     ));
                 }
