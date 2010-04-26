@@ -9,7 +9,7 @@ using WebFormsMvp.Binder;
 namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests
 {
     [TestClass]
-    public class GetBindings_SingleAttributeOnHostScopedToViewInterface
+    public class GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView
     {
         [TestMethod]
         public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_SingleAttributeOnHostScopedToViewInterface()
@@ -30,8 +30,8 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
                     (
                         new[] {view1},
                         @"AttributeBasedPresenterDiscoveryStrategy:
-- could not found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterface+View1
-- found a [PresenterBinding] attribute on host instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterface+Host1 (presenter type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterface+Presenter1, view type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterface+IViewInterface1, binding mode: Default)",
+- could not found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+View1
+- found a [PresenterBinding] attribute on host instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+Host1 (presenter type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+Presenter1, view type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+IViewInterface1, binding mode: Default)",
                         new[]
                         {
                             new PresenterBinding(typeof(Presenter1), typeof(IViewInterface1), BindingMode.Default, new[] {view1}), 
