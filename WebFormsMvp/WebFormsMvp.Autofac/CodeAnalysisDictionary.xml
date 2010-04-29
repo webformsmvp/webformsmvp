@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- see %ProgramFiles%\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\CustomDictionary.xml for samples -->
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>autofac</Word>
+    </Recognized>
+  </Words>
+</Dictionary>
