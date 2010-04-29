@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A87062B0-C7AB-4AC6-B178-A54AD979AD7C}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -89,28 +89,24 @@
     </Compile>
     <Compile Include="Controls\DynamicallyLoadedControl.ascx.cs">
       <DependentUpon>DynamicallyLoadedControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\DynamicallyLoadedControl.ascx.designer.cs">
       <DependentUpon>DynamicallyLoadedControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\EditWidgetControl.ascx.cs">
       <DependentUpon>EditWidgetControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\EditWidgetControl.ascx.designer.cs">
       <DependentUpon>EditWidgetControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\Messaging1Control.ascx.cs">
       <DependentUpon>Messaging1Control.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\Messaging1Control.ascx.designer.cs">
       <DependentUpon>Messaging1Control.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\Messaging2Control.ascx.cs">
       <DependentUpon>Messaging2Control.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\Messaging2Control.ascx.designer.cs">
       <DependentUpon>Messaging2Control.ascx</DependentUpon>
@@ -124,7 +120,6 @@
     </Compile>
     <Compile Include="PageView.aspx.cs">
       <DependentUpon>PageView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PageView.aspx.designer.cs">
       <DependentUpon>PageView.aspx</DependentUpon>
@@ -138,35 +133,30 @@
     </Compile>
     <Compile Include="Controls\AsyncMessagesControl.ascx.cs">
       <DependentUpon>AsyncMessagesControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\AsyncMessagesControl.ascx.designer.cs">
       <DependentUpon>AsyncMessagesControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\SharedPresenterControl.ascx.cs">
       <DependentUpon>SharedPresenterControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\SharedPresenterControl.ascx.designer.cs">
       <DependentUpon>SharedPresenterControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\HelloWorldControl.ascx.cs">
       <DependentUpon>HelloWorldControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\HelloWorldControl.ascx.designer.cs">
       <DependentUpon>HelloWorldControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\LookupWidgetControl.ascx.cs">
       <DependentUpon>LookupWidgetControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\LookupWidgetControl.ascx.designer.cs">
       <DependentUpon>LookupWidgetControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\RedirectControl.ascx.cs">
       <DependentUpon>RedirectControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\RedirectControl.ascx.designer.cs">
       <DependentUpon>RedirectControl.ascx</DependentUpon>
@@ -215,7 +205,6 @@
     </Compile>
     <Compile Include="TimeService.asmx.cs">
       <DependentUpon>TimeService.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewsAddedInPageInit.aspx.cs">
       <DependentUpon>ViewsAddedInPageInit.aspx</DependentUpon>
@@ -315,9 +304,6 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
