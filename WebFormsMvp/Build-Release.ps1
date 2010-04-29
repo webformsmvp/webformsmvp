@@ -81,6 +81,10 @@ http://webformsmvp.codeplex.com/SourceControl/BrowseLatest"
 $LibraryBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\bin\Release"
 Copy-Item "$LibraryBinFolder\*.*" -Destination $LibraryReleaseFolder -Include "WebFormsMvp.dll","WebFormsMvp.pdb","WebFormsMvp.xml"
 
+# Copy Autofac assets to temp folder (dll + pdb + xml)
+$AutofacBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Autofac\bin\Release"
+Copy-Item "$AutofacBinFolder\*.*" -Destination $IntegrationsReleaseFolder -Include "WebFormsMvp.Autofac.dll","WebFormsMvp.Autofac.pdb","WebFormsMvp.Autofac.xml"
+
 # Copy Castle assets to temp folder (dll + pdb + xml)
 $CastleBinFolder = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Castle\bin\Release"
 Copy-Item "$CastleBinFolder\*.*" -Destination $IntegrationsReleaseFolder -Include "WebFormsMvp.Castle.dll","WebFormsMvp.Castle.pdb","WebFormsMvp.Castle.xml"
