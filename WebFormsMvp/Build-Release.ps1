@@ -1,7 +1,7 @@
 ﻿param (
 	[Parameter(Mandatory=$true)]
-    [ValidatePattern("\d\.\d\.\d\.\d")]
-    [string]
+	[ValidatePattern("\d\.\d\.\d\.\d")]
+	[string]
 	$ReleaseVersionNumber
 )
 
@@ -14,44 +14,24 @@ $Is64BitProcess = [IntPtr]::Size -eq 8
 
 $RegistryArchitecturePath = ""
 if ($Is64BitProcess) { $RegistryArchitecturePath = "\Wow6432Node" }
-$ClrVersion = (Get-ItemProperty -path "HKLM:\SOFTWARE$RegistryArchitecturePath\Microsoft\VisualStudio\10.0")."CLR Version"
-$VSInstallDir = (Get-ItemProperty -path "HKLM:\SOFTWARE$RegistryArchitecturePath\Microsoft\VisualStudio\10.0").InstallDir
 
 $FrameworkArchitecturePath = ""
 if ($Is64BitSystem) { $FrameworkArchitecturePath = "64" }
+
+$ClrVersion = (Get-ItemProperty -path "HKLM:\SOFTWARE$RegistryArchitecturePath\Microsoft\VisualStudio\10.0")."CLR Version"
+
 $MSBuild = "$Env:SYSTEMROOT\Microsoft.NET\Framework$FrameworkArchitecturePath\$ClrVersion\MSBuild.exe"
 
-$TF = Join-Path -Path $VSInstallDir -ChildPath "tf.exe"
-
-# Check for any pending changes
-$PendingChangesPriorToBuild = (& $TF status "$SolutionRoot\*") -ne "There are no pending changes."
-if ($PendingChangesPriorToBuild)
-{
-	Write-Warning "There are pending changes in your TFS workspace. This will be marked as an unsafe release and should not be uploaded to CodePlex."
-}
-
 # Make sure we don't have a release folder for this version already
-$ReleaseSuffix = "";
-if ($PendingChangesPriorToBuild) { $ReleaseSuffix = "-Unsafe" }
-$ReleaseFolder = Join-Path -Path $SolutionRoot -ChildPath "Releases\v$ReleaseVersionNumber$ReleaseSuffix";
+$ReleaseFolder = Join-Path -Path $SolutionRoot -ChildPath "Releases\v$ReleaseVersionNumber";
 if ((Get-Item $ReleaseFolder -ErrorAction SilentlyContinue) -ne $null)
 {
 	Write-Warning "$ReleaseFolder already exists on your local machine. It will now be deleted."
 	Remove-Item $ReleaseFolder -Recurse
 }
 
-# Confirm that there isn't an existing TFS label that uses the version number
-
-# Checkout SolutionInfo.cs
-$SolutionInfoName = "SolutionInfo.cs"
-$SolutionInfoPath = Join-Path -Path $SolutionRoot -ChildPath $SolutionInfoName
-$SolutionInfoCheckoutResult = & $TF checkout "$SolutionInfoPath"
-if ($SolutionInfoCheckoutResult -ne $SolutionInfoName)
-{
-	throw "There was a problem checking out SolutionInfo.cs. The command returned:\r\n\r\n$SolutionInfoCheckoutResult"
-}
-
 # Set the version number in SolutionInfo.cs
+$SolutionInfoPath = Join-Path -Path $SolutionRoot -ChildPath "SolutionInfo.cs"
 (gc -Path $SolutionInfoPath) `
 	-replace "(?<=Version\(`")[.\d]*(?=`"\))", $ReleaseVersionNumber |
 	sc -Path $SolutionInfoPath -Encoding UTF8
@@ -138,15 +118,18 @@ Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.pdb" `
 	-Destination (Join-Path -Path $HelpersReleaseFolder -ChildPath "WebFormsMvp.CodeAnalysisRules.FxCop136.pdb")
 
 # Load ZIP library
-$LibraryReleaseZip = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp-v$ReleaseVersionNumber-Library$ReleaseSuffix.zip";
+$LibraryReleaseZip = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp-v$ReleaseVersionNumber-Library.zip";
 Add-Type -Path (Join-Path -Path $SolutionRoot -ChildPath "Dependencies\ICSharpCode.SharpZipLib.dll")
 $FastZip = New-Object -TypeName ICSharpCode.SharpZipLib.Zip.FastZip
 $FastZip.CreateZip($LibraryReleaseZip, $LibraryReleaseFolder, $true, "") # zipfile, source, recurse, filter
 
 # Copy source to a temp folder
 
-# Remove the source bindings
-
 # Package Releases\WebFormsMvp.(version).FeatureDemos.zip (feature demo w/ library reference)
 
-# Check in SolutionInfo.cs
+# Tell the user to commit the version change and tag the revision
+""
+""
+"If you're happy with this release build, you should now run the following commands:"
+"    hg com -m `"Set version to $ReleaseVersionNumber.`" SolutionInfo.cs"
+"    hg tag -m `"Tagged version $ReleaseVersionNumber.`" v$ReleaseVersionNumber"
