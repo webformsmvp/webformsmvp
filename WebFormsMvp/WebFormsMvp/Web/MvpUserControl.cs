@@ -51,8 +51,8 @@ namespace WebFormsMvp.Web
         /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
-            PageViewHost.Register(this, Context, AutoDataBind);
             registeredWithPageViewHost = true;
+            PageViewHost.Register(this, Context, AutoDataBind);
 
             base.OnInit(e);
         }
