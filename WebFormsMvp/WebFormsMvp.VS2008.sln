@@ -1,0 +1,199 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{EF165358-8758-45DC-8B74-3B963037E376}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\CSSFriendly.dll = Dependencies\CSSFriendly.dll
+		Dependencies\Rhino.Mocks.dll = Dependencies\Rhino.Mocks.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A8E0686-3992-4FE3-8E42-97A19B4BB3C4}"
+	ProjectSection(SolutionItems) = preProject
+		Build-Release.ps1 = Build-Release.ps1
+		CodeAnalysisRules.ruleset = CodeAnalysisRules.ruleset
+		DevelopmentKey.snk = DevelopmentKey.snk
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		ReleaseKey.pfx = ReleaseKey.pfx
+		SolutionInfo.cs = SolutionInfo.cs
+		WebFormsMvp.5.0.resharper = WebFormsMvp.5.0.resharper
+		WebFormsMvp.vsmdi = WebFormsMvp.vsmdi
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Castle", "Castle", "{7AD65369-54B5-4D52-95C7-C9BFD440B327}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\Castle\Castle.Core.dll = Dependencies\Castle\Castle.Core.dll
+		Dependencies\Castle\Castle.DynamicProxy2.dll = Dependencies\Castle\Castle.DynamicProxy2.dll
+		Dependencies\Castle\Castle.MicroKernel.dll = Dependencies\Castle\Castle.MicroKernel.dll
+		Dependencies\Castle\Castle.Windsor.dll = Dependencies\Castle\Castle.Windsor.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feature Demos Application", "Feature Demos Application", "{392D516C-6A30-4673-A43A-87DEC9340427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp", "WebFormsMvp\WebFormsMvp.csproj", "{E265BF3E-8CCB-4C22-8C15-263735227A3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Testing", "WebFormsMvp.Testing\WebFormsMvp.Testing.csproj", "{6C47BBFB-0189-4B11-A14B-B76C248B6685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Futures", "WebFormsMvp.Futures\WebFormsMvp.Futures.csproj", "{39B43661-3A1D-46FB-A0AF-0BC997B3FE8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureDemos.Logic", "FeatureDemos.Logic\FeatureDemos.Logic.csproj", "{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureDemos.UnitTests", "FeatureDemos.UnitTests\FeatureDemos.UnitTests.csproj", "{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureDemos.Web.VS2008", "FeatureDemos.Web\FeatureDemos.Web.VS2008.csproj", "{A87062B0-C7AB-4AC6-B178-A54AD979AD7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Castle", "WebFormsMvp.Castle\WebFormsMvp.Castle.csproj", "{D20C328A-5DEC-465B-8A19-662DA2532D88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.UnitTests", "WebFormsMvp.UnitTests\WebFormsMvp.UnitTests.csproj", "{66023434-A9DF-465E-926A-316C85F63269}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FxCop Rules", "FxCop Rules", "{F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.CodeAnalysisRules", "WebFormsMvp.CodeAnalysisRules\WebFormsMvp.CodeAnalysisRules.csproj", "{2934629D-FF06-4B81-8756-588A38F3B2E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeAnalysis.TestLibrary", "CodeAnalysis.TestLibrary\CodeAnalysis.TestLibrary.csproj", "{09B600C9-569C-4F2E-BD44-2D80A9ED4526}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FxCop136", "FxCop136", "{99AFF032-CE5D-46F0-B1F3-1894344675A8}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\FxCop136\FxCopSdk.dll = Dependencies\FxCop136\FxCopSdk.dll
+		Dependencies\FxCop136\Microsoft.Cci.dll = Dependencies\FxCop136\Microsoft.Cci.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{F9962ED5-FC3A-42C3-9375-5032D0644FF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Unity", "WebFormsMvp.Unity\WebFormsMvp.Unity.csproj", "{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{49E2E50C-13E1-44BA-8BFA-B0C4B5D2162F}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\Unity\Microsoft.Practices.ObjectBuilder2.dll = Dependencies\Unity\Microsoft.Practices.ObjectBuilder2.dll
+		Dependencies\Unity\Microsoft.Practices.ObjectBuilder2.pdb = Dependencies\Unity\Microsoft.Practices.ObjectBuilder2.pdb
+		Dependencies\Unity\Microsoft.Practices.ObjectBuilder2.xml = Dependencies\Unity\Microsoft.Practices.ObjectBuilder2.xml
+		Dependencies\Unity\Microsoft.Practices.Unity.dll = Dependencies\Unity\Microsoft.Practices.Unity.dll
+		Dependencies\Unity\Microsoft.Practices.Unity.pdb = Dependencies\Unity\Microsoft.Practices.Unity.pdb
+		Dependencies\Unity\Microsoft.Practices.Unity.xml = Dependencies\Unity\Microsoft.Practices.Unity.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Autofac", "WebFormsMvp.Autofac\WebFormsMvp.Autofac.csproj", "{FBD0408C-2801-490F-859A-56192282A987}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autofac", "Autofac", "{872B765C-A7C8-4434-94C0-6D9D77290FB5}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\Autofac\Autofac.dll = Dependencies\Autofac\Autofac.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E265BF3E-8CCB-4C22-8C15-263735227A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E265BF3E-8CCB-4C22-8C15-263735227A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E265BF3E-8CCB-4C22-8C15-263735227A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E265BF3E-8CCB-4C22-8C15-263735227A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C47BBFB-0189-4B11-A14B-B76C248B6685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39B43661-3A1D-46FB-A0AF-0BC997B3FE8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39B43661-3A1D-46FB-A0AF-0BC997B3FE8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39B43661-3A1D-46FB-A0AF-0BC997B3FE8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39B43661-3A1D-46FB-A0AF-0BC997B3FE8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D20C328A-5DEC-465B-8A19-662DA2532D88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D20C328A-5DEC-465B-8A19-662DA2532D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D20C328A-5DEC-465B-8A19-662DA2532D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D20C328A-5DEC-465B-8A19-662DA2532D88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66023434-A9DF-465E-926A-316C85F63269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66023434-A9DF-465E-926A-316C85F63269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66023434-A9DF-465E-926A-316C85F63269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66023434-A9DF-465E-926A-316C85F63269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2934629D-FF06-4B81-8756-588A38F3B2E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7AD65369-54B5-4D52-95C7-C9BFD440B327} = {EF165358-8758-45DC-8B74-3B963037E376}
+		{99AFF032-CE5D-46F0-B1F3-1894344675A8} = {EF165358-8758-45DC-8B74-3B963037E376}
+		{49E2E50C-13E1-44BA-8BFA-B0C4B5D2162F} = {EF165358-8758-45DC-8B74-3B963037E376}
+		{872B765C-A7C8-4434-94C0-6D9D77290FB5} = {EF165358-8758-45DC-8B74-3B963037E376}
+		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8} = {392D516C-6A30-4673-A43A-87DEC9340427}
+		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E} = {392D516C-6A30-4673-A43A-87DEC9340427}
+		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C} = {392D516C-6A30-4673-A43A-87DEC9340427}
+		{D20C328A-5DEC-465B-8A19-662DA2532D88} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
+		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
+		{FBD0408C-2801-490F-859A-56192282A987} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
+		{2934629D-FF06-4B81-8756-588A38F3B2E0} = {F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}
+		{09B600C9-569C-4F2E-BD44-2D80A9ED4526} = {F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 12
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs06.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WebFormsMvp\\WebFormsMvp.csproj
+		SccProjectName1 = WebFormsMvp
+		SccLocalPath1 = WebFormsMvp
+		SccProjectUniqueName2 = WebFormsMvp.Testing\\WebFormsMvp.Testing.csproj
+		SccProjectName2 = WebFormsMvp.Testing
+		SccLocalPath2 = WebFormsMvp.Testing
+		SccProjectUniqueName3 = WebFormsMvp.Futures\\WebFormsMvp.Futures.csproj
+		SccProjectName3 = WebFormsMvp.Futures
+		SccLocalPath3 = WebFormsMvp.Futures
+		SccProjectUniqueName4 = FeatureDemos.UnitTests\\FeatureDemos.UnitTests.csproj
+		SccProjectTopLevelParentUniqueName4 = WebFormsMvp.sln
+		SccProjectName4 = FeatureDemos.UnitTests
+		SccLocalPath4 = FeatureDemos.UnitTests
+		SccProjectUniqueName5 = FeatureDemos.Web\\FeatureDemos.Web.csproj
+		SccProjectTopLevelParentUniqueName5 = WebFormsMvp.sln
+		SccProjectName5 = FeatureDemos.Web
+		SccLocalPath5 = FeatureDemos.Web
+		SccProjectUniqueName6 = FeatureDemos.Logic\\FeatureDemos.Logic.csproj
+		SccProjectTopLevelParentUniqueName6 = WebFormsMvp.sln
+		SccProjectName6 = FeatureDemos.Logic
+		SccLocalPath6 = FeatureDemos.Logic
+		SccProjectUniqueName7 = WebFormsMvp.Castle\\WebFormsMvp.Castle.csproj
+		SccProjectTopLevelParentUniqueName7 = WebFormsMvp.sln
+		SccProjectName7 = WebFormsMvp.Castle
+		SccLocalPath7 = WebFormsMvp.Castle
+		SccProjectUniqueName8 = WebFormsMvp.UnitTests\\WebFormsMvp.UnitTests.csproj
+		SccProjectName8 = WebFormsMvp.UnitTests
+		SccLocalPath8 = WebFormsMvp.UnitTests
+		SccProjectUniqueName9 = WebFormsMvp.CodeAnalysisRules\\WebFormsMvp.CodeAnalysisRules.csproj
+		SccProjectTopLevelParentUniqueName9 = WebFormsMvp.sln
+		SccProjectName9 = WebFormsMvp.CodeAnalysisRules
+		SccLocalPath9 = WebFormsMvp.CodeAnalysisRules
+		SccProjectUniqueName10 = CodeAnalysis.TestLibrary\\CodeAnalysis.TestLibrary.csproj
+		SccProjectTopLevelParentUniqueName10 = WebFormsMvp.sln
+		SccProjectName10 = CodeAnalysis.TestLibrary
+		SccLocalPath10 = CodeAnalysis.TestLibrary
+		SccProjectUniqueName11 = WebFormsMvp.Unity\\WebFormsMvp.Unity.csproj
+		SccProjectTopLevelParentUniqueName11 = WebFormsMvp.sln
+		SccProjectName11 = WebFormsMvp.Unity
+		SccLocalPath11 = WebFormsMvp.Unity
+	EndGlobalSection
+EndGlobal

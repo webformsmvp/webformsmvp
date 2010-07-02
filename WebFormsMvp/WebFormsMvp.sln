@@ -71,53 +71,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{49E2E50C
 		Dependencies\Unity\Microsoft.Practices.Unity.xml = Dependencies\Unity\Microsoft.Practices.Unity.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Autofac", "WebFormsMvp.Autofac\WebFormsMvp.Autofac.csproj", "{FBD0408C-2801-490F-859A-56192282A987}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 12
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs06.codeplex.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = WebFormsMvp\\WebFormsMvp.csproj
-		SccProjectName1 = WebFormsMvp
-		SccLocalPath1 = WebFormsMvp
-		SccProjectUniqueName2 = WebFormsMvp.Testing\\WebFormsMvp.Testing.csproj
-		SccProjectName2 = WebFormsMvp.Testing
-		SccLocalPath2 = WebFormsMvp.Testing
-		SccProjectUniqueName3 = WebFormsMvp.Futures\\WebFormsMvp.Futures.csproj
-		SccProjectName3 = WebFormsMvp.Futures
-		SccLocalPath3 = WebFormsMvp.Futures
-		SccProjectUniqueName4 = FeatureDemos.UnitTests\\FeatureDemos.UnitTests.csproj
-		SccProjectTopLevelParentUniqueName4 = WebFormsMvp.sln
-		SccProjectName4 = FeatureDemos.UnitTests
-		SccLocalPath4 = FeatureDemos.UnitTests
-		SccProjectUniqueName5 = FeatureDemos.Web\\FeatureDemos.Web.csproj
-		SccProjectTopLevelParentUniqueName5 = WebFormsMvp.sln
-		SccProjectName5 = FeatureDemos.Web
-		SccLocalPath5 = FeatureDemos.Web
-		SccProjectUniqueName6 = FeatureDemos.Logic\\FeatureDemos.Logic.csproj
-		SccProjectTopLevelParentUniqueName6 = WebFormsMvp.sln
-		SccProjectName6 = FeatureDemos.Logic
-		SccLocalPath6 = FeatureDemos.Logic
-		SccProjectUniqueName7 = WebFormsMvp.Castle\\WebFormsMvp.Castle.csproj
-		SccProjectTopLevelParentUniqueName7 = WebFormsMvp.sln
-		SccProjectName7 = WebFormsMvp.Castle
-		SccLocalPath7 = WebFormsMvp.Castle
-		SccProjectUniqueName8 = WebFormsMvp.UnitTests\\WebFormsMvp.UnitTests.csproj
-		SccProjectName8 = WebFormsMvp.UnitTests
-		SccLocalPath8 = WebFormsMvp.UnitTests
-		SccProjectUniqueName9 = WebFormsMvp.CodeAnalysisRules\\WebFormsMvp.CodeAnalysisRules.csproj
-		SccProjectTopLevelParentUniqueName9 = WebFormsMvp.sln
-		SccProjectName9 = WebFormsMvp.CodeAnalysisRules
-		SccLocalPath9 = WebFormsMvp.CodeAnalysisRules
-		SccProjectUniqueName10 = CodeAnalysis.TestLibrary\\CodeAnalysis.TestLibrary.csproj
-		SccProjectTopLevelParentUniqueName10 = WebFormsMvp.sln
-		SccProjectName10 = CodeAnalysis.TestLibrary
-		SccLocalPath10 = CodeAnalysis.TestLibrary
-		SccProjectUniqueName11 = WebFormsMvp.Unity\\WebFormsMvp.Unity.csproj
-		SccProjectTopLevelParentUniqueName11 = WebFormsMvp.sln
-		SccProjectName11 = WebFormsMvp.Unity
-		SccLocalPath11 = WebFormsMvp.Unity
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = WebFormsMvp.vsmdi
 	EndGlobalSection
@@ -170,6 +126,10 @@ Global
 		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD0408C-2801-490F-859A-56192282A987}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +143,7 @@ Global
 		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{D20C328A-5DEC-465B-8A19-662DA2532D88} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
 		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
+		{FBD0408C-2801-490F-859A-56192282A987} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
 		{2934629D-FF06-4B81-8756-588A38F3B2E0} = {F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}
 		{09B600C9-569C-4F2E-BD44-2D80A9ED4526} = {F15DC2E9-2BD3-4690-84FB-BBE815C7B6E8}
 	EndGlobalSection

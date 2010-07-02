@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using WebFormsMvp.Web;
 using WebFormsMvp.FeatureDemos.Logic.Views;
 
 namespace WebFormsMvp.FeatureDemos.Web.Controls
 {
-    public partial class RedirectControl
-        : MvpUserControl, IRedirectView
+    public partial class RedirectControl : MvpUserControl, IRedirectView
     {
         protected void Button_Click(object sender, EventArgs e)
         {

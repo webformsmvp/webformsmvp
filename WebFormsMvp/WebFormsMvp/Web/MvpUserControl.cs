@@ -9,17 +9,41 @@ namespace WebFormsMvp.Web
     /// </summary>
     public abstract class MvpUserControl : UserControl, IView
     {
+        bool throwExceptionIfNoPresenterBound;
+        bool registeredWithPageViewHost;
+
         /// <summary />
         protected MvpUserControl()
         {
             AutoDataBind = true;
+            ThrowExceptionIfNoPresenterBound = true;
         }
 
         /// <summary>
-        /// Gets a value indicating whether the user control should automatically data bind itself at the Page.PreRenderComplete event.
+        /// Gets or sets whether the user control should automatically data bind itself at the Page.PreRenderComplete event.
         /// </summary>
         /// <value><c>true</c> if auto data binding is enabled (default); otherwise, <c>false</c>.</value>
         protected bool AutoDataBind { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the runtime should throw an exception if a presenter is not bound to this control.
+        /// </summary>
+        /// <value><c>true</c> if an exception should be thrown (default); otherwise, <c>false</c>.</value>
+        public bool ThrowExceptionIfNoPresenterBound
+        {
+            get
+            {
+                return throwExceptionIfNoPresenterBound;
+            }
+            set
+            {
+                if (registeredWithPageViewHost)
+                {
+                    throw new InvalidOperationException("ThrowExceptionIfNoPresenterBound can only be set prior to the control's Init event. The best place to set it is in the control's constructor.");
+                }
+                throwExceptionIfNoPresenterBound = value;
+            }
+        }
 
         /// <summary>
         /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
@@ -28,6 +52,7 @@ namespace WebFormsMvp.Web
         protected override void OnInit(EventArgs e)
         {
             PageViewHost.Register(this, Context, AutoDataBind);
+            registeredWithPageViewHost = true;
 
             base.OnInit(e);
         }

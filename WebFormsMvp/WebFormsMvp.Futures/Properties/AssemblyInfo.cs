@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("WebFormsMvp.Futures")]
+[assembly: AssemblyTitle("Web Forms MVP Futures")]
 [assembly: AssemblyDescription("Stuff we are still working on.")]

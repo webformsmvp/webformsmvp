@@ -10,13 +10,30 @@ namespace WebFormsMvp.Web
     /// </summary>
     public abstract class MvpWebService : WebService, IView
     {
+        readonly bool throwExceptionIfNoPresenterBound;
         readonly PresenterBinder presenterBinder;
 
         /// <summary />
         protected MvpWebService()
+            : this(true)
         {
+        }
+
+        /// <summary />
+        protected MvpWebService(bool throwExceptionIfNoPresenterBound)
+        {
+            this.throwExceptionIfNoPresenterBound = throwExceptionIfNoPresenterBound;
             presenterBinder = new PresenterBinder(this, HttpContext.Current);
             presenterBinder.PerformBinding();
+        }
+
+        /// <summary />
+        public bool ThrowExceptionIfNoPresenterBound
+        {
+            get
+            {
+                return throwExceptionIfNoPresenterBound;
+            }
         }
 
         /// <summary>

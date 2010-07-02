@@ -10,6 +10,29 @@ namespace WebFormsMvp.Web
     /// </summary>
     public abstract class MvpHttpHandler : IHttpHandler, IView
     {
+        readonly bool throwExceptionIfNoPresenterBound;
+
+        /// <summary />
+        protected MvpHttpHandler()
+            : this(true)
+        {
+        }
+
+        /// <summary />
+        protected MvpHttpHandler(bool throwExceptionIfNoPresenterBound)
+        {
+            this.throwExceptionIfNoPresenterBound = throwExceptionIfNoPresenterBound;
+        }
+
+        /// <summary />
+        public bool ThrowExceptionIfNoPresenterBound
+        {
+            get
+            {
+                return throwExceptionIfNoPresenterBound;
+            }
+        }
+
         /// <summary />
         public void ProcessRequest(HttpContext context)
         {

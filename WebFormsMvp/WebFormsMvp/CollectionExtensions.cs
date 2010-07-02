@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,6 +44,36 @@ namespace WebFormsMvp
                 throw new ArgumentNullException("source");
 
             return source.ToDictionary(m => m.Key, m => m.Value);
+        }
+
+        internal static bool Empty<T>(this IEnumerable<T> source)
+        {
+            return !source.Any();
+        }
+
+        /// <summary>
+        /// An order independent version of <see cref="Enumerable.SequenceEqual{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Collections.Generic.IEnumerable{TSource})"/>.
+        /// </summary>
+        internal static bool SetEqual<T>(this IEnumerable<T> x, IEnumerable<T> y)
+        {
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            
+            var objectsInX = x.ToList();
+            var objectsInY = y.ToList();
+
+            if (objectsInX.Count() != objectsInY.Count())
+                return false;
+
+            foreach (var objectInY in objectsInY)
+            {
+                if (!objectsInX.Contains(objectInY))
+                    return false;
+
+                objectsInX.Remove(objectInY);
+            }
+
+            return objectsInX.Empty();
         }
     }
 }

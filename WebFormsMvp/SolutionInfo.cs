@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ASP.NET Web Forms MVP")]
+[assembly: AssemblyProduct("Web Forms MVP")]
 [assembly: AssemblyCopyright("Copyright © Damian Edwards, Tatham Oddie 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

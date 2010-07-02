@@ -13,10 +13,14 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -79,8 +83,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleAttributeOnHostScopedToViewTypeWithSingleView.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithSingleAttribute.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithNoAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithNoAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithMultipleAttributes.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_GuardTests.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithSingleAttribute.cs" />
+    <Compile Include="Binder\CompositePresenterDiscoveryStrategyTests.cs" />
+    <Compile Include="Binder\ConventionBasedPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultCompositeViewTypeFactoryTests.cs" />
-    <Compile Include="Binder\DefaultPresenterDiscoveryStrategyTests.cs" />
     <Compile Include="Binder\DefaultPresenterFactoryTests.cs" />
     <Compile Include="Binder\PresenterBinderTests.cs" />
     <Compile Include="CollectionExtensionsTests.cs" />
@@ -90,7 +107,11 @@
     <Compile Include="Presenter`TViewTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />
+    <Compile Include="TypeExtensionsTests.cs" />
+    <Compile Include="TypeListComparerTests.cs" />
     <Compile Include="Web\MvpHttpHandlerTests.cs" />
+    <Compile Include="Web\MvpPageTests.cs" />
+    <Compile Include="Web\MvpUserControlTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">

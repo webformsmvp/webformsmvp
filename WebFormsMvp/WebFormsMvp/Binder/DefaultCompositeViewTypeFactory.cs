@@ -175,8 +175,18 @@ public class TestViewComposite
                 .Union
                 (
                     type.GetInterfaces()
-                        .SelectMany(DiscoverProperties)
-                );
+                        .SelectMany<Type, PropertyInfo>(DiscoverProperties)
+                )
+                .Select(p => new
+                {
+                    PropertyInfo = p,
+                    PropertyInfoFromCompositeViewBase = typeof(CompositeView<>).GetProperty(p.Name)
+                })
+                .Where(p =>
+                    p.PropertyInfoFromCompositeViewBase == null ||
+                    (p.PropertyInfoFromCompositeViewBase.GetGetMethod() == null && p.PropertyInfoFromCompositeViewBase.GetSetMethod() == null)
+                )
+                .Select(p => p.PropertyInfo);
         }
 
         static MethodBuilder BuildMethod(TypeBuilder type, string methodNamePrefix, string methodName, Type returnType, Type[] parameterTypes)
@@ -544,7 +554,7 @@ set
                 .Union
                 (
                     type.GetInterfaces()
-                        .SelectMany(DiscoverEvents)
+                        .SelectMany<Type, EventInfo>(DiscoverEvents)
                 );
         }
 

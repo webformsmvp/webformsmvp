@@ -12,10 +12,14 @@
     <AssemblyName>WebFormsMvp</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -88,16 +92,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\CompositePresenterDiscoveryStrategy.cs" />
+    <Compile Include="Binder\ConventionBasedPresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\DefaultCompositeViewTypeFactory.cs" />
     <Compile Include="Binder\DefaultHttpContextAdapterFactory.cs" />
-    <Compile Include="Binder\DefaultPresenterDiscoveryStrategy.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\DefaultPresenterFactory.cs" />
     <Compile Include="Binder\ICompositeViewTypeFactory.cs" />
     <Compile Include="Binder\IHttpContextAdapterFactory.cs" />
     <Compile Include="Binder\IPresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\IPresenterFactory.cs" />
-    <Compile Include="Binder\PresenterBindInfo.cs" />
+    <Compile Include="Binder\PresenterBinding.cs" />
     <Compile Include="Binder\PresenterCreatedEventArgs.cs" />
+    <Compile Include="Binder\PresenterDiscoveryResult.cs" />
     <Compile Include="BindingMode.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="..\SolutionInfo.cs">
@@ -115,7 +122,12 @@
     <Compile Include="IView.cs" />
     <Compile Include="IView`T.cs" />
     <Compile Include="MessageCoordinator.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="TraceContextAdapter.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="TypeListComparer.cs" />
+    <Compile Include="Web\BuildManagerWrapper.cs" />
+    <Compile Include="IBuildManager.cs" />
     <Compile Include="Web\MvpHttpHandler.cs" />
     <Compile Include="Web\MvpPage`T.cs">
       <SubType>ASPXCodeBehind</SubType>

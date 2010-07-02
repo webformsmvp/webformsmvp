@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A87062B0-C7AB-4AC6-B178-A54AD979AD7C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebFormsMvp.FeatureDemos.Web</RootNamespace>
+    <AssemblyName>WebFormsMvp.FeatureDemos.Web</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSSFriendly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\CSSFriendly.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\DynamicallyLoadedControl.ascx" />
+    <Content Include="PageView.aspx" />
+    <Content Include="ViewsAddedInPageInit.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="AsyncMessages.aspx.cs">
+      <DependentUpon>AsyncMessages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AsyncMessages.aspx.designer.cs">
+      <DependentUpon>AsyncMessages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DynamicallyLoadedControl.ascx.cs">
+      <DependentUpon>DynamicallyLoadedControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DynamicallyLoadedControl.ascx.designer.cs">
+      <DependentUpon>DynamicallyLoadedControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditWidgetControl.ascx.cs">
+      <DependentUpon>EditWidgetControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditWidgetControl.ascx.designer.cs">
+      <DependentUpon>EditWidgetControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Messaging1Control.ascx.cs">
+      <DependentUpon>Messaging1Control.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Messaging1Control.ascx.designer.cs">
+      <DependentUpon>Messaging1Control.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Messaging2Control.ascx.cs">
+      <DependentUpon>Messaging2Control.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Messaging2Control.ascx.designer.cs">
+      <DependentUpon>Messaging2Control.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Messaging.aspx.cs">
+      <DependentUpon>Messaging.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Messaging.aspx.designer.cs">
+      <DependentUpon>Messaging.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PageView.aspx.cs">
+      <DependentUpon>PageView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PageView.aspx.designer.cs">
+      <DependentUpon>PageView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SharedPresenter.aspx.cs">
+      <DependentUpon>SharedPresenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SharedPresenter.aspx.designer.cs">
+      <DependentUpon>SharedPresenter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AsyncMessagesControl.ascx.cs">
+      <DependentUpon>AsyncMessagesControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AsyncMessagesControl.ascx.designer.cs">
+      <DependentUpon>AsyncMessagesControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SharedPresenterControl.ascx.cs">
+      <DependentUpon>SharedPresenterControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SharedPresenterControl.ascx.designer.cs">
+      <DependentUpon>SharedPresenterControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HelloWorldControl.ascx.cs">
+      <DependentUpon>HelloWorldControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HelloWorldControl.ascx.designer.cs">
+      <DependentUpon>HelloWorldControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LookupWidgetControl.ascx.cs">
+      <DependentUpon>LookupWidgetControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LookupWidgetControl.ascx.designer.cs">
+      <DependentUpon>LookupWidgetControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RedirectControl.ascx.cs">
+      <DependentUpon>RedirectControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RedirectControl.ascx.designer.cs">
+      <DependentUpon>RedirectControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\TimeHandler.ashx.cs">
+      <DependentUpon>TimeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="HelloWorld.aspx.cs">
+      <DependentUpon>HelloWorld.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HelloWorld.aspx.designer.cs">
+      <DependentUpon>HelloWorld.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layout\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Redirect.aspx.cs">
+      <DependentUpon>Redirect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Redirect.aspx.designer.cs">
+      <DependentUpon>Redirect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RedirectTo.aspx.cs">
+      <DependentUpon>RedirectTo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RedirectTo.aspx.designer.cs">
+      <DependentUpon>RedirectTo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeService.asmx.cs">
+      <DependentUpon>TimeService.asmx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAddedInPageInit.aspx.cs">
+      <DependentUpon>ViewsAddedInPageInit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewsAddedInPageInit.aspx.designer.cs">
+      <DependentUpon>ViewsAddedInPageInit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetEdit.aspx.cs">
+      <DependentUpon>WidgetEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WidgetEdit.aspx.designer.cs">
+      <DependentUpon>WidgetEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetLookup.aspx.cs">
+      <DependentUpon>WidgetLookup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WidgetLookup.aspx.designer.cs">
+      <DependentUpon>WidgetLookup.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="Layout\Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\SiteTheme\Controls.skin" />
+    <Content Include="App_Themes\SiteTheme\print.css" />
+    <Content Include="App_Themes\SiteTheme\_styles.css" />
+    <Content Include="Global.asax" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Browsers\CSSFriendlyAdapters.browser" />
+    <Content Include="Controls\HelloWorldControl.ascx" />
+    <Content Include="HelloWorld.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\SiteDb.mdf">
+    </Content>
+    <Content Include="App_Data\SiteDb_log.ldf">
+      <DependentUpon>SiteDb.mdf</DependentUpon>
+    </Content>
+    <Content Include="AsyncMessages.aspx" />
+    <Content Include="Controls\AsyncMessagesControl.ascx" />
+    <Content Include="Controls\LookupWidgetControl.ascx" />
+    <Content Include="Controls\RedirectControl.ascx" />
+    <Content Include="License.txt" />
+    <Content Include="Redirect.aspx" />
+    <Content Include="RedirectTo.aspx" />
+    <Content Include="Web.sitemap" />
+    <Content Include="WidgetLookup.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebFormsMvp.Castle\WebFormsMvp.Castle.csproj">
+      <Project>{D20C328A-5DEC-465B-8A19-662DA2532D88}</Project>
+      <Name>WebFormsMvp.Castle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">
+      <Project>{E265BF3E-8CCB-4C22-8C15-263735227A3D}</Project>
+      <Name>WebFormsMvp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FeatureDemos.Logic\FeatureDemos.Logic.csproj">
+      <Project>{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8}</Project>
+      <Name>FeatureDemos.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\EditWidgetControl.ascx" />
+    <Content Include="Controls\Messaging1Control.ascx" />
+    <Content Include="Controls\Messaging2Control.ascx" />
+    <Content Include="Messaging.aspx" />
+    <Content Include="SharedPresenter.aspx" />
+    <Content Include="Controls\SharedPresenterControl.ascx" />
+    <Content Include="Handlers\TimeHandler.ashx" />
+    <Content Include="TimeService.asmx" />
+    <Content Include="WidgetEdit.aspx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4473</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

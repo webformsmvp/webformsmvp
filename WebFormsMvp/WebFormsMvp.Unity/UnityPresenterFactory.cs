@@ -24,9 +24,17 @@ namespace WebFormsMvp.Unity
 
         public IPresenter Create(Type presenterType, Type viewType, IView viewInstance)
         {
+            // If a PresenterBinding attribute is applied directly to a view and the ViewType
+            // property is not explicitly set, it will be defaulted to the view type. In a
+            // user control example, this will be a type like ASP.usercontrols_mycontrol_ascx.
+            // If we register it into the container using this type, and then try and resolve
+            // a presenter like Presenter<IView> unity will throw an exception because it
+            // doesn't use covariance when resolving dependencies. To get around this, we
+            // look at the generic type argument on the presenter type (in this case, IView)
+            // and register the view instance against that instead.
             if (viewType == viewInstance.GetType())
             {
-                viewType = FindViewTypeCached(presenterType, viewInstance);
+                viewType = FindPresenterDescribedViewTypeCached(presenterType, viewInstance);
             }
 
             var presenterScopedContainer = container.CreateChildContainer();
@@ -57,7 +65,7 @@ namespace WebFormsMvp.Unity
             }
         }
 
-        Type FindViewTypeCached(Type presenterType, IView viewInstance)
+        Type FindPresenterDescribedViewTypeCached(Type presenterType, IView viewInstance)
         {
             var presenterTypeHandle = presenterType.TypeHandle.Value;
 
@@ -67,7 +75,7 @@ namespace WebFormsMvp.Unity
                 {
                     if (!presentersToViewTypesCache.ContainsKey(presenterTypeHandle))
                     {
-                        var viewType = FindViewType(presenterType, viewInstance);
+                        var viewType = FindPresenterDescribedViewType(presenterType, viewInstance);
                         presentersToViewTypesCache[presenterTypeHandle] = viewType;
                         return viewType;
                     }
@@ -77,7 +85,7 @@ namespace WebFormsMvp.Unity
             return presentersToViewTypesCache[presenterTypeHandle];
         }
 
-        static Type FindViewType(Type presenterType, IView viewInstance)
+        static Type FindPresenterDescribedViewType(Type presenterType, IView viewInstance)
         {
             var genericPresenterInterface = presenterType
                 .GetInterfaces()

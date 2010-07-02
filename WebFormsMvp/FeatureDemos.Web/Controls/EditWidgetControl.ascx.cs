@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using WebFormsMvp.Web;
-using WebFormsMvp.FeatureDemos.Logic.Views.Models;
+using System.Collections.Generic;
 using WebFormsMvp.FeatureDemos.Logic.Data;
 using WebFormsMvp.FeatureDemos.Logic.Views;
-using System.Collections.Generic;
+using WebFormsMvp.FeatureDemos.Logic.Views.Models;
+using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web.Controls
 {
