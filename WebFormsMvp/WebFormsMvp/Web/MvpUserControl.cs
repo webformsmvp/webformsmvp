@@ -27,18 +27,9 @@ namespace WebFormsMvp.Web
         /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected override void OnInit(EventArgs e)
         {
-            PageViewHost.Register(this, Context);
+            PageViewHost.Register(this, Context, AutoDataBind);
 
             base.OnInit(e);
-
-            Page.PreRenderComplete += Page_PreRenderComplete;
-        }
-
-        void Page_PreRenderComplete(object sender, EventArgs e)
-        {
-            // This event is raised after any async page tasks have completed, so it
-            // is safe to data-bind
-            if (AutoDataBind) DataBind();
         }
 
         /// <summary>
