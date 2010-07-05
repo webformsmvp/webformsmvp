@@ -73,8 +73,8 @@ namespace WebFormsMvp.Binder
             // We need to scope the cache against both the presenter type and the view type.
             var cacheKey = string.Join("__:__", new []
             {
-                presenterType.FullName,
-                viewType.FullName
+                presenterType.AssemblyQualifiedName,
+                viewType.AssemblyQualifiedName
             });
 
             return buildMethodCache.GetOrCreateValue(cacheKey,
