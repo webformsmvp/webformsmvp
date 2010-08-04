@@ -106,6 +106,40 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
+        public void MessageCoordinator_Close_ShouldNotFireNotDeliveredForSubscribersOfBaseType()
+        {
+            // Arrange
+            var coordinator = new MessageCoordinator();
+            
+            coordinator.Subscribe<TestMessage>(
+                (TestMessage message) => { },
+                () => { Assert.Fail("The not recieved callback should not be called"); });
+
+            //Act
+            coordinator.Publish(new InheritedTestMessage());
+            coordinator.Close();
+
+            // Assert
+        }
+
+        [TestMethod]
+        public void MessageCoordinator_Close_ShouldFireNotDeliveredForSubscribersOfInheritedTypes()
+        {
+            // Arrange
+            var coordinator = new MessageCoordinator();
+
+            coordinator.Subscribe<InheritedTestMessage>(
+                (InheritedTestMessage message) => { Assert.Fail("The recieved callback should not be called"); },
+                () => { });
+
+            //Act
+            coordinator.Publish(new TestMessage());
+            coordinator.Close();
+
+            // Assert
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
         public void MessageCoordinator_Publish_ShouldNotFireSubsequentSubscribersIfOneFails()
         {
@@ -333,7 +367,8 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        class TestMessage { }
+        interface ITestMessage {}
+        class TestMessage : ITestMessage{ }
         class InheritedTestMessage : TestMessage { }
     }
 }

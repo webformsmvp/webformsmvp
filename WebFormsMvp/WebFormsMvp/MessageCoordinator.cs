@@ -183,8 +183,8 @@ namespace WebFormsMvp
             var neverReceivedMessageTypes = neverReceivedCallbacks
                 .Keys
                 .Where(neverReceivedMessageType =>
-                    !messages.Keys.Any(messageType =>
-                        messageType.IsAssignableFrom(neverReceivedMessageType)));
+                        !messages.Keys.Any(messageType => 
+                            neverReceivedMessageType.IsAssignableFrom(messageType)));
 
             var callbacks = neverReceivedMessageTypes
                 .SelectMany(t => neverReceivedCallbacks[t]);
