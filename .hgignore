@@ -1,6 +1,7 @@
 bin
 obj
 _ReSharper
+.ReSharper
 TestResults
 .suo
 .user
