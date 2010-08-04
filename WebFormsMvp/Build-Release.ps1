@@ -135,5 +135,5 @@ $FastZip.CreateZip($LibraryReleaseZip, $LibraryReleaseFolder, $true, "") # zipfi
 ""
 ""
 "If you're happy with this release build, you should now run the following commands:"
-"    hg com -m `"Set version to $ReleaseVersionNumber.`" SolutionInfo.cs"
+"    hg com -m `"Cutting release $ReleaseVersionNumber.`" SolutionInfo.cs"
 "    hg tag -m `"Tagged version $ReleaseVersionNumber.`" v$ReleaseVersionNumber"
