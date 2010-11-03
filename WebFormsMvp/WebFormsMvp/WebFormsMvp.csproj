@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\AssemblyExtensions.cs" />
     <Compile Include="Binder\CompositePresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\ConventionBasedPresenterDiscoveryStrategy.cs" />
     <Compile Include="Binder\DefaultCompositeViewTypeFactory.cs" />
