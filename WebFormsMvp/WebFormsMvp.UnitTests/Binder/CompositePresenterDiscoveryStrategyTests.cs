@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Rhino.Mocks;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder
@@ -57,19 +60,16 @@ namespace WebFormsMvp.UnitTests.Binder
         //        MockRepository.GenerateMock<IView>()
         //    };
 
-        //    var binding1 = TestBinding();
+        //    var discoveryResult = TestDiscoverResult();
         //    strategy.Stub(s => s
-        //        .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything, Arg<ITraceContext>.Is.Equal(traceContext)))
-        //        .Return(new[] { binding1 });
+        //        .GetBindings(Arg<IEnumerable<object>>.Is.Equal(hosts), Arg<IEnumerable<IView>>.Is.Anything))
+        //        .Return(new[] { discoveryResult });
 
         //    // Act
-        //    var bindings = composite.GetBindings(hosts, viewInstances, traceContext);
-            
+        //    var bindings = composite.GetBindings(hosts, viewInstances);
+
         //    // Assert
-        //    CollectionAssert.AreEqual(
-        //        bindings.ToArray(),
-        //        new[] { binding1 }
-        //    );
+        //    CollectionAssert.AreEquivalent(discoveryResult.Bindings.ToArray(), bindings.First().Bindings.ToArray());
         //}
 
         //[TestMethod]
@@ -146,9 +146,10 @@ namespace WebFormsMvp.UnitTests.Binder
         //    CollectionAssert.AreEqual(new[] { binding1, binding2 }, bindings.ToArray());
         //}
 
-        //static PresenterBinding TestBinding(params IView[] viewInstances)
+        //static PresenterDiscoveryResult TestDiscoverResult(params IView[] viewInstances)
         //{
-        //    return new PresenterBinding(typeof (object), typeof (object), BindingMode.Default, viewInstances);
+        //    var binding = new PresenterBinding(typeof(object), typeof(object), BindingMode.Default, viewInstances);
+        //    return new PresenterDiscoveryResult(viewInstances, "", new[] { binding });
         //}
     }
 }
