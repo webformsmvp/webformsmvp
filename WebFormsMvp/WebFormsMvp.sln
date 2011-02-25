@@ -22,8 +22,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Castle", "Castle", "{7AD65369-54B5-4D52-95C7-C9BFD440B327}"
 	ProjectSection(SolutionItems) = preProject
 		Dependencies\Castle\Castle.Core.dll = Dependencies\Castle\Castle.Core.dll
-		Dependencies\Castle\Castle.DynamicProxy2.dll = Dependencies\Castle\Castle.DynamicProxy2.dll
-		Dependencies\Castle\Castle.MicroKernel.dll = Dependencies\Castle\Castle.MicroKernel.dll
 		Dependencies\Castle\Castle.Windsor.dll = Dependencies\Castle\Castle.Windsor.dll
 	EndProjectSection
 EndProject

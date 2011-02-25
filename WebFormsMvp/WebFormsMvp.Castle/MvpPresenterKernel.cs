@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Castle.Core;
 using Castle.MicroKernel;
+using Castle.MicroKernel.Registration;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.Castle
@@ -31,7 +32,7 @@ namespace WebFormsMvp.Castle
                 {
                     if (!presenterKernel.HasComponent(presenterType))
                     {
-                        presenterKernel.AddComponent(presenterType.FullName, presenterType, LifestyleType.Transient);
+                        presenterKernel.Register(Component.For(presenterType).Named(presenterType.FullName).LifeStyle.Is(LifestyleType.Transient));
                     }
                 }
             }
