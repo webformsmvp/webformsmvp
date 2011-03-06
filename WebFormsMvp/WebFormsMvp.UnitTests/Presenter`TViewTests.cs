@@ -132,7 +132,12 @@ namespace WebFormsMvp.UnitTests
 
         class TestViewWithModel : IView<TestModel>
         {
-            public event EventHandler Load;
+            event EventHandler IView.Load
+            {
+                add { throw new NotImplementedException(); }
+                remove { throw new NotImplementedException(); }
+            }
+
             public TestModel Model { get; set; }
             public bool ThrowExceptionIfNoPresenterBound
             {
