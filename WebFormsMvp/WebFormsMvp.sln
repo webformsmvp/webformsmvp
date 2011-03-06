@@ -12,12 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Build-Release.ps1 = Build-Release.ps1
 		CodeAnalysisRules.ruleset = CodeAnalysisRules.ruleset
 		DevelopmentKey.snk = DevelopmentKey.snk
-		Local.testsettings = Local.testsettings
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 		ReleaseKey.pfx = ReleaseKey.pfx
 		SolutionInfo.cs = SolutionInfo.cs
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-		WebFormsMvp.5.0.resharper = WebFormsMvp.5.0.resharper
 		WebFormsMvp.vsmdi = WebFormsMvp.vsmdi
 	EndProjectSection
 EndProject
