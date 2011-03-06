@@ -12,9 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Build-Release.ps1 = Build-Release.ps1
 		CodeAnalysisRules.ruleset = CodeAnalysisRules.ruleset
 		DevelopmentKey.snk = DevelopmentKey.snk
+		Local.testsettings = Local.testsettings
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 		ReleaseKey.pfx = ReleaseKey.pfx
 		SolutionInfo.cs = SolutionInfo.cs
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 		WebFormsMvp.5.0.resharper = WebFormsMvp.5.0.resharper
 		WebFormsMvp.vsmdi = WebFormsMvp.vsmdi
 	EndProjectSection
@@ -73,6 +75,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{49E2E50C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Autofac", "WebFormsMvp.Autofac\WebFormsMvp.Autofac.csproj", "{FBD0408C-2801-490F-859A-56192282A987}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureDemos.FunctionalTests", "FeatureDemos.FunctionalTests\FeatureDemos.FunctionalTests.csproj", "{E01A6EBF-8356-43AB-8007-32442D22118D}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = WebFormsMvp.vsmdi
@@ -130,6 +134,10 @@ Global
 		{FBD0408C-2801-490F-859A-56192282A987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD0408C-2801-490F-859A-56192282A987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBD0408C-2801-490F-859A-56192282A987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E01A6EBF-8356-43AB-8007-32442D22118D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E01A6EBF-8356-43AB-8007-32442D22118D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E01A6EBF-8356-43AB-8007-32442D22118D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E01A6EBF-8356-43AB-8007-32442D22118D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +149,7 @@ Global
 		{2F149EE4-5EFE-4A8B-B68B-D123BEBF3AC8} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A56F84E2-1CA8-4955-B3AD-D2F33B2DE34E} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{A87062B0-C7AB-4AC6-B178-A54AD979AD7C} = {392D516C-6A30-4673-A43A-87DEC9340427}
+		{E01A6EBF-8356-43AB-8007-32442D22118D} = {392D516C-6A30-4673-A43A-87DEC9340427}
 		{D20C328A-5DEC-465B-8A19-662DA2532D88} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
 		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
 		{FBD0408C-2801-490F-859A-56192282A987} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
