@@ -93,7 +93,6 @@
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithSingleAttribute.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithNoAttributes.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithNoAttributes.cs" />
-    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetAttributes.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithMultipleAttributes.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_GuardTests.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleViewWithSingleAttribute.cs" />
