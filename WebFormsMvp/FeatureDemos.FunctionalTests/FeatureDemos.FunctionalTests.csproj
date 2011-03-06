@@ -9,8 +9,8 @@
     <ProjectGuid>{E01A6EBF-8356-43AB-8007-32442D22118D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FeatureDemos.IntegrationTests</RootNamespace>
-    <AssemblyName>FeatureDemos.IntegrationTests</AssemblyName>
+    <RootNamespace>FeatureDemos.FunctionalTests</RootNamespace>
+    <AssemblyName>FeatureDemos.FunctionalTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

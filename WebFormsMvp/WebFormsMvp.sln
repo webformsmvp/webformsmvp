@@ -75,7 +75,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{49E2E50C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Autofac", "WebFormsMvp.Autofac\WebFormsMvp.Autofac.csproj", "{FBD0408C-2801-490F-859A-56192282A987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureDemos.IntegrationTests", "FeatureDemos.IntegrationTests\FeatureDemos.IntegrationTests.csproj", "{E01A6EBF-8356-43AB-8007-32442D22118D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureDemos.FunctionalTests", "FeatureDemos.FunctionalTests\FeatureDemos.FunctionalTests.csproj", "{E01A6EBF-8356-43AB-8007-32442D22118D}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
