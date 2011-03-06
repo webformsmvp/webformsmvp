@@ -1,5 +1,4 @@
-﻿using System;
-using WebFormsMvp.Web;
+﻿using WebFormsMvp.Web;
 
 namespace WebFormsMvp.FeatureDemos.Web.Handlers
 {
