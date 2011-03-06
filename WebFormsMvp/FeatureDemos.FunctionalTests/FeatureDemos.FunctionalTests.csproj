@@ -49,6 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="TimeHandlerTest.webtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="HelloWorldTest.webtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
