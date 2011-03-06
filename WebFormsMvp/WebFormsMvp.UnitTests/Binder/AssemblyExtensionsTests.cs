@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Reflection;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.Binder;
-using Rhino.Mocks;
 
 namespace WebFormsMvp.UnitTests.Binder
 {
@@ -16,7 +10,7 @@ namespace WebFormsMvp.UnitTests.Binder
         public void AssemblyExtensions_GetNameSafe_GetsCorrectName()
         {
             // Arrange
-            var assembly = this.GetType().Assembly;
+            var assembly = GetType().Assembly;
 
             // Act
             var result = assembly.GetNameSafe();
