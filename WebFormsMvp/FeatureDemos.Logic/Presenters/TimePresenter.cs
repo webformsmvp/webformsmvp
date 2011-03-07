@@ -17,7 +17,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
 
         void View_Load(object sender, EventArgs e)
         {
-            var timeText = DateTimeOffset.Now.ToString();
+            var timeText = "Current time is: " + DateTimeOffset.Now;
             HttpContext.Response.Write(timeText);
         }
     }

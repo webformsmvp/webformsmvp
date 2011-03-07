@@ -28,7 +28,7 @@ namespace WebFormsMvp.Binder
 
                 var viewType = viewInstance.GetType();
 
-                var viewDefinedAttributes = GetAttributes(typeToAttributeCache, viewType, true);
+                var viewDefinedAttributes = GetAttributes(typeToAttributeCache, viewType);
 
                 if (viewDefinedAttributes.Empty())
                 {
@@ -62,17 +62,44 @@ namespace WebFormsMvp.Binder
                         attribute.ViewType.FullName,
                         attribute.BindingMode
                     ));
+
+                    IEnumerable<IView> viewInstancesToBind;
+                    switch (attribute.BindingMode)
+                    {
+                        case BindingMode.Default:
+                            viewInstancesToBind = new[] {viewInstance};
+                            break;
+                        case BindingMode.SharedPresenter:
+                            var attribute1 = attribute;
+                            viewInstancesToBind = pendingViewInstances
+                                .Where(v => attribute1.ViewType.IsAssignableFrom(viewType))
+                                .ToArray();
+                            
+                            messages.Add(string.Format(
+                                CultureInfo.InvariantCulture,
+                                "including {0} more view instances in the binding because the binding mode is {1} and they are compatible with the view type {2}",
+                                viewInstancesToBind.Count() - 1,
+                                attribute.BindingMode,
+                                attribute.ViewType.FullName
+                            ));
+
+                            break;
+                        default:
+                            throw new NotSupportedException(string.Format("Binding mode {0} is not supported", attribute.BindingMode));
+                    }
+
                     bindings.Add(new PresenterBinding(
                         attribute.PresenterType,
                         attribute.ViewType,
                         attribute.BindingMode,
-                        new[] { viewInstance }
+                        viewInstancesToBind
                     ));
                 }
 
                 var hostDefinedAttributes = hosts
-                    .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType(), false)
-                        .Select(a => new { Host = h, Attribute = a }));
+                    .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType())
+                        .Select(a => new { Host = h, Attribute = a }))
+                    .ToArray();
 
                 var relevantHostDefinedAttributes = hostDefinedAttributes
                     .Where(a => a.Attribute.ViewType.IsAssignableFrom(viewType));
@@ -107,19 +134,22 @@ namespace WebFormsMvp.Binder
                         new[] { viewInstance }
                     ));
                 }
-                
+
+                var totalViewInstancesBound = bindings.SelectMany(b => b.ViewInstances).Distinct();
+
                 yield return new PresenterDiscoveryResult(
-                    new[] { viewInstance },
+                    totalViewInstancesBound,
                     "AttributeBasedPresenterDiscoveryStrategy:\r\n"  +
                         string.Join("\r\n", messages.Select(m => "- " + m).ToArray()),
                     bindings
                 );
 
-                pendingViewInstances.Remove(viewInstance);
+                foreach (var viewInstanceToRemoveFromQueue in totalViewInstancesBound)
+                    pendingViewInstances.Remove(viewInstanceToRemoveFromQueue);
             }
         }
 
-        internal static IEnumerable<PresenterBindingAttribute> GetAttributes(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> cache, Type sourceType, bool restrictBindingMode)
+        internal static IEnumerable<PresenterBindingAttribute> GetAttributes(IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> cache, Type sourceType)
         {
             var hostTypeHandle = sourceType.TypeHandle;
             return cache.GetOrCreateValue(hostTypeHandle, () =>
@@ -134,19 +164,6 @@ namespace WebFormsMvp.Binder
                             BindingMode = pba.BindingMode
                         })
                     .ToArray();
-
-                if (restrictBindingMode &&
-                    attributes.Any(a => a.BindingMode != BindingMode.Default))
-                {
-                    throw new NotSupportedException(string.Format(
-                        CultureInfo.InvariantCulture,
-                        "When a {1} is applied directly to the view type, only the default binding mode is supported. One of the bindings on {0} violates this restriction. To use an alternative binding mode, such as {2}, apply the {1} to one of the hosts instead (such as the page, or master page).",
-                        sourceType.FullName,
-                        typeof(PresenterBindingAttribute).FullName,
-                        Enum.GetName(typeof(BindingMode),
-                        BindingMode.SharedPresenter)
-                    ));
-                }
 
                 return attributes;
             });

@@ -55,7 +55,11 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
                 set;
             }
 
-            public event EventHandler Load;
+            event EventHandler IView.Load
+            {
+                add { throw new NotImplementedException(); }
+                remove { throw new NotImplementedException(); }
+            }
         }
 
         public abstract class Presenter1 : IPresenter

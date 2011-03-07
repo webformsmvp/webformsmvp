@@ -9,32 +9,33 @@ using WebFormsMvp.Binder;
 namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests
 {
     [TestClass]
-    public class GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView
+    public class GetBindings_MultipleViewInstancesWithSharedPresenterOnView
     {
         [TestMethod]
-        public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_SingleAttributeOnHostScopedToViewInterface()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_MultipleViewInstancesWithSharedPresenterOnView()
         {
             // Arrange
             var strategy = new AttributeBasedPresenterDiscoveryStrategy();
-            var hosts = new [] { new Host1() };
-            var view1 = new View1();
-            var views = new[] { view1 };
+            var hosts = new object[0];
+            var viewInstance1 = new View1();
+            var viewInstance2 = new View1();
+            var viewInstances = new[] { viewInstance1, viewInstance2 };
 
             // Act
-            var results = strategy.GetBindings(hosts, views).ToArray();
+            var results = strategy.GetBindings(hosts, viewInstances).ToArray();
 
             // Assert
             CollectionAssert.AreEqual(new[]
                 {
                     new PresenterDiscoveryResult
                     (
-                        new[] {view1},
+                        new[] {viewInstance1, viewInstance2},
                         @"AttributeBasedPresenterDiscoveryStrategy:
-- could not found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+View1
-- found a [PresenterBinding] attribute on host instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+Host1 (presenter type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+Presenter1, view type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView+IViewInterface1, binding mode: Default)",
+- found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+View1 (presenter type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+Presenter1, view type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+View1, binding mode: SharedPresenter)
+- including 1 more view instances in the binding because the binding mode is SharedPresenter and they are compatible with the view type WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+View1",
                         new[]
                         {
-                            new PresenterBinding(typeof(Presenter1), typeof(IViewInterface1), BindingMode.Default, new[] {view1}), 
+                            new PresenterBinding(typeof(Presenter1), typeof(View1), BindingMode.SharedPresenter, new[] {viewInstance1, viewInstance2}), 
                         }
                     )
                 },
@@ -42,16 +43,8 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
             );
         }
 
-        [PresenterBinding(typeof(Presenter1), ViewType = typeof(IViewInterface1))]
-        public class Host1
-        {
-        }
-
-        public interface IViewInterface1 : IView
-        {   
-        }
-
-        public class View1 : IViewInterface1
+        [PresenterBinding(typeof(Presenter1), BindingMode = BindingMode.SharedPresenter)]
+        public class View1 : IView
         {
             public bool ThrowExceptionIfNoPresenterBound
             {
