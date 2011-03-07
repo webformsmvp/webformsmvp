@@ -46,7 +46,7 @@ namespace WebFormsMvp.Autofac
             }
 
             // Disposing the container will dispose any of the components
-            // created within it's lifetime scope.
+            // created within its lifetime scope.
             presenterScopedContainer.Dispose();
         }
     } 
