@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using Autofac;
 using Autofac.Builder;
 using WebFormsMvp.Binder;
