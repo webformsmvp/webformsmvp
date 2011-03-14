@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>WebFormsMvp</id>
-    <version>0.9.7.5</version>
+    <version>0.0.0.0</version>
     <authors>Damian Edwards, Tatham Oddie</authors>
     <description>ASP.NET MVC might be the new kid on the block, but there are still a host of compelling advantages to ASP.NET Web Forms.
 

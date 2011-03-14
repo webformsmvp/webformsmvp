@@ -128,14 +128,11 @@ $FastZip = New-Object -TypeName ICSharpCode.SharpZipLib.Zip.FastZip
 $FastZip.CreateZip($LibraryReleaseZip, $LibraryReleaseFolder, $true, "") # zipfile, source, recurse, filter
 
 # Build the core NuGet package
-$CoreNuSpecTemplatePath = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\WebFormsMvp.nuspec"
-(gc -Path $CoreNuSpecTemplatePath) `
-	-replace "(?<=<version>)[.\d]*(?=</version)", $ReleaseVersionNumber |
-	sc -Path $CoreNuSpecTemplatePath -Encoding UTF8
 $CoreNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.nuspec"
-Copy-Item $CoreNuSpecTemplatePath -Destination $CoreNuSpecPath
+Copy-Item (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\WebFormsMvp.nuspec") `
+	-Destination $CoreNuSpecPath
 $NuGet = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\NuGet.exe"
-& $NuGet pack $CoreNuSpecPath -OutputDirectory $ReleaseFolder
+& $NuGet pack $CoreNuSpecPath -OutputDirectory $ReleaseFolder -Version $ReleaseVersionNumber
 if (-not $?)
 {
 	throw "The NuGet process returned an error code."
