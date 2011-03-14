@@ -6,3 +6,5 @@ Contributors, in order of first commit:
 Jason Stangroome (@jstangroome)
 Ducas Francis (@ducas)
 Tariq Hassanen (@tariqh)
+Daniel Bartholomew (@dbartholomew)
+Eric Lee (@SaintGimp)
