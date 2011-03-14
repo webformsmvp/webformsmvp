@@ -139,6 +139,19 @@ if (-not $?)
 }
 Remove-Item $CoreNuSpecPath
 
+# Build the Castle NuGet package
+$CastleNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.Castle.nuspec"
+(gc -Path (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Castle\WebFormsMvp.Castle.nuspec")) `
+	-replace "(?<=dependency id=`"webformsmvp`" version=`")[.\d]*(?=`")", $ReleaseVersionNumber |
+	sc -Path $CastleNuSpecPath -Encoding UTF8
+$NuGet = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\NuGet.exe"
+& $NuGet pack $CastleNuSpecPath -OutputDirectory $ReleaseFolder -Version $ReleaseVersionNumber
+if (-not $?)
+{
+	throw "The NuGet process returned an error code."
+}
+Remove-Item $CastleNuSpecPath
+
 # Tell the user what to do next
 ""
 ""
@@ -147,3 +160,4 @@ Remove-Item $CoreNuSpecPath
 "    hg tag -m `"Tagged version $ReleaseVersionNumber.`" v$ReleaseVersionNumber"
 "    hg pus"
 "    nuget push $CoreNuSpecPath"
+"    nuget push $CastleNuSpecPath"

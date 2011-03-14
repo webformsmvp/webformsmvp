@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>WebFormsMvp-Castle</id>
+    <version>0.0.0.0</version>
+    <authors>Damian Edwards, Tatham Oddie</authors>
+    <description>Provides Castle Windsor integration for Web Forms MVP presenter resolution.</description>
+    <language>en-US</language>
+    <projectUrl>http://webformsmvp.codeplex.com/</projectUrl>
+    <licenseUrl>http://webformsmvp.codeplex.com/license</licenseUrl>
+    <dependencies>
+      <dependency id="webformsmvp" version="0.0.0.0" />
+      <dependency id="Castle.Windsor" version="2.5" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Library\Integrations\WebFormsMvp.Castle.*" target="lib" />
+  </files>
+</package>
