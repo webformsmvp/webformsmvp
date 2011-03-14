@@ -27,7 +27,7 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
                     (
                         new[] {view1},
                         @"AttributeBasedPresenterDiscoveryStrategy:
-- could not found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleViewWithNoAttribute+View1",
+- could not find a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_SingleViewWithNoAttribute+View1",
                         new PresenterBinding[0]
                     )
                 },

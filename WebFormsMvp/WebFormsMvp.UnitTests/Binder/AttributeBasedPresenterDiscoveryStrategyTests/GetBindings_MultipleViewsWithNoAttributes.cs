@@ -28,14 +28,14 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
                     (
                         new[] {view1},
                         @"AttributeBasedPresenterDiscoveryStrategy:
-- could not found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewsWithNoAttributes+View1",
+- could not find a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewsWithNoAttributes+View1",
                         new PresenterBinding[0]
                     ),
                     new PresenterDiscoveryResult
                     (
                         new[] {view2},
                         @"AttributeBasedPresenterDiscoveryStrategy:
-- could not found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewsWithNoAttributes+View2",
+- could not find a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewsWithNoAttributes+View2",
                         new PresenterBinding[0]
                     )
                 },
