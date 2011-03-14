@@ -20,6 +20,8 @@ namespace WebFormsMvp.Binder
 
             var pendingViewInstances = viewInstances.ToList();
 
+            var passes = 0;
+            var allowedPasses = pendingViewInstances.Count()*10;
             while (pendingViewInstances.Any())
             {
                 var messages = new List<string>();
@@ -146,6 +148,9 @@ namespace WebFormsMvp.Binder
 
                 foreach (var viewInstanceToRemoveFromQueue in totalViewInstancesBound)
                     pendingViewInstances.Remove(viewInstanceToRemoveFromQueue);
+
+                if (passes++ > allowedPasses)
+                    throw new ApplicationException("The loop has executed too many times. An exit condition is failing and needs to be investigated.");
             }
         }
 
