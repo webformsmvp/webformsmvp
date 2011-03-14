@@ -2,6 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>WebFormsMvp-Castle</id>
+    <title>Web Forms MVP + Castle Windsor</title>
     <version>0.0.0.0</version>
     <authors>Damian Edwards, Tatham Oddie</authors>
     <description>Provides Castle Windsor integration for Web Forms MVP presenter resolution.</description>
