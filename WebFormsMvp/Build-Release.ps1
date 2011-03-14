@@ -121,15 +121,26 @@ Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.dll" `
 Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.pdb" `
 	-Destination (Join-Path -Path $HelpersReleaseFolder -ChildPath "WebFormsMvp.CodeAnalysisRules.FxCop136.pdb")
 
-# Load ZIP library
+# Build the ZIP release
 $LibraryReleaseZip = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp-v$ReleaseVersionNumber-Library.zip";
 Add-Type -Path (Join-Path -Path $SolutionRoot -ChildPath "Dependencies\ICSharpCode.SharpZipLib.dll")
 $FastZip = New-Object -TypeName ICSharpCode.SharpZipLib.Zip.FastZip
 $FastZip.CreateZip($LibraryReleaseZip, $LibraryReleaseFolder, $true, "") # zipfile, source, recurse, filter
 
-# Copy source to a temp folder
-
-# Package Releases\WebFormsMvp.(version).FeatureDemos.zip (feature demo w/ library reference)
+# Build the core NuGet package
+$CoreNuSpecTemplatePath = Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp\WebFormsMvp.nuspec"
+(gc -Path $CoreNuSpecTemplatePath) `
+	-replace "(?<=<version>)[.\d]*(?=</version)", $ReleaseVersionNumber |
+	sc -Path $CoreNuSpecTemplatePath -Encoding UTF8
+$CoreNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.nuspec"
+Copy-Item $CoreNuSpecTemplatePath -Destination $CoreNuSpecPath
+$NuGet = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\NuGet.exe"
+& $NuGet pack $CoreNuSpecPath -OutputDirectory $ReleaseFolder
+if (-not $?)
+{
+	throw "The NuGet process returned an error code."
+}
+Remove-Item $CoreNuSpecPath
 
 # Tell the user to commit the version change and tag the revision
 ""
@@ -137,3 +148,4 @@ $FastZip.CreateZip($LibraryReleaseZip, $LibraryReleaseFolder, $true, "") # zipfi
 "If you're happy with this release build, you should now run the following commands:"
 "    hg com -m `"Cutting release $ReleaseVersionNumber.`" SolutionInfo.cs"
 "    hg tag -m `"Tagged version $ReleaseVersionNumber.`" v$ReleaseVersionNumber"
+"    nuget push $CoreNuSpecPath"
