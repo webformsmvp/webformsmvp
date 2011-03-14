@@ -9,14 +9,14 @@ using WebFormsMvp.Binder;
 namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests
 {
     [TestClass]
-    public class GetBindings_MultipleViewInstancesWithSharedPresenterOnView
+    public class GetBindings_MultipleViewInstancesWithSharedPresenterOnHost
     {
         [TestMethod]
-        public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_MultipleViewInstancesWithSharedPresenterOnView()
+        public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_MultipleViewInstancesWithSharedPresenterOnHost()
         {
             // Arrange
             var strategy = new AttributeBasedPresenterDiscoveryStrategy();
-            var hosts = new object[0];
+            var hosts = new[] { new Host1() };
             var viewInstance1 = new View1();
             var viewInstance2 = new View1();
             var viewInstances = new[] { viewInstance1, viewInstance2 };
@@ -31,8 +31,9 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
                     (
                         new[] {viewInstance1, viewInstance2},
                         @"AttributeBasedPresenterDiscoveryStrategy:
-- found a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+View1 (presenter type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+Presenter1, view type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+IViewInterface1, binding mode: SharedPresenter)
-- including 1 more view instances in the binding because the binding mode is SharedPresenter and they are compatible with the view type WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnView+IViewInterface1",
+- could not find a [PresenterBinding] attribute on view instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnHost+View1
+- found a [PresenterBinding] attribute on host instance WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnHost+Host1 (presenter type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnHost+Presenter1, view type: WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnHost+IViewInterface1, binding mode: SharedPresenter)
+- including 1 more view instances in the binding because the binding mode is SharedPresenter and they are compatible with the view type WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetBindings_MultipleViewInstancesWithSharedPresenterOnHost+IViewInterface1",
                         new[]
                         {
                             new PresenterBinding(typeof(Presenter1), typeof(IViewInterface1), BindingMode.SharedPresenter, new[] {viewInstance1, viewInstance2}), 
@@ -43,11 +44,18 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
             );
         }
 
+        [PresenterBinding(
+            typeof(Presenter1),
+            ViewType = typeof(IViewInterface1),
+            BindingMode = BindingMode.SharedPresenter)]
+        public class Host1
+        {
+        }
+
         public interface IViewInterface1 : IView
         {
         }
 
-        [PresenterBinding(typeof(Presenter1), BindingMode = BindingMode.SharedPresenter, ViewType = typeof(IViewInterface1))]
         public class View1 : IViewInterface1
         {
             public bool ThrowExceptionIfNoPresenterBound
