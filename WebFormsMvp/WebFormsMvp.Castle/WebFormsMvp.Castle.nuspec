@@ -9,6 +9,7 @@
     <language>en-US</language>
     <projectUrl>http://webformsmvp.codeplex.com/</projectUrl>
     <licenseUrl>http://webformsmvp.codeplex.com/license</licenseUrl>
+    <iconUrl>http://webformsmvp.com/nugetlogo.png</iconUrl>
     <dependencies>
       <dependency id="webformsmvp" version="0.0.0.0" />
       <dependency id="Castle.Windsor" version="2.5" />

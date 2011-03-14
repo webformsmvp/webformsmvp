@@ -11,6 +11,7 @@ The ASP.NET Web Forms MVP project is about bringing the love back to Web Forms t
     <language>en-US</language>
     <projectUrl>http://webformsmvp.codeplex.com/</projectUrl>
     <licenseUrl>http://webformsmvp.codeplex.com/license</licenseUrl>
+    <iconUrl>http://webformsmvp.com/nugetlogo.png</iconUrl>
   </metadata>
   <files>
     <file src="Library\*.dll" target="lib" />
