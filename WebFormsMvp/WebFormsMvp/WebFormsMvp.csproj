@@ -64,8 +64,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Release\WebFormsMvp.xml</DocumentationFile>
     <AssemblyOriginatorKeyFile>..\ReleaseKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
