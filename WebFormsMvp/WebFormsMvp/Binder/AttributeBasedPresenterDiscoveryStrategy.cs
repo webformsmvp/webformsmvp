@@ -36,7 +36,7 @@ namespace WebFormsMvp.Binder
                 {
                     messages.Add(string.Format(
                         CultureInfo.InvariantCulture,
-                        "could not found a [PresenterBinding] attribute on view instance {0}",
+                        "could not find a [PresenterBinding] attribute on view instance {0}",
                         viewType.FullName
                     ));
                 }
@@ -137,7 +137,7 @@ namespace WebFormsMvp.Binder
                     ));
                 }
 
-                var totalViewInstancesBound = bindings.SelectMany(b => b.ViewInstances).Distinct();
+                var totalViewInstancesBound = bindings.SelectMany(b => b.ViewInstances).Concat(new[] { viewInstance }).Distinct();
 
                 yield return new PresenterDiscoveryResult(
                     totalViewInstancesBound,
