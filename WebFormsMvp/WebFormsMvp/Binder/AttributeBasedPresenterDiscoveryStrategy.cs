@@ -41,7 +41,7 @@ namespace WebFormsMvp.Binder
                     ));
                 }
                 
-                foreach (var attribute in viewDefinedAttributes)
+                foreach (var attribute in viewDefinedAttributes.OrderBy(a => a.PresenterType.Name))
                 {
                     if (!attribute.ViewType.IsAssignableFrom(viewType))
                     {
@@ -106,7 +106,7 @@ namespace WebFormsMvp.Binder
                 var relevantHostDefinedAttributes = hostDefinedAttributes
                     .Where(a => a.Attribute.ViewType.IsAssignableFrom(viewType));
 
-                foreach (var hostAttribute in relevantHostDefinedAttributes)
+                foreach (var hostAttribute in relevantHostDefinedAttributes.OrderBy(a => a.Attribute.PresenterType.Name))
                 {
                     if (!hostAttribute.Attribute.ViewType.IsAssignableFrom(viewType))
                     {
