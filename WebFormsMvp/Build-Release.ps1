@@ -139,10 +139,11 @@ if (-not $?)
 }
 Remove-Item $CoreNuSpecPath
 
-# Tell the user to commit the version change and tag the revision
+# Tell the user what to do next
 ""
 ""
 "If you're happy with this release build, you should now run the following commands:"
 "    hg com -m `"Cutting release $ReleaseVersionNumber.`" SolutionInfo.cs"
 "    hg tag -m `"Tagged version $ReleaseVersionNumber.`" v$ReleaseVersionNumber"
+"    hg pus"
 "    nuget push $CoreNuSpecPath"
