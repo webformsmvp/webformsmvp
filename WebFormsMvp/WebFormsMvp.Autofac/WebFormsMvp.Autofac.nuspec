@@ -12,7 +12,7 @@
     <iconUrl>http://webformsmvp.com/nugetlogo.png</iconUrl>
     <dependencies>
       <dependency id="webformsmvp" version="0.0.0.0" />
-      <dependency id="Autofac.Web" version="2" />
+      <dependency id="Autofac.Web" version="2.4" />
     </dependencies>
   </metadata>
   <files>
