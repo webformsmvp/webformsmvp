@@ -152,6 +152,19 @@ if (-not $?)
 }
 Remove-Item $CastleNuSpecPath
 
+# Build the Autofac NuGet package
+$AutofacNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.Autofac.nuspec"
+(gc -Path (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Autofac\WebFormsMvp.Autofac.nuspec")) `
+	-replace "(?<=dependency id=`"webformsmvp`" version=`")[.\d]*(?=`")", $ReleaseVersionNumber |
+	sc -Path $AutofacNuSpecPath -Encoding UTF8
+$NuGet = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\NuGet.exe"
+& $NuGet pack $AutofacNuSpecPath -OutputDirectory $ReleaseFolder -Version $ReleaseVersionNumber
+if (-not $?)
+{
+	throw "The NuGet process returned an error code."
+}
+Remove-Item $AutofacNuSpecPath
+
 # Tell the user what to do next
 ""
 ""
@@ -161,3 +174,4 @@ Remove-Item $CastleNuSpecPath
 "    hg pus"
 "    nuget push $CoreNuSpecPath"
 "    nuget push $CastleNuSpecPath"
+"    nuget push $AutofacNuSpecPath"
