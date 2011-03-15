@@ -211,6 +211,22 @@ namespace WebFormsMvp.UnitTests
         }
 
         [TestMethod]
+        public void MessageCoordinator_Publish_ShouldAcceptNewMessagesWithinALateSubscribeCallback()
+        {
+            // Arrange
+            var coordinator = new MessageCoordinator();
+
+            // Act
+            var intReceived = false;
+            coordinator.Publish("message");
+            coordinator.Subscribe<int>(m => { intReceived = m == 123; });
+            coordinator.Subscribe<string>(m => coordinator.Publish(123));
+
+            // Assert
+            Assert.IsTrue(intReceived);
+        }
+
+        [TestMethod]
         public void MessageCoordinator_Subscribe_ShouldReceivePreviousMessages()
         {
             // Arrange

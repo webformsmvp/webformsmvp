@@ -138,7 +138,8 @@ namespace WebFormsMvp
                 .Where(mt => typeof(TMessage).IsAssignableFrom(mt));
 
             var previousMessages = previousMessageTypes
-                .SelectMany(t => messages[t].Cast<TMessage>());
+                .SelectMany(t => messages[t].Cast<TMessage>())
+                .ToArray();
 
             foreach (var previousMessage in previousMessages)
             {
