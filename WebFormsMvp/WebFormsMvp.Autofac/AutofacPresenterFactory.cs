@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Autofac;
-using Autofac.Builder;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.Autofac
@@ -10,8 +9,8 @@ namespace WebFormsMvp.Autofac
     {
         readonly IContainer container;
 
-        readonly IDictionary<IPresenter, IContainer> presentersToContainers = new Dictionary<IPresenter, IContainer>();
-        readonly object presentersToContainersSyncLock = new object();
+        readonly IDictionary<IPresenter, ILifetimeScope> presentersToLifetimeScopes = new Dictionary<IPresenter, ILifetimeScope>();
+        readonly object presentersToLifetimeScopesSyncLock = new object();
 
         public AutofacPresenterFactory(IContainer container)
         {
@@ -20,18 +19,18 @@ namespace WebFormsMvp.Autofac
 
         public IPresenter Create(Type presenterType, Type viewType, IView viewInstance)
         {
-            var presenterScopedContainer = container.CreateInnerContainer();            
-            
-            var builder = new ContainerBuilder();
-            builder.Register(presenterType).ContainerScoped();
-            builder.Register((object)viewInstance).As(viewType);
-            builder.Build(presenterScopedContainer);
+            var presenterScopedContainer = container.BeginLifetimeScope(builder =>
+            {
+                builder.RegisterType(presenterType);
+                builder.RegisterInstance((object)viewInstance).As(viewType);
+                builder.Build();
+            });
 
             var presenter = (IPresenter)presenterScopedContainer.Resolve(presenterType);
             
-            lock (presentersToContainersSyncLock)
+            lock (presentersToLifetimeScopesSyncLock)
             {
-                presentersToContainers[presenter] = presenterScopedContainer;
+                presentersToLifetimeScopes[presenter] = presenterScopedContainer;
             }
 
             return presenter;
@@ -39,10 +38,10 @@ namespace WebFormsMvp.Autofac
 
         public void Release(IPresenter presenter)
         {
-            var presenterScopedContainer = presentersToContainers[presenter];
-            lock (presentersToContainersSyncLock)
+            var presenterScopedContainer = presentersToLifetimeScopes[presenter];
+            lock (presentersToLifetimeScopesSyncLock)
             {
-                presentersToContainers.Remove(presenter);
+                presentersToLifetimeScopes.Remove(presenter);
             }
 
             // Disposing the container will dispose any of the components
