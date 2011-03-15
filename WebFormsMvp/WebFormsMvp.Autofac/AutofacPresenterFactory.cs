@@ -25,7 +25,9 @@ namespace WebFormsMvp.Autofac
                 builder.RegisterInstance((object)viewInstance).As(viewType);
             });
 
-            var presenter = (IPresenter)presenterScopedContainer.Resolve(presenterType);
+            var presenter = (IPresenter)presenterScopedContainer.Resolve(
+                presenterType,
+                new LooselyTypedParameter(viewType, viewInstance));
             
             lock (presentersToLifetimeScopesSyncLock)
             {
@@ -47,5 +49,5 @@ namespace WebFormsMvp.Autofac
             // created within its lifetime scope.
             presenterScopedContainer.Dispose();
         }
-    } 
+    }
 }

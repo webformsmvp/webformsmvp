@@ -32,6 +32,17 @@ namespace WebFormsMvp.PresenterFactoryUnitTests
         }
 
         [TestMethod]
+        public void Create_ShouldReturnInstanceWhenViewInstanceIsASuperTypeOfThePresenterSignature()
+        {
+            var factory = BuildFactory();
+            var viewInstance = new View1();
+
+            var presenter = factory.Create(typeof(BasicPresenter), typeof(View1), viewInstance);
+
+            Assert.IsInstanceOfType(presenter, typeof(BasicPresenter));
+        }
+
+        [TestMethod]
         public void Release_ShouldCallDisposeIfThePresenterImplementsIDisposable()
         {
             var factory = BuildFactory();
