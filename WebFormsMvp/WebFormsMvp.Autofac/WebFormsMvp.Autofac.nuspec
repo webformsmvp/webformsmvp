@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>WebFormsMvp-Autofac</id>
+    <id>WebFormsMvp.Autofac</id>
     <title>Web Forms MVP + Autofac</title>
     <version>0.0.0.0</version>
     <authors>Damian Edwards, Tatham Oddie</authors>
