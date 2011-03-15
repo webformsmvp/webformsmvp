@@ -23,7 +23,6 @@ namespace WebFormsMvp.Autofac
             {
                 builder.RegisterType(presenterType);
                 builder.RegisterInstance((object)viewInstance).As(viewType);
-                builder.Build();
             });
 
             var presenter = (IPresenter)presenterScopedContainer.Resolve(presenterType);

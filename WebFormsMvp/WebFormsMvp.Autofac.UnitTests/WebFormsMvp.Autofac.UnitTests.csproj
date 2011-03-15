@@ -54,12 +54,17 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AutofacPresenterFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebFormsMvp.Autofac\WebFormsMvp.Autofac.csproj">
       <Project>{FBD0408C-2801-490F-859A-56192282A987}</Project>
       <Name>WebFormsMvp.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">
+      <Project>{E265BF3E-8CCB-4C22-8C15-263735227A3D}</Project>
+      <Name>WebFormsMvp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
