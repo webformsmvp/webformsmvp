@@ -26,7 +26,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
-            presenter.ReleaseView();
 
             // Assert that both begin & end handlers were called
             Assert.IsTrue(view.Model.Messages.Any(m => m.Contains("begin handler")));

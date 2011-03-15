@@ -79,8 +79,7 @@ namespace WebFormsMvp.UnitTests
             httpContext.Stub(h => h.Response).Return(response);
 
             // Act
-            var presenter = new TestPresenter(view);
-            presenter.HttpContext = httpContext;
+            var presenter = new TestPresenter(view) {HttpContext = httpContext};
 
             // Assert
             Assert.AreSame(response, presenter.Response);
@@ -96,8 +95,7 @@ namespace WebFormsMvp.UnitTests
             httpContext.Stub(h => h.Server).Return(server);
 
             // Act
-            var presenter = new TestPresenter(view);
-            presenter.HttpContext = httpContext;
+            var presenter = new TestPresenter(view) {HttpContext = httpContext};
 
             // Assert
             Assert.AreSame(server, presenter.Server);
@@ -153,26 +151,12 @@ namespace WebFormsMvp.UnitTests
         {
             public TestPresenterWithModelBasedView(TestViewWithModel view)
                 : base(view)
-            {
-            }
-
-            public override void ReleaseView()
-            {
-                throw new NotImplementedException();
-            }
+            {}
         }
 
         class TestPresenter : Presenter<IView>
         {
-            public TestPresenter(IView view)
-                : base(view)
-            {
-            }
-
-            public override void ReleaseView()
-            {
-                throw new NotImplementedException();
-            }
+            public TestPresenter(IView view) : base(view) {}
         }
     }
 }

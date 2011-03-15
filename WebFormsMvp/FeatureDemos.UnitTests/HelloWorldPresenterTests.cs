@@ -31,7 +31,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
-            presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual("Hello World!", view.Model.Message);
@@ -49,7 +48,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             httpContext.Stub(h => h.User).Return(user).Repeat.Twice();
             user.Stub(u => u.Identity).Return(identity).Repeat.Twice();
             identity.Stub(i => i.IsAuthenticated).Return(true);
-            var name = "Bob";
+            const string name = "Bob";
             identity.Stub(i => i.Name).Return(name);
 
             var presenter = new HelloWorldPresenter(view)
@@ -59,7 +58,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
-            presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(string.Format("Hello {0}!", name), view.Model.Message);

@@ -35,7 +35,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs { Id = 1 });
             asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
-            presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
@@ -64,8 +63,7 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs { Id = 1, Name = "Blah" });
             asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
-            presenter.ReleaseView();
-
+ 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
         }
@@ -93,7 +91,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs { Name = "Test" });
             asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
-            presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
@@ -122,7 +119,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs { Id = -1, Name = "Test" });
             asyncManager.ExecuteRegisteredAsyncTasks(); // Execute the tasks here as ASP.NET would normally do for us
-            presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(widget, view.Model.Widgets.First());
@@ -139,7 +135,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
 
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
-            presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(false, view.Model.ShowResults);
@@ -167,7 +162,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.Finding += null, view, new FindingWidgetEventArgs { Name = "Test" });
-            presenter.ReleaseView();
 
             // Assert
             Assert.AreEqual(true, view.Model.ShowResults);

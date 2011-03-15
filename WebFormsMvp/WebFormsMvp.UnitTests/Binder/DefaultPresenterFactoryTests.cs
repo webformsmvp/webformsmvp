@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
 using WebFormsMvp.Binder;
@@ -90,11 +89,6 @@ namespace WebFormsMvp.UnitTests.Binder
             {
                 DisposeCalled = true;
             }
-
-            public override void ReleaseView()
-            {
-                throw new NotImplementedException();
-            }
         }
         [TestMethod]
         public void DefaultPresenterFactory_Release_ShouldCallDispose()
@@ -166,11 +160,6 @@ namespace WebFormsMvp.UnitTests.Binder
             public Create_Presenter(IView view)
                 : base(view)
             { }
-
-            public override void ReleaseView()
-            {
-                throw new NotImplementedException();
-            }
         }
         [TestMethod]
         public void DefaultPresenterFactory_Create_ShouldReturnInstance()
@@ -196,11 +185,6 @@ namespace WebFormsMvp.UnitTests.Binder
                 : base(view)
             {
                 throw new ApplicationException("test exception");
-            }
-
-            public override void ReleaseView()
-            {
-                throw new NotImplementedException();
             }
         }
         [TestMethod]

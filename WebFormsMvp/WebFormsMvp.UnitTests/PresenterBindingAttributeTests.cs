@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WebFormsMvp.UnitTests
 {
@@ -29,16 +28,8 @@ namespace WebFormsMvp.UnitTests
         
         class TestPresenter : Presenter<IView>
         {
-            public TestPresenter(IView view)
-                : base(view)
-            {
-                    
-            }
-
-            public override void ReleaseView()
-            {
-                
-            }
+            public TestPresenter(IView view) : base(view)
+            {}
         }
     }
 }

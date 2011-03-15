@@ -29,7 +29,6 @@ namespace WebFormsMvp.FeatureDemos.UnitTests
             // Act
             view.Raise(v => v.Load += null, view, new EventArgs());
             view.Raise(v => v.ActionAccepted += null, view, new EventArgs());
-            presenter.ReleaseView();
 
             // Assert
             httpContext.VerifyAllExpectations();

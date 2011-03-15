@@ -77,15 +77,10 @@ namespace WebFormsMvp.UnitTests.Web
             public TestPresenter(IView view)
                 : base(view)
             {
-                View.Load += View_Load;
+                View.Load += Load;
             }
 
-            public override void ReleaseView()
-            {
-                View.Load -= View_Load;
-            }
-
-            static void View_Load(object sender, EventArgs e)
+            static void Load(object sender, EventArgs e)
             {
                 throw new ApplicationException("It worked!");
             }
