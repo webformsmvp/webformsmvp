@@ -121,6 +121,7 @@
     <Compile Include="IPresenter`T.cs" />
     <Compile Include="ITraceContext.cs" />
     <Compile Include="IView.cs" />
+    <Compile Include="IViewLifecycleManager.cs" />
     <Compile Include="IView`T.cs" />
     <Compile Include="MessageCoordinator.cs" />
     <Compile Include="StringExtensions.cs" />

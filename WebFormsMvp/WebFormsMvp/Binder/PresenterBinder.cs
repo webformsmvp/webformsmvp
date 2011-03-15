@@ -245,8 +245,12 @@ namespace WebFormsMvp.Binder
                         CultureInfo.InvariantCulture,
                         "Calling ReleaseView on presenter of type {0}.",
                         presenter1.GetType().FullName));
-                    
-                    presenter.ReleaseView();
+
+                    var presenterThatWeNeedToCallReleaseViewOn = presenter as IViewLifecycleManager;
+                    if (presenterThatWeNeedToCallReleaseViewOn != null)
+                    {
+                        presenterThatWeNeedToCallReleaseViewOn.ReleaseView();
+                    }
 
                     traceContext.Write(this, () => string.Format(
                         CultureInfo.InvariantCulture,

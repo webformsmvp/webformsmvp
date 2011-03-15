@@ -40,11 +40,6 @@ namespace WebFormsMvp
         RouteData RouteData { get; }
 
         /// <summary>
-        /// Releases the view.
-        /// </summary>
-        void ReleaseView();
-
-        /// <summary>
         /// Gets or sets the async task manager.
         /// </summary>
         IAsyncTaskManager AsyncManager { get; set; }

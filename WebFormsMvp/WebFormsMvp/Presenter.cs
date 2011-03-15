@@ -10,7 +10,7 @@ namespace WebFormsMvp
     /// Represents a presenter in a Web Forms Model-View-Presenter application.
     /// </summary>
     /// <typeparam name="TView">The type of the view.</typeparam>
-    public abstract class Presenter<TView> : IPresenter<TView>
+    public abstract class Presenter<TView> : IPresenter<TView>, IViewLifecycleManager
         where TView : class, IView
     {
         private readonly TView view;
@@ -91,7 +91,7 @@ namespace WebFormsMvp
         /// <summary>
         /// Releases the view.
         /// </summary>
-        [Obsolete("You are no longer required to implement ReleaseView. If you have objects that need to be disposed at the end of your presenter's lifetime, implement IDisposable instead.")]
+        [Obsolete("You are no longer required to implement ReleaseView. If you have objects that need to be disposed at the end of your presenter's lifetime, implement IDisposable instead. This method will be removed altogether in a future release.")]
         public virtual void ReleaseView()
         {
         }
