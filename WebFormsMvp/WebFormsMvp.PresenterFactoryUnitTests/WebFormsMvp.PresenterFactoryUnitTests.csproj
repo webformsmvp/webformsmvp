@@ -6,11 +6,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{352067C9-234B-4EEA-9F3F-50C58D634F54}</ProjectGuid>
+    <ProjectGuid>{CEEEC8B2-6196-4984-A295-AB783F73778E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebFormsMvp.Autofac.UnitTests</RootNamespace>
-    <AssemblyName>WebFormsMvp.Autofac.UnitTests</AssemblyName>
+    <RootNamespace>WebFormsMvp.PresenterFactoryUnitTests</RootNamespace>
+    <AssemblyName>WebFormsMvp.PresenterFactoryUnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -55,6 +55,7 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="AutofacPresenterFactoryTests.cs" />
+    <Compile Include="PresenterFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
