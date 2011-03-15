@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using WebFormsMvp;
+﻿using WebFormsMvp;
 
 namespace CodeAnalysis.TestLibrary.PresentersShouldHaveCorrectSuffix
 {
@@ -8,11 +6,6 @@ namespace CodeAnalysis.TestLibrary.PresentersShouldHaveCorrectSuffix
     {
         public Test6Presenter(IView view) : base(view)
         {
-        }
-
-        public override void ReleaseView()
-        {
-            throw new NotImplementedException();
         }
     }
 }

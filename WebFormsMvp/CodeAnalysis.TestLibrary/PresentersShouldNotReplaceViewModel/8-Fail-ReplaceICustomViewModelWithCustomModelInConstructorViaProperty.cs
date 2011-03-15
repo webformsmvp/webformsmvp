@@ -1,5 +1,4 @@
-﻿using System;
-using WebFormsMvp;
+﻿using WebFormsMvp;
 
 namespace CodeAnalysis.TestLibrary.PresentersShouldNotReplaceViewModel
 {
@@ -19,11 +18,6 @@ namespace CodeAnalysis.TestLibrary.PresentersShouldNotReplaceViewModel
         {
             // Do it via the property
             View.Model = new CustomViewModel();
-        }
-
-        public override void ReleaseView()
-        {
-            throw new NotImplementedException();
         }
     }
 }

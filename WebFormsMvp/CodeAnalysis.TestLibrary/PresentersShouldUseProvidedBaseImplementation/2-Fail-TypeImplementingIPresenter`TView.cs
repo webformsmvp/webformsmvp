@@ -1,5 +1,4 @@
-﻿using System;
-using WebFormsMvp;
+﻿using WebFormsMvp;
 
 namespace CodeAnalysis.TestLibrary.PresentersShouldUseProvidedBaseImplementation
 {
@@ -7,11 +6,6 @@ namespace CodeAnalysis.TestLibrary.PresentersShouldUseProvidedBaseImplementation
     {
         public Test3(IView view) : base(view)
         {
-        }
-
-        public override void ReleaseView()
-        {
-            throw new NotImplementedException();
         }
     }
 }

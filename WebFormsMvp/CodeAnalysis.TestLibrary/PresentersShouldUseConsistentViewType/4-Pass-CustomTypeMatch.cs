@@ -1,5 +1,4 @@
-﻿using System;
-using WebFormsMvp;
+﻿using WebFormsMvp;
 
 namespace CodeAnalysis.TestLibrary.PresentersShouldUseConsistentViewType
 {
@@ -12,11 +11,6 @@ namespace CodeAnalysis.TestLibrary.PresentersShouldUseConsistentViewType
         public Test4Presenter(ICustomView view)
             : base(view)
         {
-        }
-
-        public override void ReleaseView()
-        {
-            throw new NotImplementedException();
         }
     }
 }
