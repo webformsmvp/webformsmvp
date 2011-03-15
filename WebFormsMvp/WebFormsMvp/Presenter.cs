@@ -91,6 +91,9 @@ namespace WebFormsMvp
         /// <summary>
         /// Releases the view.
         /// </summary>
-        public abstract void ReleaseView();
+        [Obsolete("You are no longer required to implement ReleaseView. If you have objects that need to be disposed at the end of your presenter's lifetime, implement IDisposable instead.")]
+        public virtual void ReleaseView()
+        {
+        }
     }
 }
