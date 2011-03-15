@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Policy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,7 +9,7 @@ namespace WebFormsMvp.UnitTests
         /// <summary>
         /// Creates an AppDomain based on the passed TestContext to provide isolation for a unit test.
         /// </summary>
-        private static AppDomain CreateAppDomain(TestContext testContext)
+        static AppDomain CreateAppDomain(TestContext testContext)
         {
             return AppDomain.CreateDomain(
                 testContext.TestName + "_AppDomain",
