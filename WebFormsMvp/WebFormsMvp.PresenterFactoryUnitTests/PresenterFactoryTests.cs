@@ -87,7 +87,10 @@ namespace WebFormsMvp.PresenterFactoryUnitTests
             {
                 get { throw new NotImplementedException(); }
             }
-            public event EventHandler Load;
+            event EventHandler IView.Load
+            {
+                add { } remove { }
+            }
         }
     }
 }
