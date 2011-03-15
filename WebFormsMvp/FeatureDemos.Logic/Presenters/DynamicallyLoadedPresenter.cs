@@ -8,15 +8,10 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public DynamicallyLoadedPresenter(IDynamicallyLoadedView view)
             : base(view)
         {
-            View.Load += View_Load;
+            View.Load += Load;
         }
 
-        public override void ReleaseView()
-        {
-            View.Load -= View_Load;
-        }
-
-        void View_Load(object sender, EventArgs e)
+        void Load(object sender, EventArgs e)
         {
             View.PresenterWasBound = true;
         }

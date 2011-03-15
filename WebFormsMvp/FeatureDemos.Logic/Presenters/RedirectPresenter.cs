@@ -8,15 +8,10 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public RedirectPresenter(IRedirectView view)
             : base(view)
         {
-            View.ActionAccepted += View_ActionAccepted;
+            View.ActionAccepted += ActionAccepted;
         }
 
-        public override void ReleaseView()
-        {
-            View.ActionAccepted -= View_ActionAccepted;
-        }
-
-        void View_ActionAccepted(object sender, EventArgs e)
+        void ActionAccepted(object sender, EventArgs e)
         {
             HttpContext.Response.Redirect("~/RedirectTo.aspx");
         }

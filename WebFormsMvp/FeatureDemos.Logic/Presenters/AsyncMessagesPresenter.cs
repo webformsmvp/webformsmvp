@@ -10,12 +10,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public AsyncMessagesPresenter(IView<AsyncMessagesModel> view)
             : base(view)
         {
-            View.Load += View_Load;
-        }
-
-        public override void ReleaseView()
-        {
-            View.Load -= View_Load;
+            View.Load += Load;
         }
 
         private readonly Func<string> doStuff1 = () =>
@@ -30,7 +25,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
             return ThreadMessage("Async task doStuff2 processed");
         };
 
-        void View_Load(object sender, EventArgs e)
+        void Load(object sender, EventArgs e)
         {
             View.Model.Messages.Add(ThreadMessage("View.Load event handled"));
 
@@ -47,9 +42,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
                     View.Model.Messages.Add(ThreadMessage("Async task doStuff1 end handler"));
                 },
                 result => // Timeout
-                {
-                    View.Model.Messages.Add(ThreadMessage("Async task doStuff1 timeout handler"));
-                },
+                    View.Model.Messages.Add(ThreadMessage("Async task doStuff1 timeout handler")),
                 null,
                 true
             );
@@ -67,9 +60,7 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
                     View.Model.Messages.Add(ThreadMessage("Async task doStuff2 end handler"));
                 },
                 result => // Timeout
-                {
-                    View.Model.Messages.Add(ThreadMessage("Async task doStuff2 timeout handler"));
-                },
+                    View.Model.Messages.Add(ThreadMessage("Async task doStuff2 timeout handler")),
                 null,
                 true
             );

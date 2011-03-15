@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WebFormsMvp.FeatureDemos.Logic.Data;
 
 namespace WebFormsMvp.FeatureDemos.Logic.Views.Models

@@ -9,15 +9,10 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
         public Messaging2Presenter(IView<MessagingModel> view)
             : base(view)
         {
-            View.Load += View_Load;
+            View.Load += Load;
         }
 
-        public override void ReleaseView()
-        {
-            View.Load -= View_Load;
-        }
-
-        void View_Load(object sender, EventArgs e)
+        void Load(object sender, EventArgs e)
         {
             // This subscription will fire whenever somebody else
             // publishes a Widget to the message bus.
