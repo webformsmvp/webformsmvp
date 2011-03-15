@@ -63,6 +63,9 @@ namespace WebFormsMvp.Unity
             {
                 presenterScopedContainer.Teardown(presenter);
             }
+
+            if (presenter is IDisposable)
+                ((IDisposable)presenter).Dispose();
         }
 
         Type FindPresenterDescribedViewTypeCached(Type presenterType, IView viewInstance)

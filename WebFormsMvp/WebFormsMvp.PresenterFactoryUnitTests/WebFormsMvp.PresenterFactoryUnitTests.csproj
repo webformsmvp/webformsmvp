@@ -45,6 +45,21 @@
     <Reference Include="Castle.Windsor, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Windsor.2.5.2\lib\NET40\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -62,6 +77,7 @@
     </Compile>
     <Compile Include="AutofacPresenterFactoryTests.cs" />
     <Compile Include="CastlePresenterFactoryTests.cs" />
+    <Compile Include="UnityPresenterFactoryTests.cs" />
     <Compile Include="PresenterFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,6 +89,10 @@
     <ProjectReference Include="..\WebFormsMvp.Castle\WebFormsMvp.Castle.csproj">
       <Project>{D20C328A-5DEC-465B-8A19-662DA2532D88}</Project>
       <Name>WebFormsMvp.Castle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFormsMvp.Unity\WebFormsMvp.Unity.csproj">
+      <Project>{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}</Project>
+      <Name>WebFormsMvp.Unity</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">
       <Project>{E265BF3E-8CCB-4C22-8C15-263735227A3D}</Project>
