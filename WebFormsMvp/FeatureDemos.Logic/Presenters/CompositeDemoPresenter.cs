@@ -16,11 +16,6 @@ namespace WebFormsMvp.FeatureDemos.Logic.Presenters
             View.Load += new EventHandler(View_Load);
         }
 
-        public override void ReleaseView()
-        {
-            View.Load -= new EventHandler(View_Load);
-        }
-
         void View_Load(object sender, EventArgs e)
         {
             View.Model.Message = string.Format(

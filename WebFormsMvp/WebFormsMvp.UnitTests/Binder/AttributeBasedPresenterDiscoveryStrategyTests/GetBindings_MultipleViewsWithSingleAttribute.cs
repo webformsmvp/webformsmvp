@@ -90,7 +90,6 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
             public abstract HttpServerUtilityBase Server { get; }
             public abstract Cache Cache { get; }
             public abstract RouteData RouteData { get; }
-            public abstract void ReleaseView();
             public abstract IAsyncTaskManager AsyncManager { get; set; }
             public abstract IMessageBus Messages { get; set; }
         }
@@ -103,7 +102,6 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
             public abstract HttpServerUtilityBase Server { get; }
             public abstract Cache Cache { get; }
             public abstract RouteData RouteData { get; }
-            public abstract void ReleaseView();
             public abstract IAsyncTaskManager AsyncManager { get; set; }
             public abstract IMessageBus Messages { get; set; }
         }

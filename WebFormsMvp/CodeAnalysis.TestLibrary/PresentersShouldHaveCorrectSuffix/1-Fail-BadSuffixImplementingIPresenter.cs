@@ -40,11 +40,6 @@ namespace CodeAnalysis.TestLibrary.PresentersShouldHaveCorrectSuffix
             get { throw new NotImplementedException(); }
         }
 
-        public void ReleaseView()
-        {
-            throw new NotImplementedException();
-        }
-
         public IAsyncTaskManager AsyncManager
         {
             get { throw new NotImplementedException(); }
