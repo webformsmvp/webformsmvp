@@ -62,9 +62,6 @@ namespace WebFormsMvp.Web
         /// </summary>
         /// <typeparam name="T">The type to get the data item as</typeparam>
         /// <returns>The data item as type <typeparamref name="T"/>, or a new instance of <typeparamref name="T"/> if the data item is null.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
-            "CA1004:GenericMethodsShouldProvideTypeParameter",
-            Justification = "This method exists to assist with type conversion.")]
         protected T DataItem<T>()
             where T : class, new()
         {
@@ -77,9 +74,6 @@ namespace WebFormsMvp.Web
         /// </summary>
         /// <typeparam name="T">The type to cast the data item to</typeparam>
         /// <returns>The data item cast to type T.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
-            "CA1004:GenericMethodsShouldProvideTypeParameter",
-            Justification = "This method exists to assist with type conversion.")]
         protected T DataValue<T>()
         {
             return (T)Page.GetDataItem();
@@ -91,9 +85,6 @@ namespace WebFormsMvp.Web
         /// <typeparam name="T">The type to cast the data item to</typeparam>
         /// <param name="format">The format string.</param>
         /// <returns>The formatted data item value.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
-            "CA1004:GenericMethodsShouldProvideTypeParameter",
-            Justification = "This method exists to assist with type conversion.")]
         protected string DataValue<T>(string format)
         {
             return String.Format(CultureInfo.CurrentCulture, format, (T)Page.GetDataItem());
