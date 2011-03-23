@@ -5,6 +5,9 @@ using System.Web;
 using System.Globalization;
 using WebFormsMvp.Web;
 
+// Only until we finally kill ReleaseView for good
+#pragma warning disable 618
+
 namespace WebFormsMvp.Binder
 {
     /// <summary>
