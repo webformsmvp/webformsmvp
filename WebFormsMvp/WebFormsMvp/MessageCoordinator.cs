@@ -34,9 +34,7 @@ namespace WebFormsMvp
         public void Publish<TMessage>(TMessage message)
         {
             if (closed)
-            {
                 throw new InvalidOperationException("Messages can't be published or subscribed to after the message bus has been closed. In a typical page lifecycle, this happens during PreRenderComplete.");
-            }
 
             AddMessage(message);
             PushMessage(message);
@@ -46,10 +44,9 @@ namespace WebFormsMvp
         {
             var messageList = messages.GetOrCreateValue(typeof(TMessage),
                 () => new List<TMessage>());
+
             lock (messageList)
-            {
                 messageList.Add(message);
-            }
         }
 
         void PushMessage<TMessage>(TMessage message)
@@ -64,9 +61,7 @@ namespace WebFormsMvp
                 .SelectMany(t => messageReceivedCallbacks[t]);
 
             foreach (var callback in callbacks)
-            {
                 callback(message);
-            }
         }
 
         /// <summary>
@@ -92,13 +87,10 @@ namespace WebFormsMvp
         public void Subscribe<TMessage>(Action<TMessage> messageReceivedCallback, Action neverReceivedCallback)
         {
             if (closed)
-            {
                 throw new InvalidOperationException("Messages can't be published or subscribed to after the message bus has been closed. In a typical page lifecycle, this happens during PreRenderComplete.");
-            }
+            
             if (messageReceivedCallback == null)
-            {
                 throw new ArgumentNullException("messageReceivedCallback");
-            }
 
             AddMessageReceivedCallback(messageReceivedCallback);
             AddNeverReceivedCallback<TMessage>(neverReceivedCallback);
@@ -112,23 +104,20 @@ namespace WebFormsMvp
 
             var receivedList = messageReceivedCallbacks.GetOrCreateValue(typeof(TMessage),
                 () => new List<Action<object>>());
+
             lock (receivedList)
-            {
                 receivedList.Add(intermediateReceivedCallback);
-            }
         }
 
         void AddNeverReceivedCallback<TMessage>(Action neverReceivedCallback)
         {
-            if (neverReceivedCallback != null)
-            {
-                var neverReceivedList = neverReceivedCallbacks.GetOrCreateValue(typeof(TMessage),
-                    () => new List<Action>());
-                lock (neverReceivedList)
-                {
-                    neverReceivedList.Add(neverReceivedCallback);
-                }
-            }
+            if (neverReceivedCallback == null) return;
+            
+            var neverReceivedList = neverReceivedCallbacks.GetOrCreateValue(typeof(TMessage),
+                () => new List<Action>());
+
+            lock (neverReceivedList)
+                neverReceivedList.Add(neverReceivedCallback);
         }
 
         void PushPreviousMessages<TMessage>(Action<TMessage> messageReceivedCallback)
@@ -142,9 +131,7 @@ namespace WebFormsMvp
                 .ToArray();
 
             foreach (var previousMessage in previousMessages)
-            {
                 messageReceivedCallback(previousMessage);
-            }
         }
 
         bool closed;
@@ -167,12 +154,11 @@ namespace WebFormsMvp
         /// </summary>
         public void Close()
         {
+            if (closed) return;
+
             lock (closeLock)
             {
-                if (closed)
-                {
-                    return;
-                }
+                if (closed) return;
                 closed = true;
             }
 
@@ -184,16 +170,13 @@ namespace WebFormsMvp
             var neverReceivedMessageTypes = neverReceivedCallbacks
                 .Keys
                 .Where(neverReceivedMessageType =>
-                        !messages.Keys.Any(messageType => 
-                            neverReceivedMessageType.IsAssignableFrom(messageType)));
+                    !messages.Keys.Any(neverReceivedMessageType.IsAssignableFrom));
 
             var callbacks = neverReceivedMessageTypes
                 .SelectMany(t => neverReceivedCallbacks[t]);
 
             foreach (var callback in callbacks)
-            {
                 callback();
-            }
         }
     }
 }
