@@ -87,7 +87,7 @@ namespace WebFormsMvp.Web
         /// <returns>The formatted data item value.</returns>
         protected string DataValue<T>(string format)
         {
-            return String.Format(CultureInfo.CurrentCulture, format, (T)Page.GetDataItem());
+            return string.Format(CultureInfo.CurrentCulture, format, (T)Page.GetDataItem());
         }
     }
 }

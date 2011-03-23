@@ -16,7 +16,7 @@ namespace WebFormsMvp
             return implementationTypeToViewInterfacesCache.GetOrCreateValue(implementationTypeHandle, () =>
                 implementationType
                     .GetInterfaces()
-                    .Where(i => typeof(IView).IsAssignableFrom(i))
+                    .Where(typeof(IView).IsAssignableFrom)
                     .ToArray()
             );
         }

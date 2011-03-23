@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,15 +24,9 @@ namespace WebFormsMvp
                 throw new ArgumentNullException("dictionary");
 
             if (!dictionary.ContainsKey(key))
-            {
                 lock (dictionary)
-                {
                     if (!dictionary.ContainsKey(key))
-                    {
                         dictionary[key] = createValueCallback();
-                    }
-                }
-            }
 
             return dictionary[key];
         }
