@@ -121,6 +121,12 @@ Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.dll" `
 Copy-Item "$CodeAnalysisRulesBinFolder\WebFormsMvp.CodeAnalysisRules.pdb" `
 	-Destination (Join-Path -Path $HelpersReleaseFolder -ChildPath "WebFormsMvp.CodeAnalysisRules.FxCop136.pdb")
 
+# Copy LICENSE.txt and CREDITS.txt to temp folder
+Copy-Item (Join-Path -Path $SolutionRoot -ChildPath "..\LICENSE.txt") `
+	-Destination (Join-Path -Path $LibraryReleaseFolder -ChildPath "LICENSE.txt")
+Copy-Item (Join-Path -Path $SolutionRoot -ChildPath "..\CREDITS.txt") `
+	-Destination (Join-Path -Path $LibraryReleaseFolder -ChildPath "CREDITS.txt")
+
 # Build the ZIP release
 $LibraryReleaseZip = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp-v$ReleaseVersionNumber-Library.zip";
 Add-Type -Path (Join-Path -Path $SolutionRoot -ChildPath "Dependencies\ICSharpCode.SharpZipLib.dll")
