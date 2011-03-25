@@ -76,6 +76,7 @@ namespace WebFormsMvp.Binder
                 }
 
                 var hostDefinedAttributes = hosts
+                    .Except(viewInstances.OfType<object>())
                     .SelectMany(h => GetAttributes(typeToAttributeCache, h.GetType())
                         .Select(a => new { Host = h, Attribute = a }))
                     .ToArray();
