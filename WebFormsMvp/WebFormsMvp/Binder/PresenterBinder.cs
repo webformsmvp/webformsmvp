@@ -55,7 +55,7 @@ namespace WebFormsMvp.Binder
         /// strategies in a fallthrough approach, use <see cref="CompositePresenterDiscoveryStrategy"/>.
         ///</summary>
         ///<exception cref="ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
-        internal static IPresenterDiscoveryStrategy DiscoveryStrategy
+        public static IPresenterDiscoveryStrategy DiscoveryStrategy
         {
             get
             {
