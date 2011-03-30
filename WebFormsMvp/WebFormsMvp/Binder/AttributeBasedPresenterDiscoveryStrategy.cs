@@ -5,11 +5,15 @@ using System.Linq;
 
 namespace WebFormsMvp.Binder
 {
-    internal class AttributeBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
+    ///<summary>
+    /// Attempts to find presenters for a view type based on a set of method Attribute.
+    ///</summary>
+    public class AttributeBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         static readonly IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> typeToAttributeCache
             = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
 
+        /// <summary />
         public IEnumerable<PresenterDiscoveryResult> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
             if (hosts == null)

@@ -5,16 +5,29 @@ using System.Linq;
 
 namespace WebFormsMvp.Binder
 {
-    internal class CompositePresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
+    ///<summary>
+    /// Attempts to find presenters for a view type based on a set of IPresenterDiscoveryStrategy instances.
+    ///</summary>
+    public class CompositePresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         readonly IEnumerable<IPresenterDiscoveryStrategy> strategies;
         readonly IEqualityComparer<IEnumerable<IView>> viewInstanceListComparer = new TypeListComparer<IView>();
 
+        ///<summary>
+        ///  Creates a new instance of the CompositePresenterDiscoveryStrategy class.
+        ///</summary>
+        ///<param name="strategies">The array of IPresenter Discovery Strategies to use</param>
         public CompositePresenterDiscoveryStrategy(params IPresenterDiscoveryStrategy[] strategies)
             : this((IEnumerable<IPresenterDiscoveryStrategy>)strategies)
         {
         }
 
+        ///<summary>
+        /// Creates a new instance of the CompositePresenterDiscoveryStrategy class.
+        ///</summary>
+        ///<param name="strategies">The Enumerable list of IPresenter Discovery Strategies to use</param>
+        ///<exception cref="ArgumentNullException">When strategies is null</exception>
+        ///<exception cref="ArgumentException">When strategies has no valid IPresenterDiscoveryStrategy </exception>
         public CompositePresenterDiscoveryStrategy(IEnumerable<IPresenterDiscoveryStrategy> strategies)
         {
             if (strategies == null)
@@ -28,6 +41,7 @@ namespace WebFormsMvp.Binder
                 throw new ArgumentException("You must supply at least one strategy.", "strategies");
         }
 
+        /// <summary />
         public IEnumerable<PresenterDiscoveryResult> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
             var results = new List<PresenterDiscoveryResult>();

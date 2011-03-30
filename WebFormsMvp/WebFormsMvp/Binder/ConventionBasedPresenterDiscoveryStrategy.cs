@@ -10,7 +10,7 @@ namespace WebFormsMvp.Binder
     /// Attempts to find presenters for a view type based on a set of naming formats conventions.
     /// To use custom naming formats, derive from this class and override the CandidatePresenterTypeFullNameFormats property.
     /// </summary>
-    public class ConventionBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
+    internal class ConventionBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         readonly IBuildManager buildManager;
 
