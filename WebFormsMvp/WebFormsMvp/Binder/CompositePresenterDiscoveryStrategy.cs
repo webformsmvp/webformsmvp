@@ -6,7 +6,7 @@ using System.Linq;
 namespace WebFormsMvp.Binder
 {
     ///<summary>
-    /// Attempts to find presenters for a view type based on a set of IPresenterDiscoveryStrategy instances.
+    /// Attempts to find presenters for a view based on a set of <see cref="IPresenterDiscoveryStrategy"/> instances.
     ///</summary>
     public class CompositePresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {

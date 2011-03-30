@@ -7,10 +7,10 @@ using System.Web.UI;
 namespace WebFormsMvp.Binder
 {
     /// <summary>
-    /// Attempts to find presenters for a view type based on a set of naming formats conventions.
-    /// To use custom naming formats, derive from this class and override the CandidatePresenterTypeFullNameFormats property.
+    /// Attempts to find presenters for a view type based on a set of naming conventions.
+    /// To use custom naming formats, derive from this class and override the <see cref="CandidatePresenterTypeFullNameFormats"/> property.
     /// </summary>
-    internal class ConventionBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
+    public class ConventionBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         readonly IBuildManager buildManager;
 

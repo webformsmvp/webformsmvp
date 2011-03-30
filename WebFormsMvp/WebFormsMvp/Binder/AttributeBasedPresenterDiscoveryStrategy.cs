@@ -6,7 +6,7 @@ using System.Linq;
 namespace WebFormsMvp.Binder
 {
     ///<summary>
-    /// Attempts to find presenters for a view type based on a set of method Attribute.
+    /// Attempts to find presenters for a view based on [PresenterBinding] attributes placed on the view or host.
     ///</summary>
     public class AttributeBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
