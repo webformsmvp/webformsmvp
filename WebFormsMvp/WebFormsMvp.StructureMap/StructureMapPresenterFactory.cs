@@ -7,16 +7,15 @@ namespace WebFormsMvp.StructureMap
 {
     public class StructureMapPresenterFactory : IPresenterFactory
     {
-        private readonly IContainer _container;
-
-        private readonly object _registerLock = new object();
+        readonly IContainer container;
+        readonly object registerLock = new object();
 
         public StructureMapPresenterFactory(IContainer container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
 
-            _container = container;
+            this.container = container;
         }
 
         public IPresenter Create(Type presenterType, Type viewType, IView viewInstance)
@@ -28,13 +27,13 @@ namespace WebFormsMvp.StructureMap
             if (viewInstance == null)
                 throw new ArgumentNullException("viewInstance");
 
-            if (!_container.Model.HasImplementationsFor(presenterType))
+            if (!container.Model.HasImplementationsFor(presenterType))
             {
-                lock (_registerLock)
+                lock (registerLock)
                 {
-                    if (!_container.Model.HasImplementationsFor(presenterType))
+                    if (!container.Model.HasImplementationsFor(presenterType))
                     {
-                        _container.Configure(x => x.For<Type>().HybridHttpOrThreadLocalScoped().Use(presenterType).Named(presenterType.Name));
+                        container.Configure(x => x.For<Type>().HybridHttpOrThreadLocalScoped().Use(presenterType).Named(presenterType.Name));
                     }
                 }
             }
@@ -43,19 +42,16 @@ namespace WebFormsMvp.StructureMap
             args.Set("view");
             args.SetArg("view", viewInstance);
 
-            return (IPresenter)_container.GetInstance(presenterType, args);
+            return (IPresenter)container.GetInstance(presenterType, args);
         }
 
         public void Release(IPresenter presenter)
         {
-            _container.EjectAllInstancesOf<IPresenter>();
+            container.EjectAllInstancesOf<IPresenter>();
 
             var disposablePresenter = presenter as IDisposable;
             if (disposablePresenter != null)
                 disposablePresenter.Dispose();
- 
         }
-
-        
     }
 }
