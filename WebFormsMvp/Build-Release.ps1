@@ -184,6 +184,19 @@ if (-not $?)
 }
 Remove-Item $UnityNuSpecPath
 
+# Build the StructureMap NuGet package
+$StructureMapNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.StructureMap.nuspec"
+(gc -Path (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.StructureMap\WebFormsMvp.StructureMap.nuspec")) `
+	-replace "(?<=dependency id=`"webformsmvp`" version=`")[.\d]*(?=`")", $ReleaseVersionNumber |
+	sc -Path $StructureMapNuSpecPath -Encoding UTF8
+$NuGet = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\NuGet.exe"
+& $NuGet pack $StructureMapNuSpecPath -OutputDirectory $ReleaseFolder -Version $ReleaseVersionNumber
+if (-not $?)
+{
+	throw "The NuGet process returned an error code."
+}
+Remove-Item $StructureMapNuSpecPath
+
 # Tell the user what to do next
 ""
 ""
