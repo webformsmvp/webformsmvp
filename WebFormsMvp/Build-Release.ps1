@@ -202,7 +202,7 @@ Remove-Item $UnityNuSpecPath
 ""
 "If you're happy with this release build, you should now run the following commands:"
 "    hg com -m `"Cutting release $ReleaseVersionNumber.`" SolutionInfo.cs"
-"    hg tag -m `"Tagged version $ReleaseVersionNumber.`" v$ReleaseVersionNumber"
+"    hg tag v$ReleaseVersionNumber"
 "    hg pus"
 "    nuget push $($CoreNuSpecPath -replace `".nuspec`",`".$ReleaseVersionNumber.nupkg`")"
 "    nuget push $($AutofacNuSpecPath -replace `".nuspec`",`".$ReleaseVersionNumber.nupkg`")"
