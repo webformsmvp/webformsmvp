@@ -61,6 +61,9 @@
       <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.2.6.2\lib\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -77,6 +80,7 @@
     </Compile>
     <Compile Include="AutofacPresenterFactoryTests.cs" />
     <Compile Include="CastlePresenterFactoryTests.cs" />
+    <Compile Include="StructureMapPresenterFactoryTests.cs" />
     <Compile Include="UnityPresenterFactoryTests.cs" />
     <Compile Include="PresenterFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +93,10 @@
     <ProjectReference Include="..\WebFormsMvp.Castle\WebFormsMvp.Castle.csproj">
       <Project>{D20C328A-5DEC-465B-8A19-662DA2532D88}</Project>
       <Name>WebFormsMvp.Castle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFormsMvp.StructureMap\WebFormsMvp.StructureMap.csproj">
+      <Project>{7007A4E7-543E-4058-952A-DC6B5560F0D1}</Project>
+      <Name>WebFormsMvp.StructureMap</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebFormsMvp.Unity\WebFormsMvp.Unity.csproj">
       <Project>{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32}</Project>
