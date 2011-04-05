@@ -4,7 +4,7 @@
     <id>WebFormsMvp</id>
     <title>Web Forms MVP</title>
     <version>0.0.0.0</version>
-    <authors>Damian Edwards, Tatham Oddie</authors>
+    <authors>Damian Edwards, Tatham Oddie and contributors</authors>
     <description>ASP.NET MVC might be the new kid on the block, but there are still a host of compelling advantages to ASP.NET Web Forms.
 
 The ASP.NET Web Forms MVP project is about bringing the love back to Web Forms through a renewed approach to using it - an approach that facilitates separation of concerns and testability whilst maintaining the rapid development that Web Forms was built to deliver.</description>
