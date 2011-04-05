@@ -208,3 +208,4 @@ Remove-Item $StructureMapNuSpecPath
 "    nuget push $CastleNuSpecPath"
 "    nuget push $AutofacNuSpecPath"
 "    nuget push $UnityNuSpecPath"
+"    nuget push $StructureMapNuSpecPath"
