@@ -33,7 +33,7 @@ namespace WebFormsMvp.StructureMap
                 {
                     if (!container.Model.HasImplementationsFor(presenterType))
                     {
-                        container.Configure(x => x.For<Type>().HybridHttpOrThreadLocalScoped().Use(presenterType).Named(presenterType.Name));
+                        container.Configure(x => x.For(presenterType).HybridHttpOrThreadLocalScoped().Use(presenterType).Named(presenterType.Name));
                     }
                 }
             }
