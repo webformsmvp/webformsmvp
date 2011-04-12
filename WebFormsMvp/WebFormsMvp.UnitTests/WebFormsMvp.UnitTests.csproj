@@ -115,6 +115,9 @@
     <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="TypeListComparerTests.cs" />
     <Compile Include="Web\MvpHttpHandlerTests\MvpHttpHandlerTests.cs" />
+    <Compile Include="Web\MvpHttpHandlerTests\WithPresenterBindingAttribute_ProcessRequest_ShouldBindOnePresenter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Web\MvpPageTests.cs" />
     <Compile Include="Web\MvpUserControlTests.cs" />
   </ItemGroup>
