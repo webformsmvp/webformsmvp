@@ -3,7 +3,7 @@ using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.Web;
 
-namespace WebFormsMvp.UnitTests.Web
+namespace WebFormsMvp.UnitTests.Web.MvpHttpHandlerTests
 {
     [TestClass]
     public class MvpHttpHandlerTests
