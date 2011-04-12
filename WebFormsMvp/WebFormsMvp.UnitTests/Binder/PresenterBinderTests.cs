@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -213,6 +214,33 @@ namespace WebFormsMvp.UnitTests.Binder
 
             // Assert
             customFactory.AssertWasCalled(cf => cf.Create(originalContext));
+        }
+
+        [TestMethod]
+        public void PresenterBinder_ctor_TracesWebFormsMvpVersion()
+        {
+            // Arrange
+            var host = new object();
+            var httpContext = MockRepository.GenerateMock<HttpContextBase>();
+            var traceMessages = new List<string>();
+            var traceContext = MockRepository.GenerateStub<ITraceContext>();
+            traceContext.Stub(t => t
+                .Write(new object(), () => ""))
+                .IgnoreArguments()
+                .WhenCalled(mi =>
+                {
+                    var callback = (Func<string>)mi.Arguments[1];
+                    traceMessages.Add(callback());
+                });
+
+            // Act
+            new PresenterBinder(new[] { host }, httpContext, traceContext);
+
+            // Assert
+            var webFormsMvpAssemblyName = typeof (PresenterBinder).Assembly.GetNameSafe();
+            var versionString = webFormsMvpAssemblyName.Version.ToString();
+            var expectedMessage = string.Format("Web Forms MVP version is {0}", versionString);
+            CollectionAssert.Contains(traceMessages, expectedMessage);
         }
 
         [TestMethod]

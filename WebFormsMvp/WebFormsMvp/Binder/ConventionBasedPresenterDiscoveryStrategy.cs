@@ -184,7 +184,7 @@ namespace WebFormsMvp.Binder
         static IEnumerable<string> GenerateCandidatePresenterTypeFullNames(Type viewType, IEnumerable<string> presenterTypeNames, IEnumerable<string> presenterTypeFullNameFormats)
         {
             // We assume the assembly name is the same as the namespace or that minus ".Web"
-            var assemblyName = viewType.Assembly.GetNameSafe();
+            var assemblyName = viewType.Assembly.GetNameSafe().Name;
             var assemblyNameMinusWeb = assemblyName.TrimFromEnd(".Web");
 
             foreach (var presenterTypeName in presenterTypeNames)
