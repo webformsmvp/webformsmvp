@@ -5,16 +5,28 @@ using System.Linq;
 
 namespace WebFormsMvp.Binder
 {
-    internal class CompositePresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
+    /// <summary>
+    /// Combines multiple presenter discovery strategies into one. Strategies will be evaluated in the order
+    /// they are provided. The first strategy to provide a result wins.
+    /// </summary>
+    public class CompositePresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         readonly IEnumerable<IPresenterDiscoveryStrategy> strategies;
         readonly IEqualityComparer<IEnumerable<IView>> viewInstanceListComparer = new TypeListComparer<IView>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositePresenterDiscoveryStrategy"/> class.
+        /// </summary>
+        /// <param name="strategies">The strategies to be evaluated.</param>
         public CompositePresenterDiscoveryStrategy(params IPresenterDiscoveryStrategy[] strategies)
             : this((IEnumerable<IPresenterDiscoveryStrategy>)strategies)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositePresenterDiscoveryStrategy"/> class.
+        /// </summary>
+        /// <param name="strategies">The strategies to be evaluated.</param>
         public CompositePresenterDiscoveryStrategy(IEnumerable<IPresenterDiscoveryStrategy> strategies)
         {
             if (strategies == null)
@@ -28,6 +40,11 @@ namespace WebFormsMvp.Binder
                 throw new ArgumentException("You must supply at least one strategy.", "strategies");
         }
 
+        /// <summary>
+        /// Gets the presenter bindings for passed views using the passed hosts.
+        /// </summary>
+        /// <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+        /// <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
         public IEnumerable<PresenterDiscoveryResult> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
             var results = new List<PresenterDiscoveryResult>();
