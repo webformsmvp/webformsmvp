@@ -5,11 +5,20 @@ using System.Linq;
 
 namespace WebFormsMvp.Binder
 {
-    internal class AttributeBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
+    /// <summary>
+    /// A strategy for discovery presenters based on [PresenterBinding] attributes being placed
+    /// on views and view hosts.
+    /// </summary>
+    public class AttributeBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
         static readonly IDictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>> typeToAttributeCache
             = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttributeBasedPresenterDiscoveryStrategy"/> class.
+        /// </summary>
+        /// <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+        /// <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
         public IEnumerable<PresenterDiscoveryResult> GetBindings(IEnumerable<object> hosts, IEnumerable<IView> viewInstances)
         {
             if (hosts == null)
