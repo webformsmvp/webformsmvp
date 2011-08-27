@@ -15,7 +15,7 @@ namespace WebFormsMvp.Binder
             = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AttributeBasedPresenterDiscoveryStrategy"/> class.
+        /// Gets the presenter bindings for passed views using the passed hosts.
         /// </summary>
         /// <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
         /// <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>

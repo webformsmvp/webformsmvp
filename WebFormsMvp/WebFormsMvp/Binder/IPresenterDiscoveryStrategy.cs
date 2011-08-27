@@ -11,9 +11,8 @@ namespace WebFormsMvp.Binder
         /// <summary>
         /// Gets the presenter bindings for passed views using the passed hosts.
         /// </summary>
-        /// <param name="hosts">The host objects.</param>
-        /// <param name="viewInstances">The views.</param>
-        /// <returns>The presenter bindings.</returns>
+        /// <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+        /// <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
         IEnumerable<PresenterDiscoveryResult> GetBindings(
             IEnumerable<object> hosts,
             IEnumerable<IView> viewInstances);
