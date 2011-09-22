@@ -5,11 +5,11 @@ using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.Castle
 {
-    public sealed class MvpPresenterKernel : IPresenterFactory
+    public sealed class CastlePresenterFactory : IPresenterFactory
     {
         readonly IKernel presenterKernel;
 
-        public MvpPresenterKernel(IKernel kernel)
+        public CastlePresenterFactory(IKernel kernel)
         {
             if (kernel == null) throw new ArgumentNullException("kernel");
 

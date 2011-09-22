@@ -12,7 +12,7 @@ namespace WebFormsMvp.PresenterFactoryUnitTests
         {
             var container = new WindsorContainer();
             var kernel = container.Kernel;
-            return new MvpPresenterKernel(kernel);
+            return new CastlePresenterFactory(kernel);
         }
     }
 }
