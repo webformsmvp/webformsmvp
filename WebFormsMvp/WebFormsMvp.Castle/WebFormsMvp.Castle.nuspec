@@ -12,7 +12,7 @@
     <iconUrl>http://webformsmvp.com/nugetlogo.png</iconUrl>
     <dependencies>
       <dependency id="webformsmvp" version="0.0.0.0" />
-      <dependency id="Castle.Windsor" version="3.0" />
+      <dependency id="Castle.Windsor" version="2.5" />
     </dependencies>
   </metadata>
   <files>
