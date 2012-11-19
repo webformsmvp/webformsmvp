@@ -58,7 +58,8 @@ namespace WebFormsMvp
                 .Where(k => k.IsAssignableFrom(messageType));
 
             var callbacks = callbackTypes
-                .SelectMany(t => messageReceivedCallbacks[t]);
+                .SelectMany(t => messageReceivedCallbacks[t])
+                .ToArray();
 
             foreach (var callback in callbacks)
                 callback(message);
