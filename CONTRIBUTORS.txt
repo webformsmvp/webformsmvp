@@ -1,0 +1,12 @@
+# Contributors with agreements on file
+damian@damianedwards.com
+daniel.bartholomew@hotmail.com
+ducas@ducasfrancis.com
+jason@codeassassin.com
+stephen.godbold@gmail.com
+tariqhassanen@gmail.com
+tatham@oddie.com.au
+
+# Contributors without agreements on file
+saintgimp@hotmail.com
+lewis@lewisbenge.net
