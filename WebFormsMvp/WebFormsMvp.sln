@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.Autofac", "WebF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.PresenterFactoryUnitTests", "WebFormsMvp.PresenterFactoryUnitTests\WebFormsMvp.PresenterFactoryUnitTests.csproj", "{CEEEC8B2-6196-4984-A295-AB783F73778E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsMvp.StructureMap", "WebFormsMvp.StructureMap\WebFormsMvp.StructureMap.csproj", "{7007A4E7-543E-4058-952A-DC6B5560F0D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,10 @@ Global
 		{CEEEC8B2-6196-4984-A295-AB783F73778E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEEEC8B2-6196-4984-A295-AB783F73778E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEEEC8B2-6196-4984-A295-AB783F73778E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7007A4E7-543E-4058-952A-DC6B5560F0D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7007A4E7-543E-4058-952A-DC6B5560F0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7007A4E7-543E-4058-952A-DC6B5560F0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7007A4E7-543E-4058-952A-DC6B5560F0D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{5A4DF7CD-3443-41DC-BAAD-05C061A6FB32} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
 		{FBD0408C-2801-490F-859A-56192282A987} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
 		{CEEEC8B2-6196-4984-A295-AB783F73778E} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
+		{7007A4E7-543E-4058-952A-DC6B5560F0D1} = {F9962ED5-FC3A-42C3-9375-5032D0644FF1}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = WebFormsMvp.vsmdi

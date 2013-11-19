@@ -145,6 +145,19 @@ if (-not $?)
 }
 Remove-Item $CoreNuSpecPath
 
+# Build the Autofac NuGet package
+$AutofacNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.Autofac.nuspec"
+(gc -Path (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Autofac\WebFormsMvp.Autofac.nuspec")) `
+	-replace "(?<=dependency id=`"webformsmvp`" version=`")[.\d]*(?=`")", $ReleaseVersionNumber |
+	sc -Path $AutofacNuSpecPath -Encoding UTF8
+$NuGet = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\NuGet.exe"
+& $NuGet pack $AutofacNuSpecPath -OutputDirectory $ReleaseFolder -Version $ReleaseVersionNumber
+if (-not $?)
+{
+	throw "The NuGet process returned an error code."
+}
+Remove-Item $AutofacNuSpecPath
+
 # Build the Castle NuGet package
 $CastleNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.Castle.nuspec"
 (gc -Path (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Castle\WebFormsMvp.Castle.nuspec")) `
@@ -158,18 +171,18 @@ if (-not $?)
 }
 Remove-Item $CastleNuSpecPath
 
-# Build the Autofac NuGet package
-$AutofacNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.Autofac.nuspec"
-(gc -Path (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.Autofac\WebFormsMvp.Autofac.nuspec")) `
+# Build the StructureMap NuGet package
+$StructureMapNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.StructureMap.nuspec"
+(gc -Path (Join-Path -Path $SolutionRoot -ChildPath "WebFormsMvp.StructureMap\WebFormsMvp.StructureMap.nuspec")) `
 	-replace "(?<=dependency id=`"webformsmvp`" version=`")[.\d]*(?=`")", $ReleaseVersionNumber |
-	sc -Path $AutofacNuSpecPath -Encoding UTF8
+	sc -Path $StructureMapNuSpecPath -Encoding UTF8
 $NuGet = Join-Path -Path $SolutionRoot -ChildPath "Dependencies\NuGet.exe"
-& $NuGet pack $AutofacNuSpecPath -OutputDirectory $ReleaseFolder -Version $ReleaseVersionNumber
+& $NuGet pack $StructureMapNuSpecPath -OutputDirectory $ReleaseFolder -Version $ReleaseVersionNumber
 if (-not $?)
 {
 	throw "The NuGet process returned an error code."
 }
-Remove-Item $AutofacNuSpecPath
+Remove-Item $StructureMapNuSpecPath
 
 # Build the Unity NuGet package
 $UnityNuSpecPath = Join-Path -Path $ReleaseFolder -ChildPath "WebFormsMvp.Unity.nuspec"
@@ -189,9 +202,10 @@ Remove-Item $UnityNuSpecPath
 ""
 "If you're happy with this release build, you should now run the following commands:"
 "    hg com -m `"Cutting release $ReleaseVersionNumber.`" SolutionInfo.cs"
-"    hg tag -m `"Tagged version $ReleaseVersionNumber.`" v$ReleaseVersionNumber"
+"    hg tag v$ReleaseVersionNumber"
 "    hg pus"
-"    nuget push $CoreNuSpecPath"
-"    nuget push $CastleNuSpecPath"
-"    nuget push $AutofacNuSpecPath"
-"    nuget push $UnityNuSpecPath"
+"    nuget push $($CoreNuSpecPath -replace `".nuspec`",`".$ReleaseVersionNumber.nupkg`")"
+"    nuget push $($AutofacNuSpecPath -replace `".nuspec`",`".$ReleaseVersionNumber.nupkg`")"
+"    nuget push $($CastleNuSpecPath -replace `".nuspec`",`".$ReleaseVersionNumber.nupkg`")"
+"    nuget push $($StructureMapNuSpecPath -replace `".nuspec`",`".$ReleaseVersionNumber.nupkg`")"
+"    nuget push $($UnityNuSpecPath -replace `".nuspec`",`".$ReleaseVersionNumber.nupkg`")"

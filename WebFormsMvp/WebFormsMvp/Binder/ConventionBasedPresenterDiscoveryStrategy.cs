@@ -7,8 +7,8 @@ using System.Web.UI;
 namespace WebFormsMvp.Binder
 {
     /// <summary>
-    /// Attempts to find presenters for a view type based on a set of naming formats conventions.
-    /// To use custom naming formats, derive from this class and override the CandidatePresenterTypeFullNameFormats property.
+    /// Attempts to find presenters for a view type based on a set of naming conventions.
+    /// To use custom naming formats, derive from this class and override the <see cref="CandidatePresenterTypeFullNameFormats"/> property.
     /// </summary>
     public class ConventionBasedPresenterDiscoveryStrategy : IPresenterDiscoveryStrategy
     {
@@ -184,7 +184,7 @@ namespace WebFormsMvp.Binder
         static IEnumerable<string> GenerateCandidatePresenterTypeFullNames(Type viewType, IEnumerable<string> presenterTypeNames, IEnumerable<string> presenterTypeFullNameFormats)
         {
             // We assume the assembly name is the same as the namespace or that minus ".Web"
-            var assemblyName = viewType.Assembly.GetNameSafe();
+            var assemblyName = viewType.Assembly.GetNameSafe().Name;
             var assemblyNameMinusWeb = assemblyName.TrimFromEnd(".Web");
 
             foreach (var presenterTypeName in presenterTypeNames)

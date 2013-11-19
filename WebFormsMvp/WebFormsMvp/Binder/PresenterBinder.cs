@@ -98,6 +98,8 @@ namespace WebFormsMvp.Binder
 
         static readonly ICompositeViewTypeFactory compositeViewTypeFactory = new DefaultCompositeViewTypeFactory();
 
+        static string libraryVersion;
+
         readonly HttpContextBase httpContext;
         readonly ITraceContext traceContext;
         readonly IMessageCoordinator messageCoordinator = new MessageCoordinator();
@@ -145,6 +147,11 @@ namespace WebFormsMvp.Binder
         {
             this.httpContext = httpContext;
             this.traceContext = traceContext;
+
+            traceContext.Write(this, () => string.Format(
+                CultureInfo.InvariantCulture,
+                "Web Forms MVP version is {0}",
+                libraryVersion = libraryVersion ?? typeof(PresenterBinder).Assembly.GetNameSafe().Version.ToString()));
 
             traceContext.Write(this, () => string.Format(
                 CultureInfo.InvariantCulture,

@@ -5,82 +5,66 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2934629D-FF06-4B81-8756-588A38F3B2E0}</ProjectGuid>
+    <ProjectGuid>{7007A4E7-543E-4058-952A-DC6B5560F0D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebFormsMvp.CodeAnalysisRules</RootNamespace>
-    <AssemblyName>WebFormsMvp.CodeAnalysisRules</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>WebFormsMvp.StructureMap</RootNamespace>
+    <AssemblyName>WebFormsMvp.StructureMap</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;DEV10</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;DEV10</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="StructureMap, Version=2.6.2.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.2.6.2\lib\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="FxCopSdk">
-      <HintPath>$(CodeAnalysisPath)\FxCopSdk.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Cci">
-      <HintPath>$(CodeAnalysisPath)\Microsoft.Cci.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.CodeAnalysis" Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">
-      <HintPath>$(CodeAnalysisPath)\Microsoft.VisualStudio.CodeAnalysis.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="BaseRule.cs" />
-    <Compile Include="PresentersShouldHaveDescriptiveNames.cs" />
-    <Compile Include="PresentersShouldHaveCorrectSuffix.cs" />
-    <Compile Include="PresentersShouldNotReplaceViewModel.cs" />
-    <Compile Include="PresentersShouldUseConsistentViewType.cs" />
-    <Compile Include="PresentersShouldUseProvidedBaseImplementation.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StructureMapPresenterFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Rules.xml" />
+    <None Include="packages.config" />
+    <None Include="WebFormsMvp.StructureMap.nuspec" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebFormsMvp\WebFormsMvp.csproj">
+      <Project>{E265BF3E-8CCB-4C22-8C15-263735227A3D}</Project>
+      <Name>WebFormsMvp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml">
       <Link>CodeAnalysisDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <Content Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

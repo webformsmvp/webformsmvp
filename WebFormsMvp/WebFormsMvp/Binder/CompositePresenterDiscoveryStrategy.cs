@@ -27,6 +27,8 @@ namespace WebFormsMvp.Binder
         /// Initializes a new instance of the <see cref="CompositePresenterDiscoveryStrategy"/> class.
         /// </summary>
         /// <param name="strategies">The strategies to be evaluated.</param>
+        /// <exception cref="ArgumentNullException">When strategies is null</exception>
+        /// <exception cref="ArgumentException">When strategies has no valid IPresenterDiscoveryStrategy </exception>
         public CompositePresenterDiscoveryStrategy(IEnumerable<IPresenterDiscoveryStrategy> strategies)
         {
             if (strategies == null)

@@ -16,7 +16,7 @@ namespace WebFormsMvp.UnitTests.Binder
             var result = assembly.GetNameSafe();
 
             // Assert
-            Assert.AreEqual(assembly.GetName().Name, result);
+            Assert.AreEqual(assembly.GetName().Name, result.Name);
         }
     }
 }

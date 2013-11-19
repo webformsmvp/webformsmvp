@@ -3,7 +3,7 @@ using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.Web;
 
-namespace WebFormsMvp.UnitTests.Web
+namespace WebFormsMvp.UnitTests.Web.MvpHttpHandlerTests
 {
     [TestClass]
     public class MvpHttpHandlerTests
@@ -32,20 +32,20 @@ namespace WebFormsMvp.UnitTests.Web
         }
 
         [TestMethod]
-        public void MvpHttpHandler_ProcessRequest_ShouldRaiseLoadEvent()
+        public void MvpHttpHandler_ProcessRequest_ShouldRaiseLoadEventOnce()
         {
             // Arrange
             var httpContext = new HttpContext(new HttpRequest("c:\test.txt", "http://test", "a=b"), new HttpResponse(null));
             var handler = new TestHandler();
 
-            var loadWasCalled = false;
-            handler.Load += (s, e) => loadWasCalled = true;
+            var loadEventCallCount = 0;
+            handler.Load += (s, e) => loadEventCallCount++;
 
             // Act
             handler.ProcessRequest(httpContext);
 
             // Assert
-            Assert.IsTrue(loadWasCalled);
+            Assert.AreEqual(1, loadEventCallCount);
         }
 
         [TestMethod]

@@ -114,7 +114,10 @@
     <Compile Include="TestHelper.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="TypeListComparerTests.cs" />
-    <Compile Include="Web\MvpHttpHandlerTests.cs" />
+    <Compile Include="Web\MvpHttpHandlerTests\MvpHttpHandlerTests.cs" />
+    <Compile Include="Web\MvpHttpHandlerTests\WithPresenterBindingAttribute_ProcessRequest_ShouldBindOnePresenter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Web\MvpPageTests.cs" />
     <Compile Include="Web\MvpUserControlTests.cs" />
   </ItemGroup>
@@ -149,6 +152,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
