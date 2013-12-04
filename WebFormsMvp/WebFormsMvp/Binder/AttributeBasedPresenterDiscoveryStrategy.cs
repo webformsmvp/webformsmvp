@@ -146,7 +146,7 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        static IEnumerable<IView> GetViewInstancesToBind(IEnumerable<IView> pendingViewInstances, IView viewInstance, Type viewType, ICollection<string> messages, PresenterBindingAttribute attribute)
+        internal static IEnumerable<IView> GetViewInstancesToBind(IEnumerable<IView> pendingViewInstances, IView viewInstance, Type viewType, ICollection<string> messages, PresenterBindingAttribute attribute)
         {
             IEnumerable<IView> viewInstancesToBind;
             switch (attribute.BindingMode)
@@ -156,7 +156,7 @@ namespace WebFormsMvp.Binder
                     break;
                 case BindingMode.SharedPresenter:
                     viewInstancesToBind = pendingViewInstances
-                        .Where(v => attribute.ViewType.IsAssignableFrom(viewType))
+                        .Where(viewType.IsInstanceOfType)
                         .ToArray();
                             
                     messages.Add(string.Format(

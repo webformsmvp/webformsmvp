@@ -92,6 +92,7 @@
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewInstancesWithSharedPresenterOnHost.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewInstancesWithSharedPresenterOnView.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SelfHostedView.cs" />
+    <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SharedPresenterWithNonMatchingCandidateViews.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleAttributeOnHostScopedToViewInterfaceWithSingleView.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_SingleAttributeOnHostScopedToViewTypeWithSingleView.cs" />
     <Compile Include="Binder\AttributeBasedPresenterDiscoveryStrategyTests\GetBindings_MultipleViewsWithSingleAttribute.cs" />
