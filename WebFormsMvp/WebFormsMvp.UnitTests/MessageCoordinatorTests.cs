@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace WebFormsMvp.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class MessageCoordinatorTests
     {
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldFireExistingSubscribers()
         {
             // Arrange
@@ -27,7 +27,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreEqual(publishedMessage, receviedMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldAcceptNullMessage()
         {
             // Arrange
@@ -45,7 +45,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsNull(receviedMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldFireMultipleSubscribersInOrderOfSubscription()
         {
             // Arrange
@@ -69,7 +69,7 @@ namespace WebFormsMvp.UnitTests
             CollectionAssert.AreEquivalent(expectedFiringOrder, firedSubscribers);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldFireSubscribersOfBaseTypes()
         {
             // Arrange
@@ -88,7 +88,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreEqual(publishedMessage, receviedMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldNotFireSubscribersOfInheritedTypes()
         {
             // Arrange
@@ -105,7 +105,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Close_ShouldNotFireNotDeliveredForSubscribersOfBaseType()
         {
             // Arrange
@@ -122,7 +122,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Close_ShouldFireNotDeliveredForSubscribersOfInheritedTypes()
         {
             // Arrange
@@ -139,7 +139,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ApplicationException))]
         public void MessageCoordinator_Publish_ShouldNotFireSubsequentSubscribersIfOneFails()
         {
@@ -168,7 +168,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldNotFailIfThereAreNoMatchingSubscribers()
         {
             // Arrange
@@ -180,7 +180,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void MessageCoordinator_Publish_ShouldThrowInvalidOperationExceptionIfCalledAfterClose()
         {
@@ -194,7 +194,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldAcceptNewMessagesWithinACallback()
         {
             // Arrange
@@ -210,7 +210,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(intReceived);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Publish_ShouldAcceptNewMessagesWithinALateSubscribeCallback()
         {
             // Arrange
@@ -226,7 +226,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(intReceived);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Subscribe_ShouldReceivePreviousMessages()
         {
             // Arrange
@@ -245,7 +245,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreEqual(publishedMessage, receviedMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Subscribe_ShouldReceiveMultiplePreviousMessagesInOrderOfPublishing()
         {
             // Arrange
@@ -268,7 +268,7 @@ namespace WebFormsMvp.UnitTests
             CollectionAssert.AreEquivalent(publishedMessages, receviedMessages);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void MessageCoordinator_Subscribe_ShouldThrowInvalidOperationExceptionIfCalledAfterClose()
         {
@@ -285,7 +285,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void MessageCoordinator_Subscribe_ShouldThrowArgumentNullExceptionIfMessageReceivedCallbackIsNull()
         {
@@ -298,7 +298,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Subscribe_ShouldAcceptNullForNeverReceivedCallback()
         {
             // Arrange
@@ -310,7 +310,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Close_ShouldFireNeverReceivedCallback()
         {
             // Arrange
@@ -334,7 +334,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(neverReceivedCallbackFired);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Close_ShouldFireNeverReceivedCallbackInOrderOfSubscription()
         {
             // Arrange
@@ -362,7 +362,7 @@ namespace WebFormsMvp.UnitTests
             CollectionAssert.AreEquivalent(expectedFiringOrder, firedCallbacks);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Close_ShouldNotFireNeverReceivedCallbackForMessagesThatHaveBeenReceived()
         {
             // Arrange
@@ -386,7 +386,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(messageReceivedCallbackFired);
         }
 
-        [TestMethod]
+        [Test]
         public void MessageCoordinator_Close_ShouldSupportBeingCalledMultipleTimes()
         {
             // Arrange

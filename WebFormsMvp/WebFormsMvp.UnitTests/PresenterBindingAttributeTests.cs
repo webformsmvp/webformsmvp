@@ -1,25 +1,25 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace WebFormsMvp.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class PresenterBindingAttributeTests
     {
-        [TestMethod]
+        [Test]
         public void PresenterBindingAttribute_Ctor_SetsBindingModeToDefault()
         {
             var attribute = new PresenterBindingAttribute(typeof(TestPresenter));
             Assert.AreEqual(BindingMode.Default, attribute.BindingMode);
         }
 
-        [TestMethod]
+        [Test]
         public void PresenterBindingAttribute_Ctor_SetsPresenterType()
         {
             var attribute = new PresenterBindingAttribute(typeof(TestPresenter));
             Assert.AreEqual(typeof(TestPresenter), attribute.PresenterType);
         }
 
-        [TestMethod]
+        [Test]
         public void PresenterBindingAttribute_Ctor_SetsViewTypeToNull()
         {
             var attribute = new PresenterBindingAttribute(typeof(TestPresenter));

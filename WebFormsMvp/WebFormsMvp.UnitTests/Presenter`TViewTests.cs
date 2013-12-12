@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Rhino.Mocks;
 using System.Web;
 using System.Web.Caching;
@@ -7,12 +7,12 @@ using System.Web.Routing;
 
 namespace WebFormsMvp.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class PresenterTests
     {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [Test]
         public void Presenter_Constructor_ShouldIntializeDefaultViewModelForViewTypesThatImplementIViewTModel()
         {
             // Arrange
@@ -25,7 +25,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsNotNull(view.Model);
         }
 
-        [TestMethod]
+        [Test]
         public void Presenter_Constructor_ShouldSupportNonModelBasedViews()
         {
             // Arrange
@@ -37,7 +37,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void Presenter_Cache_ReturnsCacheFromHttpContext()
         {
             // Arrange
@@ -53,7 +53,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreSame(cache, presenter.Cache);
         }
 
-        [TestMethod]
+        [Test]
         public void Presenter_Request_ReturnsRequestFromHttpContext()
         {
             // Arrange
@@ -69,7 +69,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreSame(request, presenter.Request);
         }
 
-        [TestMethod]
+        [Test]
         public void Presenter_Response_ReturnsResponseFromHttpContext()
         {
             // Arrange
@@ -85,7 +85,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreSame(response, presenter.Response);
         }
 
-        [TestMethod]
+        [Test]
         public void Presenter_Server_ReturnsServerFromHttpContext()
         {
             // Arrange
@@ -101,29 +101,25 @@ namespace WebFormsMvp.UnitTests
             Assert.AreSame(server, presenter.Server);
         }
 
-        [TestMethod]
+        [Test, RunInApplicationDomain]
         public void Presenter_RouteData_ReturnsRouteDataFromHttpContext()
         {
-            TestContext.Isolate(() =>
-                {
-                    // Arrange
-                    var view = MockRepository.GenerateStub<IView>();
-                    var httpContext = MockRepository.GenerateStub<HttpContextBase>();
-                    var request = MockRepository.GenerateStub<HttpRequestBase>();
-                    httpContext.Stub(h => h.Request).Return(request);
-                    var route = MockRepository.GenerateStub<RouteBase>();
-                    var routeData = new RouteData();
-                    routeData.Values.Add("TestRouteDataValue", 1);
-                    route.Stub(r => r.GetRouteData(httpContext)).Return(routeData);
-                    RouteTable.Routes.Add("Test Route", route);
+            // Arrange
+            var view = MockRepository.GenerateStub<IView>();
+            var httpContext = MockRepository.GenerateStub<HttpContextBase>();
+            var request = MockRepository.GenerateStub<HttpRequestBase>();
+            httpContext.Stub(h => h.Request).Return(request);
+            var route = MockRepository.GenerateStub<RouteBase>();
+            var routeData = new RouteData();
+            routeData.Values.Add("TestRouteDataValue", 1);
+            route.Stub(r => r.GetRouteData(httpContext)).Return(routeData);
+            RouteTable.Routes.Add("Test Route", route);
 
-                    // Act
-                    var presenter = new TestPresenter(view) { HttpContext = httpContext };
+            // Act
+            var presenter = new TestPresenter(view) { HttpContext = httpContext };
 
-                    // Assert
-                    Assert.AreEqual(1, presenter.RouteData.Values["TestRouteDataValue"]);
-                }
-            );
+            // Assert
+            Assert.AreEqual(1, presenter.RouteData.Values["TestRouteDataValue"]);
         }
 
         class TestModel { }

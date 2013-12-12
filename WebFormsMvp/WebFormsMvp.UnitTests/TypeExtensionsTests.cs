@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace WebFormsMvp.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TypeExtensionsTests
     {
-        [TestMethod]
+        [Test]
         public void TypeExtensions_GetViewInterfaces_ShouldReturnForIView()
         {
             // Arrange
@@ -24,7 +24,7 @@ namespace WebFormsMvp.UnitTests
             CollectionAssert.AreEquivalent(expected, actual.ToList());
         }
 
-        [TestMethod]
+        [Test]
         public void TypeExtensions_GetViewInterfaces_ShouldReturnForIViewT()
         {
             // Arrange
@@ -41,7 +41,7 @@ namespace WebFormsMvp.UnitTests
         }
 
         public interface GetViewInterfaces_CustomIView : IView { }
-        [TestMethod]
+        [Test]
         public void TypeExtensions_GetViewInterfaces_ShouldReturnForCustomIView()
         {
             // Arrange
@@ -58,7 +58,7 @@ namespace WebFormsMvp.UnitTests
         }
 
         public interface GetViewInterfaces_CustomIViewT : IView<object> { }
-        [TestMethod]
+        [Test]
         public void TypeExtensions_GetViewInterfaces_ShouldReturnForCustomIViewT()
         {
             // Arrange
@@ -78,7 +78,7 @@ namespace WebFormsMvp.UnitTests
         }
 
         public interface GetViewInterfaces_ChainedCustomIView : GetViewInterfaces_CustomIView { }
-        [TestMethod]
+        [Test]
         public void TypeExtensions_GetViewInterfaces_ShouldReturnForChainedCustomIView()
         {
             // Arrange

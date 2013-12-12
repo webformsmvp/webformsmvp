@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests
 {
-    [TestClass]
+    [TestFixture]
     public class GetAttributes_SharedPresenterWithoutExplicitViewType
     {
-        [TestMethod]
+        [Test]
         public void AttributeBasedPresenterDiscoveryStrategy_GetAttributes_ShouldThrowExceptionForSharedPresenterWithoutExplicitViewType()
         {
             try

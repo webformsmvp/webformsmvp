@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace WebFormsMvp.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class CompositeViewTests
     {
         public class MyView : CompositeView<IView<object>>
@@ -13,7 +13,7 @@ namespace WebFormsMvp.UnitTests
             public override event EventHandler Load;
         }
 
-        [TestMethod]
+        [Test]
         public void CompositeView_Add_ShouldAddToList()
         {
             // Arrange
@@ -30,7 +30,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(expected.SequenceEqual(compositeView.Views));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CompositeView_Add_ShouldThrowArgumentNullExceptionIfViewIsNull()
         {
@@ -43,7 +43,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void CompositeView_Add_ShouldThrowArgumentExceptionIfViewTypeIsWrong()
         {
