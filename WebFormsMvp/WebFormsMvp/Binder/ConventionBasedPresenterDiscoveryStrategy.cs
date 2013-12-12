@@ -80,7 +80,7 @@ namespace WebFormsMvp.Binder
             get { return defaultCandidatePresenterTypeFullNameFormats; }
         }
 
-        static readonly IDictionary<RuntimeTypeHandle, ConventionSearchResult> viewTypeToPresenterTypeCache = new Dictionary<RuntimeTypeHandle, ConventionSearchResult>();
+        internal static readonly IDictionary<RuntimeTypeHandle, ConventionSearchResult> viewTypeToPresenterTypeCache = new Dictionary<RuntimeTypeHandle, ConventionSearchResult>();
         internal static PresenterDiscoveryResult GetBinding(IView viewInstance, IBuildManager buildManager, IEnumerable<string> viewInstanceSuffixes, IEnumerable<string> presenterTypeFullNameFormats)
         {
             var viewType = viewInstance.GetType();
@@ -208,7 +208,7 @@ namespace WebFormsMvp.Binder
             }
         }
 
-        class ConventionSearchResult
+        internal class ConventionSearchResult
         {
             readonly string message;
             readonly Type presenterType;

@@ -43,7 +43,7 @@ namespace WebFormsMvp.UnitTests.Binder
             {
                 // Assert
                 Assert.AreEqual("strategies", ex.ParamName);
-                StringAssert.StartsWith(ex.Message, "You must supply at least one strategy.");
+                StringAssert.StartsWith("You must supply at least one strategy.", ex.Message);
             }
         }
 

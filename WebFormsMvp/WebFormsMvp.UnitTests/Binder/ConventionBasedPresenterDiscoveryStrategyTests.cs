@@ -3,7 +3,6 @@ using System.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
 using WebFormsMvp.Binder;
-using Rhino.Mocks.Constraints;
 using System.Collections.Generic;
 
 namespace WebFormsMvp.UnitTests.Binder
@@ -12,6 +11,12 @@ namespace WebFormsMvp.UnitTests.Binder
     public class ConventionBasedPresenterDiscoveryStrategyTests
     {
         public TestContext TestContext { get; set; }
+
+        [SetUp]
+        public void SetUp()
+        {
+            ConventionBasedPresenterDiscoveryStrategy.viewTypeToPresenterTypeCache.Clear();
+        }
 
         [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_Ctor_ShouldGuardNullBuildManager()
@@ -75,7 +80,7 @@ namespace WebFormsMvp.UnitTests.Binder
             }
         }
         
-        [Test, RunInApplicationDomain]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_FindsPresenterTypeFromBuildManager()
         {
             // Arrange
@@ -94,7 +99,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(presenter.GetType(), result.First().Bindings.First().PresenterType);
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_DoesNotThrowExceptionWhenNoPresenterTypeFound()
         {
             // Arrange
@@ -109,7 +114,7 @@ namespace WebFormsMvp.UnitTests.Binder
             strategy.GetBindings(hosts, views);
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_ReturnsAsSoonAsPresenterTypeIsFound()
         {
             // Arrange
@@ -135,11 +140,10 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         // TODO: Test overriding virtual properties to ensure base class correctly uses them for discovery
-        [Test, RunInApplicationDomain]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_UsesCandidatePresenterNameFormatsWhenOverridden()
         {
             // Arrange
-            var presenter = MockRepository.GenerateStub<IPresenter<IView>>();
             var buildManager = MockRepository.GenerateStub<IBuildManager>();
             var namesUsed = new List<string>();
             buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
@@ -151,9 +155,11 @@ namespace WebFormsMvp.UnitTests.Binder
                 .Return(null);
             var hosts = new[] { new object() };
             var views = new List<IView> { MockRepository.GenerateStub<IView>() };
-            var strategy = new DerivedConventionBasedPresenterDiscoveryStrategy(buildManager);
-            strategy.NamesToUse = new[] { "Foo", "Bar" };
-                
+            var strategy = new DerivedConventionBasedPresenterDiscoveryStrategy(buildManager)
+            {
+                NamesToUse = new[] {"Foo", "Bar"}
+            };
+
             // Act
             strategy.GetBindings(hosts, views);
 

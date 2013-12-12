@@ -101,7 +101,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreSame(server, presenter.Server);
         }
 
-        [Test, RunInApplicationDomain]
+        [Test]
         public void Presenter_RouteData_ReturnsRouteDataFromHttpContext()
         {
             // Arrange
