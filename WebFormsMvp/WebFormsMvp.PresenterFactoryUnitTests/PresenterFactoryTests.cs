@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebFormsMvp.Binder;
 
@@ -7,6 +8,11 @@ namespace WebFormsMvp.PresenterFactoryUnitTests
     public abstract class PresenterFactoryTests
     {
         protected abstract IPresenterFactory BuildFactory();
+
+        protected IEnumerable<Type> TypesThatShouldBeRegistered
+        {
+            get { return new[] {typeof (BasicPresenter), typeof (DisposablePresenter)}; }
+        }
 
         [TestMethod]
         public void Create_ShouldReturnInstance()
