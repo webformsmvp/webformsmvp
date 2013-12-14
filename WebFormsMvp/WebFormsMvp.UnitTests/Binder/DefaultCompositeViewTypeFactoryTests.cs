@@ -1,15 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder
 {
-    [TestClass]
+    [TestFixture]
     public class DefaultCompositeViewTypeFactoryTests
     {
         // ReSharper disable InconsistentNaming
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldThrowArgumentExceptionForClassTypes()
         {
@@ -21,7 +21,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldAllowIView()
         {
             // Arrange
@@ -32,7 +32,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldAllowIViewT()
         {
             // Arrange
@@ -44,7 +44,7 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         public interface ValidateViewType_ITestView : IView { }
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldAllowInheritorsOfIView()
         {
             // Arrange
@@ -56,7 +56,7 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         public interface ValidateViewType_ITestViewT : IView<object> { }
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldAllowInheritorsOfIViewT()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldThrowArgumentExceptionForNonIViewBasedInterfaces()
         {
@@ -80,7 +80,7 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         interface ValidateViewType_IPrivateView : IView {}
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldThrowArgumentExceptionForNonPublicInterfaces()
         {
@@ -92,7 +92,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_GetCompositeViewParentType_ShouldReturnCorrectTypeForIView()
         {
             // Arrange
@@ -105,7 +105,7 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         public interface GetCompositeViewParentType_ITestView : IView {}
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_GetCompositeViewParentType_ShouldReturnCorrectTypeForIViewBasedViews()
         {
             // Arrange
@@ -117,7 +117,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(typeof(CompositeView<GetCompositeViewParentType_ITestView>), type);
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_GetCompositeViewParentType_ShouldReturnCorrectTypeForIViewT()
         {
             // Arrange
@@ -130,7 +130,7 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         public interface GetCompositeViewParentType_ITestViewT : IView<object> { }
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_GetCompositeViewParentType_ShouldReturnCorrectTypeForIViewTBasedViews()
         {
             // Arrange
@@ -142,7 +142,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(typeof(CompositeView<GetCompositeViewParentType_ITestViewT>), type);
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewTypeInternal_ShouldReturnACompositeForIViewThatImplementsIView()
         {
             // Arrange
@@ -154,7 +154,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(typeof(IView).IsAssignableFrom(type));
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewTypeInternal_ShouldReturnACompositeForIViewThatImplementsICompositeView()
         {
             // Arrange
@@ -166,7 +166,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(typeof(ICompositeView).IsAssignableFrom(type));
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewTypeInternal_ShouldReturnACompositeForIViewTThatImplementsIView()
         {
             // Arrange
@@ -178,7 +178,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(typeof(IView<object>).IsAssignableFrom(type));
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewTypeInternal_ShouldReturnACompositeForIViewTThatImplementsICompositeView()
         {
             // Arrange
@@ -196,7 +196,7 @@ namespace WebFormsMvp.UnitTests.Binder
             int TestGetProperty { get; }
             bool? TestSetProperty { set; }
         }
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewTypeInternal_ShouldReturnACompositeForCustomProperties()
         {
             // Arrange
@@ -213,7 +213,7 @@ namespace WebFormsMvp.UnitTests.Binder
         {
             event EventHandler TestEvent;
         }
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewTypeInternal_ShouldReturnACompositeForCustomEvents()
         {
             // Arrange
@@ -226,7 +226,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(typeof(BuildCompositeViewTypeInternal_CustomEvents).IsAssignableFrom(type));
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewType_ShouldReturnCompositeForIView()
         {
             // Arrange
@@ -239,7 +239,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(typeof(CompositeView<IView>).IsAssignableFrom(type));
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewType_ShouldReturnSameTypeMultipleTimes()
         {
             // Arrange
@@ -253,7 +253,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(type1 == type2);
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultCompositeViewTypeFactory_BuildCompositeViewType_ShouldReturnSameTypeMultipleTimesAcrossMultipleInstances()
         {
             // Arrange

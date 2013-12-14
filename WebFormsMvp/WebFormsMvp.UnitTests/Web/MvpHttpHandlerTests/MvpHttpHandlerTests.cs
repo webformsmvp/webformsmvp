@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Web;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WebFormsMvp.Web;
 
 namespace WebFormsMvp.UnitTests.Web.MvpHttpHandlerTests
 {
-    [TestClass]
+    [TestFixture]
     public class MvpHttpHandlerTests
     {
-        [TestMethod]
+        [Test]
         public void MvpHttpHandler_ProcessRequest_ShouldBindPresenter()
         {
             // Arrange
@@ -31,7 +31,7 @@ namespace WebFormsMvp.UnitTests.Web.MvpHttpHandlerTests
             Assert.Fail();
         }
 
-        [TestMethod]
+        [Test]
         public void MvpHttpHandler_ProcessRequest_ShouldRaiseLoadEventOnce()
         {
             // Arrange
@@ -48,7 +48,7 @@ namespace WebFormsMvp.UnitTests.Web.MvpHttpHandlerTests
             Assert.AreEqual(1, loadEventCallCount);
         }
 
-        [TestMethod]
+        [Test]
         public void MvpHttpHandler_IsReusable_ShouldBeFalse()
         {
             // Arrange

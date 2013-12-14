@@ -3,15 +3,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Routing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests
 {
-    [TestClass]
+    [TestFixture]
     public class GetBindings_MultipleViewInstancesWithSharedPresenterOnHost
     {
-        [TestMethod]
+        [Test]
         public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_MultipleViewInstancesWithSharedPresenterOnHost()
         {
             // Arrange

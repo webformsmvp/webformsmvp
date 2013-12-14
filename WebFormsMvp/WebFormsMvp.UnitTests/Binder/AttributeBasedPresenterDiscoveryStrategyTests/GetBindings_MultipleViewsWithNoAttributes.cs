@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests
 {
-    [TestClass]
+    [TestFixture]
     public class GetBindings_MultipleViewsWithNoAttributes
     {
-        [TestMethod]
+        [Test]
         public void AttributeBasedPresenterDiscoveryStrategy_GetBindings_MultipleViewsWithNoAttributes()
         {
             // Arrange

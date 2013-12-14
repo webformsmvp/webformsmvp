@@ -1,13 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Rhino.Mocks;
 using WebFormsMvp.Web;
 
 namespace WebFormsMvp.UnitTests.Web
 {
-    [TestClass]
+    [TestFixture]
     public class MvpPageTests
     {
-        [TestMethod]
+        [Test]
         public void MvpPage_ThrowExceptionIfNoPresenterBound_ShouldDefaultToTrue()
         {
             // Arrange

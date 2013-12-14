@@ -1,13 +1,13 @@
 ﻿using System.Web;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 
 namespace WebFormsMvp.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class TypeListComparerTests
     {
-        [TestMethod]
+        [Test]
         public void TypeListComparer_Equals_ShouldReturnTrueForTwoEmptyLists()
         {
             // Arrange
@@ -21,7 +21,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(actual);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TypeListComparer_Equals_ShouldThrowExceptionWhenFirstArgumentIsNull()
         {
@@ -35,7 +35,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TypeListComparer_Equals_ShouldThrowExceptionWhenSecondArgumentIsNull()
         {
@@ -49,7 +49,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void TypeListComparer_Equals_ShouldReturnTrueForTwoSortedLists()
         {
             // Arrange
@@ -68,7 +68,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(actual);
         }
 
-        [TestMethod]
+        [Test]
         public void TypeListComparer_Equals_ShouldReturnTrueForTwoUnsortedLists()
         {
             // Arrange
@@ -87,7 +87,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsTrue(actual);
         }
 
-        [TestMethod]
+        [Test]
         public void TypeListComparer_Equals_ShouldReturnFalseForTwoListsOfDifferentLength()
         {
             // Arrange
@@ -106,7 +106,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsFalse(actual);
         }
 
-        [TestMethod]
+        [Test]
         public void TypeListComparer_Equals_ShouldReturnFalseForTwoListsOfDifferentValues()
         {
             // Arrange
@@ -125,7 +125,7 @@ namespace WebFormsMvp.UnitTests
             Assert.IsFalse(actual);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TypeListComparer_GetHashCode_ShouldThrowExceptionWhenArgumentIsNull()
         {
@@ -138,7 +138,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void TypeListComparer_GetHashCode_ShouldReturnZeroForEmptyList()
         {
             // Arrange
@@ -152,7 +152,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void TypeListComparer_GetHashCode_ShouldReturnValueOfItemInSingleItemList()
         {
             // Arrange
@@ -166,7 +166,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void TypeListComparer_GetHashCode_ShouldReturnAggregateOrOfListItems()
         {
             // Arrange

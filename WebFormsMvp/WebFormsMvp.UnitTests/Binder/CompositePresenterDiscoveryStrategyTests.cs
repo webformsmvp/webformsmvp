@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Rhino.Mocks;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder
 {
-    [TestClass]
+    [TestFixture]
     public class CompositePresenterDiscoveryStrategyTests
     {
-        [TestMethod]
+        [Test]
         public void CompositePresenterDiscoveryStrategyTests_Ctor_ShouldGuardNullStrategyList()
         {
             try
@@ -28,7 +28,7 @@ namespace WebFormsMvp.UnitTests.Binder
             }
         }
 
-        [TestMethod]
+        [Test]
         public void CompositePresenterDiscoveryStrategyTests_Ctor_ShouldGuardEmptyStrategyList()
         {
             try
@@ -43,11 +43,11 @@ namespace WebFormsMvp.UnitTests.Binder
             {
                 // Assert
                 Assert.AreEqual("strategies", ex.ParamName);
-                StringAssert.StartsWith(ex.Message, "You must supply at least one strategy.");
+                StringAssert.StartsWith("You must supply at least one strategy.", ex.Message);
             }
         }
 
-        //[TestMethod]
+        //[Test]
         //public void CompositePresenterDiscoveryStrategyTests_GetBindings_ShouldYieldFromChildStrategy()
         //{
         //    // Arrange
@@ -72,7 +72,7 @@ namespace WebFormsMvp.UnitTests.Binder
         //    CollectionAssert.AreEquivalent(discoveryResult.Bindings.ToArray(), bindings.First().Bindings.ToArray());
         //}
 
-        //[TestMethod]
+        //[Test]
         //public void CompositePresenterDiscoveryStrategyTests_GetBindings_ShouldNotPassMatchedViewsToSubsequentStrategies()
         //{
         //    // Arrange
@@ -110,7 +110,7 @@ namespace WebFormsMvp.UnitTests.Binder
         //    CollectionAssert.AreEqual(new[] { view3 }, strategy2ViewInstances.ToArray());
         //}
 
-        //[TestMethod]
+        //[Test]
         //public void CompositePresenterDiscoveryStrategyTests_GetBindings_ShouldFallThroughChildStrategiesInOrder()
         //{
         //    // Arrange

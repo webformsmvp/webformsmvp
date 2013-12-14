@@ -1,11 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Rhino.Mocks;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder
 {
-    [TestClass]
+    [TestFixture]
     public class DefaultPresenterFactoryTests
     {
         // ReSharper disable InconsistentNaming
@@ -19,7 +19,7 @@ namespace WebFormsMvp.UnitTests.Binder
             public string Param { get; private set; }
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultPresenterFactory_GetBuildMethodInternal_ShouldReturnWorkingBuildMethodForConstructorWithOneParameter()
         {
             // Arrange
@@ -32,11 +32,11 @@ namespace WebFormsMvp.UnitTests.Binder
             var instance = buildMethod.Invoke(null, new[] { "test" });
 
             // Assert
-            Assert.IsInstanceOfType(instance, typeToBuild);
+            Assert.IsInstanceOf(typeToBuild, instance);
             Assert.AreEqual("test", ((GetBuildMethodInternal_TestClassWithParameter)instance).Param);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void DefaultPresenterFactory_GetBuildMethodInternal_ShouldThrowArgumentExcpetionWhenMatchingConstructorNotFound()
         {
@@ -51,7 +51,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultPresenterFactory_GetBuildMethod_ShouldReturnSameMethodMultipleTimes()
         {
             // Arrange
@@ -64,7 +64,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(buildMethod1, buildMethod2);
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultPresenterFactory_GetBuildMethod_ShouldReturnDifferentMethodsForDifferentConstructors()
         {
             // Arrange
@@ -90,7 +90,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 DisposeCalled = true;
             }
         }
-        [TestMethod]
+        [Test]
         public void DefaultPresenterFactory_Release_ShouldCallDispose()
         {
             // Arrange
@@ -104,7 +104,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsTrue(presenter.DisposeCalled);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfPresenterTypeIsNull()
         {
@@ -121,7 +121,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfViewTypeIsNull()
         {
@@ -138,7 +138,7 @@ namespace WebFormsMvp.UnitTests.Binder
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfViewInstanceIsNull()
         {
@@ -161,7 +161,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 : base(view)
             { }
         }
-        [TestMethod]
+        [Test]
         public void DefaultPresenterFactory_Create_ShouldReturnInstance()
         {
             // Arrange
@@ -176,7 +176,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 viewInstance);
 
             // Assert
-            Assert.IsInstanceOfType(presenter, presenterType);
+            Assert.IsInstanceOf(presenterType, presenter);
         }
 
         public class Create_ErrorPresenter : Presenter<IView>
@@ -187,7 +187,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 throw new ApplicationException("test exception");
             }
         }
-        [TestMethod]
+        [Test]
         public void DefaultPresenterFactory_Create_ShouldWrapExceptions()
         {
             // Arrange
@@ -209,8 +209,8 @@ namespace WebFormsMvp.UnitTests.Binder
             catch (Exception ex)
             {
                 // Assert
-                Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
-                Assert.IsInstanceOfType(ex.InnerException, typeof(ApplicationException));
+                Assert.IsInstanceOf<InvalidOperationException>(ex);
+                Assert.IsInstanceOf<ApplicationException>(ex.InnerException);
                 Assert.AreEqual(ex.InnerException.Message, "test exception");
             }
         }

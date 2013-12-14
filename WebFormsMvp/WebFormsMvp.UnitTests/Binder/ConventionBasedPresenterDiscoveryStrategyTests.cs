@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Rhino.Mocks;
 using WebFormsMvp.Binder;
-using Rhino.Mocks.Constraints;
 using System.Collections.Generic;
 
 namespace WebFormsMvp.UnitTests.Binder
 {
-    [TestClass]
+    [TestFixture]
     public class ConventionBasedPresenterDiscoveryStrategyTests
     {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [SetUp]
+        public void SetUp()
+        {
+            ConventionBasedPresenterDiscoveryStrategy.viewTypeToPresenterTypeCache.Clear();
+        }
+
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_Ctor_ShouldGuardNullBuildManager()
         {
             try
@@ -31,7 +36,7 @@ namespace WebFormsMvp.UnitTests.Binder
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_ShouldGuardNullHosts()
         {
             // Arrange
@@ -53,7 +58,7 @@ namespace WebFormsMvp.UnitTests.Binder
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_ShouldGuardNullViewInstances()
         {
             // Arrange
@@ -75,110 +80,94 @@ namespace WebFormsMvp.UnitTests.Binder
             }
         }
         
-        [TestMethod]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_FindsPresenterTypeFromBuildManager()
         {
-            TestHelper.Isolate(TestContext, () =>
-            {
+            // Arrange
+            var presenter = MockRepository.GenerateStub<IPresenter<IView>>();
+            var buildManager = MockRepository.GenerateStub<IBuildManager>();
+            buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
+                .Return(presenter.GetType());
+            var hosts = new[] { new object() };
+            var views = new List<IView> { MockRepository.GenerateStub<IView>() };
+            var strategy = new ConventionBasedPresenterDiscoveryStrategy(buildManager);
 
-                // Arrange
-                var presenter = MockRepository.GenerateStub<IPresenter<IView>>();
-                var buildManager = MockRepository.GenerateStub<IBuildManager>();
-                buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
-                    .Return(presenter.GetType());
-                var hosts = new[] { new object() };
-                var views = new List<IView> { MockRepository.GenerateStub<IView>() };
-                var strategy = new ConventionBasedPresenterDiscoveryStrategy(buildManager);
+            // Act
+            var result = strategy.GetBindings(hosts, views);
 
-                // Act
-                var result = strategy.GetBindings(hosts, views);
-
-                // Assert
-                Assert.AreEqual(presenter.GetType(), result.First().Bindings.First().PresenterType);
-
-            });
+            // Assert
+            Assert.AreEqual(presenter.GetType(), result.First().Bindings.First().PresenterType);
         }
 
-        [TestMethod]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_DoesNotThrowExceptionWhenNoPresenterTypeFound()
         {
-            TestHelper.Isolate(TestContext, () => {
+            // Arrange
+            var buildManager = MockRepository.GenerateStub<IBuildManager>();
+            buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
+                .Return(null);
+            var hosts = new[] { new object() };
+            var views = new List<IView> { MockRepository.GenerateStub<IView>() };
+            var strategy = new ConventionBasedPresenterDiscoveryStrategy(buildManager);
 
-                // Arrange
-                var buildManager = MockRepository.GenerateStub<IBuildManager>();
-                buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
-                    .Return(null);
-                var hosts = new[] { new object() };
-                var views = new List<IView> { MockRepository.GenerateStub<IView>() };
-                var strategy = new ConventionBasedPresenterDiscoveryStrategy(buildManager);
-
-                // Act
-                strategy.GetBindings(hosts, views);
-
-            });
+            // Act
+            strategy.GetBindings(hosts, views);
         }
 
-        [TestMethod]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_ReturnsAsSoonAsPresenterTypeIsFound()
         {
-            TestHelper.Isolate(TestContext, () => {
-
-                // Arrange
-                var presenter = MockRepository.GenerateStub<IPresenter<IView>>();
-                var buildManager = MockRepository.GenerateStub<IBuildManager>();
-                var callCount = 0;
-                buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
-                    .WhenCalled(mi => {
-                        callCount++;
-                        mi.ReturnValue = presenter.GetType(); // Find on the first one
-                    })
-                    .Return(presenter.GetType());
-                var hosts = new[] { new object() };
-                var views = new List<IView> { MockRepository.GenerateStub<IView>() };
-                var strategy = new ConventionBasedPresenterDiscoveryStrategy(buildManager);
+            // Arrange
+            var presenter = MockRepository.GenerateStub<IPresenter<IView>>();
+            var buildManager = MockRepository.GenerateStub<IBuildManager>();
+            var callCount = 0;
+            buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
+                .WhenCalled(mi => {
+                    callCount++;
+                    mi.ReturnValue = presenter.GetType(); // Find on the first one
+                })
+                .Return(presenter.GetType());
+            var hosts = new[] { new object() };
+            var views = new List<IView> { MockRepository.GenerateStub<IView>() };
+            var strategy = new ConventionBasedPresenterDiscoveryStrategy(buildManager);
             
-                // Act
-                strategy.GetBindings(hosts, views);
+            // Act
+            strategy.GetBindings(hosts, views);
 
-                // Assert
-                Assert.IsTrue(strategy.CandidatePresenterTypeFullNameFormats.Count() > 1);
-                Assert.AreEqual(1, callCount);
-
-            });
+            // Assert
+            Assert.IsTrue(strategy.CandidatePresenterTypeFullNameFormats.Count() > 1);
+            Assert.AreEqual(1, callCount);
         }
 
         // TODO: Test overriding virtual properties to ensure base class correctly uses them for discovery
-        [TestMethod]
+        [Test]
         public void ConventionBasedPresenterDiscoveryStrategy_GetBindings_UsesCandidatePresenterNameFormatsWhenOverridden()
         {
-            TestHelper.Isolate(TestContext, () =>
-            {
-
-                // Arrange
-                var presenter = MockRepository.GenerateStub<IPresenter<IView>>();
-                var buildManager = MockRepository.GenerateStub<IBuildManager>();
-                var namesUsed = new List<string>();
-                buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
-                    .WhenCalled(mi =>
-                    {
-                        namesUsed.Add((string)mi.Arguments[0]);
-                        mi.ReturnValue = null; // return null to force it to look through all candidat names
-                    })
-                    .Return(null);
-                var hosts = new[] { new object() };
-                var views = new List<IView> { MockRepository.GenerateStub<IView>() };
-                var strategy = new DerivedConventionBasedPresenterDiscoveryStrategy(buildManager);
-                strategy.NamesToUse = new[] { "Foo", "Bar" };
-                
-                // Act
-                strategy.GetBindings(hosts, views);
-
-                // Assert
-                foreach (var name in strategy.NamesToUse)
+            // Arrange
+            var buildManager = MockRepository.GenerateStub<IBuildManager>();
+            var namesUsed = new List<string>();
+            buildManager.Stub(b => b.GetType(Arg<string>.Is.Anything, Arg<bool>.Is.Equal(false)))
+                .WhenCalled(mi =>
                 {
-                    Assert.IsTrue(namesUsed.Any(n => n.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0));
-                }
-            });
+                    namesUsed.Add((string)mi.Arguments[0]);
+                    mi.ReturnValue = null; // return null to force it to look through all candidat names
+                })
+                .Return(null);
+            var hosts = new[] { new object() };
+            var views = new List<IView> { MockRepository.GenerateStub<IView>() };
+            var strategy = new DerivedConventionBasedPresenterDiscoveryStrategy(buildManager)
+            {
+                NamesToUse = new[] {"Foo", "Bar"}
+            };
+
+            // Act
+            strategy.GetBindings(hosts, views);
+
+            // Assert
+            foreach (var name in strategy.NamesToUse)
+            {
+                Assert.IsTrue(namesUsed.Any(n => n.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0));
+            }
         }
 
         class DerivedConventionBasedPresenterDiscoveryStrategy : ConventionBasedPresenterDiscoveryStrategy

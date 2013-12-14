@@ -1,13 +1,13 @@
 ﻿using System.Web;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WebFormsMvp.Web;
 
 namespace WebFormsMvp.UnitTests.Web.MvpHttpHandlerTests
 {
-    [TestClass]
+    [TestFixture]
     public class WithPresenterBindingAttribute_ShouldBindOnePresenter
     {
-        [TestMethod]
+        [Test]
         public void MvpHttpHandler_WithPresenterBindingAttribute_ProcessRequest_ShouldBindOnePresenter()
         {
             // Arrange

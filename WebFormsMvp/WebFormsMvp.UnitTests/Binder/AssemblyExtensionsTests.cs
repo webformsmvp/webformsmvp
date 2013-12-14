@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder
 {
-    [TestClass]
+    [TestFixture]
     public class AssemblyExtensionsTests
     {
-        [TestMethod]
+        [Test]
         public void AssemblyExtensions_GetNameSafe_GetsCorrectName()
         {
             // Arrange

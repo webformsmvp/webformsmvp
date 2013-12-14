@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace WebFormsMvp.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class CollectionExtensionsTests
     {
-        [TestMethod]
+        [Test]
         public void CollectionExtensions_ICollection_AddRange_AddsItemsToInstance()
         {
             // Arrange
@@ -23,7 +23,7 @@ namespace WebFormsMvp.UnitTests
             CollectionAssert.AreEqual(expecting, (List<string>)actual);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_ICollection_AddRange_ThrowsIfTargetArgumentIsNull()
         {
@@ -36,7 +36,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_ICollection_AddRange_ThrowsIfListArgumentIsNull()
         {
@@ -49,7 +49,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionExtensions_IDictionary_GetOrCreateValue_GetsValueIfContainedInDictionary()
         {
             // Arrange
@@ -64,7 +64,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreEqual("value", result);
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionExtensions_IDictionary_GetOrCreateValue_AddsValueIfNotContainedInDictionary()
         {
             // Arrange
@@ -77,7 +77,7 @@ namespace WebFormsMvp.UnitTests
             Assert.AreEqual("yo", result);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_IDictionary_GetOrCreateValue_ThrowsIfDictionaryArgumentIsNull()
         {
@@ -89,7 +89,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_IEnumerable_ToDictionary_ThrowsIfSourceArgumentIsNull()
         {
@@ -101,7 +101,7 @@ namespace WebFormsMvp.UnitTests
             // Assert
         }
 
-        [TestMethod]
+        [Test]
         public void CollectionExtensions_IEnumerable_ToDictionary_ReturnsItemsAsDictionary()
         {
             // Arrange
