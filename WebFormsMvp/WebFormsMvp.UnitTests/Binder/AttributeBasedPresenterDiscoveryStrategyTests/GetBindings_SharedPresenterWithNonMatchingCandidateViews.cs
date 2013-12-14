@@ -1,16 +1,16 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Rhino.Mocks;
 using WebFormsMvp.Web;
 using WebFormsMvp.Binder;
 
 namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests
 {
-    [TestClass]
+    [TestFixture]
     public class GetBindings_SharedPresenterWithNonMatchingCandidateViews
     {
-        [TestMethod]
+        [Test]
         public void AttributeBasedPresenterDiscoveryStrategy_GetViewInstancesToBind_Only_Binds_Views_With_Matching_Interface()
         {
 
@@ -35,7 +35,7 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
             Assert.AreEqual(matchedView, boundView);
         }
 
-        [TestMethod]
+        [Test]
         public void AttributeBasedPresenterDiscoveryStrategy_GetViewInstancesToBind_Can_Return_Zero_Matched_Instances()
         {
 
