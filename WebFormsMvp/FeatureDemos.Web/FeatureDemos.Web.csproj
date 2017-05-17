@@ -26,6 +26,12 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -79,6 +85,7 @@
   <ItemGroup>
     <Content Include="Controls\DynamicallyLoadedControl.ascx" />
     <Content Include="PageView.aspx" />
+    <Content Include="ViewsAddedDynamically.aspx" />
     <Content Include="ViewsAddedInPageInit.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -222,6 +229,13 @@
     <Compile Include="TimeService.asmx.cs">
       <DependentUpon>TimeService.asmx</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ViewsAddedDynamically.aspx.cs">
+      <DependentUpon>ViewsAddedDynamically.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewsAddedDynamically.aspx.designer.cs">
+      <DependentUpon>ViewsAddedDynamically.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewsAddedInPageInit.aspx.cs">
       <DependentUpon>ViewsAddedInPageInit.aspx</DependentUpon>
