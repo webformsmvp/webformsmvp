@@ -20,11 +20,15 @@ namespace WebFormsMvp.Web
         /// Initializes a new instance of the <see cref="PageViewHost"/> class.
         /// </summary>
         /// <param name="page">The page instance that this view host will be responsible for.</param>
+        /// <param name="control"></param>
         /// <param name="httpContext">The owning HTTP context.</param>
-        public PageViewHost(Page page, HttpContext httpContext)
+        public PageViewHost(Page page, Control control, HttpContext httpContext)
         {
             if (page == null)
                 throw new ArgumentNullException("page");
+
+            if (control == null)
+                throw new ArgumentNullException("control");
 
             if (httpContext == null)
                 throw new ArgumentNullException("httpContext");
@@ -50,8 +54,8 @@ namespace WebFormsMvp.Web
                 presenter.AsyncManager = asyncManager;
             };
 
-            traceContext.Write(this, () => "Subscribing PageViewHost to Page.InitComplete event.");
-            page.InitComplete += Page_InitComplete;
+            traceContext.Write(this, () => "Subscribing PageViewHost to Control.Init event.");
+            control.Init += Control_Init;
 
             traceContext.Write(this, () => "Subscribing PageViewHost to Page.PreRenderComplete event.");
             page.PreRenderComplete += Page_PreRenderComplete;
@@ -65,11 +69,6 @@ namespace WebFormsMvp.Web
             presenterBinder.RegisterView(view);
         }
 
-        void Page_InitComplete(object sender, EventArgs e)
-        {
-            presenterBinder.PerformBinding();
-        }
-
         void Page_PreRenderComplete(object sender, EventArgs e)
         {
             presenterBinder.MessageCoordinator.Close();
@@ -78,6 +77,11 @@ namespace WebFormsMvp.Web
         void Page_Unload(object sender, EventArgs e)
         {
             presenterBinder.Release();
+        }
+
+        void Control_Init(object sender, EventArgs e)
+        {
+            presenterBinder.PerformBinding();
         }
 
         internal static IEnumerable<object> FindHosts(Page page, ITraceContext traceContext)
@@ -94,19 +98,20 @@ namespace WebFormsMvp.Web
             }
         }
 
-        readonly static string viewHostCacheKey = typeof(PageViewHost).FullName + ".PageContextKey";
+        static readonly string ViewHostCacheKey = typeof(PageViewHost).FullName + ".PageContextKey";
+
         internal static PageViewHost FindViewHost(Control control, HttpContext httpContext, ITraceContext traceContext)
         {
             traceContext.Write(typeof(PageViewHost), () => "Finding PageViewHost instance.");
 
             var pageContext = control.Page.Items;
 
-            if (pageContext.Contains(viewHostCacheKey))
-                return (PageViewHost)pageContext[viewHostCacheKey];
+            if (pageContext.Contains(ViewHostCacheKey))
+                return (PageViewHost)pageContext[ViewHostCacheKey];
 
-            var host = new PageViewHost(control.Page, httpContext);
+            var host = new PageViewHost(control.Page, control, httpContext);
 
-            pageContext[viewHostCacheKey] = host;
+            pageContext[ViewHostCacheKey] = host;
 
             return host;
         }
