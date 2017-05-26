@@ -58,8 +58,8 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
 
             event EventHandler IView.Load
             {
-                add { throw new NotImplementedException(); }
-                remove { throw new NotImplementedException(); }
+                add => throw new NotImplementedException();
+                remove => throw new NotImplementedException();
             }
         }
 
