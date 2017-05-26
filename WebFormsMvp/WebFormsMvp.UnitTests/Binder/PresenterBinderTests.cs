@@ -55,38 +55,27 @@ namespace WebFormsMvp.UnitTests.Binder
             var factory = MockRepository.GenerateStub<IPresenterFactory>();
 
             // Act
-            try
-            {
-                PresenterBinder.Factory = new DefaultPresenterFactory();
-                PresenterBinder.Factory = factory;
-            }
-            catch (Exception ex)
-            {
-                // Assert
-                Assert.IsNotNull(ex);
-                StringAssert.Contains(ex.Message, "default implementation");
-            }
+            PresenterBinder.Factory = new DefaultPresenterFactory();
+            var ex = Assert.Throws<InvalidOperationException>(() => PresenterBinder.Factory = factory);
+
+            // Assert
+            StringAssert.Contains("default implementation", ex.Message);
         }
 
         [Test, RunInApplicationDomain]
         public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsNotDefaultUsesTerseExceptionMessage()
         {
-            try
-            {
-                // Arrange
-                var factory = MockRepository.GenerateStub<IPresenterFactory>();
-                var factory2 = MockRepository.GenerateStub<IPresenterFactory>();
+            // Arrange
+            var factory = MockRepository.GenerateStub<IPresenterFactory>();
+            var factory2 = MockRepository.GenerateStub<IPresenterFactory>();
 
-                // Act
-                PresenterBinder.Factory = factory;
-                PresenterBinder.Factory = factory2;
-            }
-            catch (Exception ex)
-            {
-                // Assert
-                Assert.IsNotNull(ex);
-                StringAssert.StartsWith(ex.Message, "You can only set your factory once");
-            }
+            // Act
+            PresenterBinder.Factory = factory;
+            var ex = Assert.Throws<InvalidOperationException>(() => PresenterBinder.Factory = factory2);
+
+            // Assert
+            Assert.IsNotNull(ex);
+            StringAssert.StartsWith("You can only set your factory once", ex.Message);
         }
 
         [Test, RunInApplicationDomain]
