@@ -11,17 +11,11 @@ namespace WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyT
         [Test]
         public void AttributeBasedPresenterDiscoveryStrategy_GetAttributes_ShouldThrowExceptionForSharedPresenterWithoutExplicitViewType()
         {
-            try
-            {
-                var cache = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
-                AttributeBasedPresenterDiscoveryStrategy.GetAttributes(cache, typeof(Host1));
-                Assert.Fail("Expected exception was never thrown");
-            }
-            catch (NotSupportedException ex)
-            {
-                const string expectedMessage = "When a PresenterBindingAttribute is applied with BindingMode=SharedPresenter, the ViewType must be explicitly specified. One of the bindings on WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetAttributes_SharedPresenterWithoutExplicitViewType+Host1 violates this restriction.";
-                Assert.AreEqual(expectedMessage, ex.Message);
-            }
+            var cache = new Dictionary<RuntimeTypeHandle, IEnumerable<PresenterBindingAttribute>>();
+            var ex = Assert.Throws<NotSupportedException>(
+                () => AttributeBasedPresenterDiscoveryStrategy.GetAttributes(cache, typeof(Host1)));
+            const string expectedMessage = "When a PresenterBindingAttribute is applied with BindingMode=SharedPresenter, the ViewType must be explicitly specified. One of the bindings on WebFormsMvp.UnitTests.Binder.AttributeBasedPresenterDiscoveryStrategyTests.GetAttributes_SharedPresenterWithoutExplicitViewType+Host1 violates this restriction.";
+            Assert.AreEqual(expectedMessage, ex.Message);
         }
 
         [PresenterBinding(typeof(Presenter1), BindingMode = BindingMode.SharedPresenter)]
