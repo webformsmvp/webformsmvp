@@ -43,6 +43,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.Throws<InvalidOperationException>(() =>
             {
                 // Act
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed tests presenter binder
                 PresenterBinder.Factory.ToString();
                 PresenterBinder.Factory = new DefaultPresenterFactory();
             });
@@ -168,6 +169,7 @@ namespace WebFormsMvp.UnitTests.Binder
             PresenterBinder.HttpContextAdapterFactory = customFactory;
             
             // Act
+            // ReSharper disable once ObjectCreationAsStatement tests presenter binder
             new PresenterBinder(new object(), originalContext);
 
             // Assert
@@ -192,12 +194,13 @@ namespace WebFormsMvp.UnitTests.Binder
                 });
 
             // Act
+            // ReSharper disable once ObjectCreationAsStatement tests presenter binder
             new PresenterBinder(new[] { host }, httpContext, traceContext);
 
             // Assert
             var webFormsMvpAssemblyName = typeof (PresenterBinder).Assembly.GetNameSafe();
             var versionString = webFormsMvpAssemblyName.Version.ToString();
-            var expectedMessage = string.Format("Web Forms MVP version is {0}", versionString);
+            var expectedMessage = $"Web Forms MVP version is {versionString}";
             CollectionAssert.Contains(traceMessages, expectedMessage);
         }
 
