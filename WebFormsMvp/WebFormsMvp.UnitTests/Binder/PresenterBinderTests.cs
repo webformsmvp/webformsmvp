@@ -10,14 +10,13 @@ using WebFormsMvp.Binder;
 namespace WebFormsMvp.UnitTests.Binder
 {
     [TestFixture]
-    [Ignore("These tests need to run in their own app domain each, but I can't get that working again under NUnit")]
     public class PresenterBinderTests
     {
         public TestContext TestContext { get; set; }
         
         // ReSharper disable InconsistentNaming
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_Factory_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -27,7 +26,7 @@ namespace WebFormsMvp.UnitTests.Binder
             });
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_Factory_CanOnlyBeSetOnce()
         {
             Assert.Throws<InvalidOperationException>(() =>
@@ -38,7 +37,7 @@ namespace WebFormsMvp.UnitTests.Binder
             });
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_Factory_CantSetFactoryAfterItHasBeenUsed()
         {
             Assert.Throws<InvalidOperationException>(() =>
@@ -49,7 +48,7 @@ namespace WebFormsMvp.UnitTests.Binder
             });
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsDefaultUsesFriendlyExceptionMessage()
         {
             // Arrange
@@ -69,7 +68,7 @@ namespace WebFormsMvp.UnitTests.Binder
             }
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_Factory_WhenSetMoreThanOnceWhenExistingInstanceIsNotDefaultUsesTerseExceptionMessage()
         {
             try
@@ -90,7 +89,7 @@ namespace WebFormsMvp.UnitTests.Binder
             }
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_Factory_ReturnsDefaultFactoryWhenNoneIsSet()
         {
             // Act
@@ -100,7 +99,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(factoryType, typeof(DefaultPresenterFactory));
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_DiscoveryStrategy_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -110,7 +109,7 @@ namespace WebFormsMvp.UnitTests.Binder
             });
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_DiscoveryStrategy_ReturnsDefaultCompositeWhenNoneIsSet()
         {
             // Act
@@ -120,7 +119,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(strategyType, typeof(CompositePresenterDiscoveryStrategy));
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_DiscoveryStrategy_CanBeReplacedWithCustom()
         {
             // Arrange
@@ -133,7 +132,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(customStrategy, PresenterBinder.DiscoveryStrategy);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_HttpContextAdapterFactory_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -143,7 +142,7 @@ namespace WebFormsMvp.UnitTests.Binder
             });
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_HttpContextAdapterFactory_ReturnsDefaultFactoryWhenNoneIsSet()
         {
             // Act
@@ -153,7 +152,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(factoryType, typeof(DefaultHttpContextAdapterFactory));
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_HttpContextAdapterFactory_CanBeReplacedWithCustom()
         {
             // Arrange
@@ -166,7 +165,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.AreEqual(customFactory, PresenterBinder.HttpContextAdapterFactory);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_ctor_PassesHttpContextToFactory()
         {
             // Arrange
@@ -186,7 +185,7 @@ namespace WebFormsMvp.UnitTests.Binder
             customFactory.AssertWasCalled(cf => cf.Create(originalContext));
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_ctor_TracesWebFormsMvpVersion()
         {
             // Arrange
@@ -213,7 +212,7 @@ namespace WebFormsMvp.UnitTests.Binder
             CollectionAssert.Contains(traceMessages, expectedMessage);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_MessageCoordinator_ShouldReturnInstance()
         {
             // Arrange
@@ -228,7 +227,7 @@ namespace WebFormsMvp.UnitTests.Binder
             Assert.IsNotNull(binder.MessageCoordinator);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_CreateCompositeView_ShouldAddEachViewToComposite()
         {
             // Arrange
@@ -246,7 +245,7 @@ namespace WebFormsMvp.UnitTests.Binder
             CollectionAssert.AreEquivalent(views, ((CompositeView<IView>)compositeView).Views.ToList());
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void PresenterBinder_CreateCompositeView_ShouldReturnInstanceOfCorrectType()
         {
             // Arrange
