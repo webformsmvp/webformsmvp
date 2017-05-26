@@ -22,7 +22,6 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TypeListComparer_Equals_ShouldThrowExceptionWhenFirstArgumentIsNull()
         {
             // Arrange
@@ -30,13 +29,15 @@ namespace WebFormsMvp.UnitTests
             var y = new object[0];
 
             // Act
-            var actual = new TypeListComparer<object>().Equals(x, y);
+            Assert.Throws<ArgumentNullException>(
+                // ReSharper disable once ExpressionIsAlwaysNull test null valued parameter
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed test null valued parameter
+                () => new TypeListComparer<object>().Equals(x, y));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TypeListComparer_Equals_ShouldThrowExceptionWhenSecondArgumentIsNull()
         {
             // Arrange
@@ -44,7 +45,10 @@ namespace WebFormsMvp.UnitTests
             var y = null as object[];
 
             // Act
-            var actual = new TypeListComparer<object>().Equals(x, y);
+            Assert.Throws<ArgumentNullException>(
+                // ReSharper disable once ExpressionIsAlwaysNull tests null parameter
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed tests null parameter
+                () => new TypeListComparer<object>().Equals(x, y));
 
             // Assert
         }
@@ -126,14 +130,16 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TypeListComparer_GetHashCode_ShouldThrowExceptionWhenArgumentIsNull()
         {
             // Arrange
             var obj = null as object[];
 
             // Act
-            var actual = new TypeListComparer<object>().GetHashCode(obj);
+            Assert.Throws<ArgumentNullException>(
+                // ReSharper disable once ExpressionIsAlwaysNull tests null value parameter
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed tests null value parameter
+                () => new TypeListComparer<object>().GetHashCode(obj));
 
             // Assert
         }

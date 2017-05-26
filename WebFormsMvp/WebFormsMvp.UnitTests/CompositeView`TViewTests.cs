@@ -31,27 +31,27 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void CompositeView_Add_ShouldThrowArgumentNullExceptionIfViewIsNull()
         {
             // Arrange
             var compositeView = new MyView();
 
             // Act
-            compositeView.Add(null);
+            Assert.Throws<ArgumentNullException>(
+                () => compositeView.Add(null));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void CompositeView_Add_ShouldThrowArgumentExceptionIfViewTypeIsWrong()
         {
             // Arrange
             var compositeView = new MyView();
 
             // Act
-            compositeView.Add(MockRepository.GenerateMock<IView>());          
+            Assert.Throws<ArgumentException>(
+                () => compositeView.Add(MockRepository.GenerateMock<IView>()));          
 
             // Assert
         }

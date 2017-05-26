@@ -10,13 +10,13 @@ namespace WebFormsMvp.UnitTests.Binder
         // ReSharper disable InconsistentNaming
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldThrowArgumentExceptionForClassTypes()
         {
             // Arrange
 
             // Act
-            DefaultCompositeViewTypeFactory.ValidateViewType(typeof(System.Collections.Hashtable));
+            Assert.Throws<ArgumentException>(
+                () => DefaultCompositeViewTypeFactory.ValidateViewType(typeof(System.Collections.Hashtable)));
 
             // Assert
         }
@@ -68,26 +68,26 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldThrowArgumentExceptionForNonIViewBasedInterfaces()
         {
             // Arrange
 
             // Act
-            DefaultCompositeViewTypeFactory.ValidateViewType(typeof(IAsyncResult));
+            Assert.Throws<ArgumentException>(
+                () => DefaultCompositeViewTypeFactory.ValidateViewType(typeof(IAsyncResult)));
 
             // Assert
         }
 
         interface ValidateViewType_IPrivateView : IView {}
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void DefaultCompositeViewTypeFactory_ValidateViewType_ShouldThrowArgumentExceptionForNonPublicInterfaces()
         {
             // Arrange
 
             // Act
-            DefaultCompositeViewTypeFactory.ValidateViewType(typeof(ValidateViewType_IPrivateView));
+            Assert.Throws<ArgumentException>(
+                () => DefaultCompositeViewTypeFactory.ValidateViewType(typeof(ValidateViewType_IPrivateView)));
 
             // Assert
         }

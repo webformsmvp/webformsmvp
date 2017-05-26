@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 
 namespace WebFormsMvp.UnitTests
@@ -24,27 +23,28 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_ICollection_AddRange_ThrowsIfTargetArgumentIsNull()
         {
             // Arrange
             ICollection<string> actual = null;
 
             // Act
-            actual.AddRange(new[] { "1", "2" });
+            Assert.Throws<ArgumentNullException>(
+                // ReSharper disable once ExpressionIsAlwaysNull test a null target
+                () => actual.AddRange(new[] { "1", "2" }));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_ICollection_AddRange_ThrowsIfListArgumentIsNull()
         {
             // Arrange
             ICollection<string> actual = new List<string> { "1", "2", "3" };
 
             // Act
-            actual.AddRange(null);
+            Assert.Throws<ArgumentNullException>(
+                () => actual.AddRange(null));
 
             // Assert
         }
@@ -78,25 +78,25 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_IDictionary_GetOrCreateValue_ThrowsIfDictionaryArgumentIsNull()
         {
             // Arrange
-            
+
             // Act
-            ((IDictionary<string, string>)null).GetOrCreateValue("blah", () => "yo");
+            Assert.Throws<ArgumentNullException>(
+                () => ((IDictionary<string, string>)null).GetOrCreateValue("blah", () => "yo"));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void CollectionExtensions_IEnumerable_ToDictionary_ThrowsIfSourceArgumentIsNull()
         {
             // Arrange
-            
+
             // Act
-            ((IEnumerable<KeyValuePair<string, string>>)null).ToDictionary();
+            Assert.Throws<ArgumentNullException>(
+                () => ((IEnumerable<KeyValuePair<string, string>>)null).ToDictionary());
 
             // Assert
         }

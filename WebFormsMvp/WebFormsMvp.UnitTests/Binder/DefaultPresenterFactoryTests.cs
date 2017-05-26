@@ -16,7 +16,7 @@ namespace WebFormsMvp.UnitTests.Binder
             {
                 Param = param;
             }
-            public string Param { get; private set; }
+            public string Param { get; }
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace WebFormsMvp.UnitTests.Binder
             var buildMethod = DefaultPresenterFactory.GetBuildMethodInternal(
                 typeToBuild,
                 typeof(string));
-            var instance = buildMethod.Invoke(null, new[] { "test" });
+            var instance = buildMethod.Invoke(null, new object[] { "test" });
 
             // Assert
             Assert.IsInstanceOf(typeToBuild, instance);
@@ -37,16 +37,16 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void DefaultPresenterFactory_GetBuildMethodInternal_ShouldThrowArgumentExcpetionWhenMatchingConstructorNotFound()
         {
             // Arrange
             var typeToBuild = typeof(GetBuildMethodInternal_TestClassWithParameter);
 
             // Act
-            DefaultPresenterFactory.GetBuildMethodInternal(
-                typeToBuild,
-                typeof(int));
+            Assert.Throws<ArgumentException>(
+                () => DefaultPresenterFactory.GetBuildMethodInternal(
+                    typeToBuild,
+                    typeof(int)));
 
             // Assert
         }
@@ -105,7 +105,6 @@ namespace WebFormsMvp.UnitTests.Binder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfPresenterTypeIsNull()
         {
             // Arrange
@@ -113,16 +112,16 @@ namespace WebFormsMvp.UnitTests.Binder
             var viewInstance = MockRepository.GenerateMock<IView>();
 
             // Act
-            new DefaultPresenterFactory().Create(
-                null,
-                viewType,
-                viewInstance);
+            Assert.Throws<ArgumentNullException>(
+                () => new DefaultPresenterFactory().Create(
+                    null,
+                    viewType,
+                    viewInstance));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfViewTypeIsNull()
         {
             // Arrange
@@ -130,16 +129,16 @@ namespace WebFormsMvp.UnitTests.Binder
             var viewInstance = MockRepository.GenerateMock<IView>();
 
             // Act
-            new DefaultPresenterFactory().Create(
-                presenterType,
-                null,
-                viewInstance);
+            Assert.Throws<ArgumentNullException>(
+                () => new DefaultPresenterFactory().Create(
+                    presenterType,
+                    null,
+                    viewInstance));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DefaultPresenterFactory_Create_ShouldThrowArgumentNullExcpetionIfViewInstanceIsNull()
         {
             // Arrange
@@ -147,10 +146,11 @@ namespace WebFormsMvp.UnitTests.Binder
             var viewType = typeof(IView);
 
             // Act
-            new DefaultPresenterFactory().Create(
-                presenterType,
-                viewType,
-                null);
+            Assert.Throws<ArgumentNullException>(
+                () => new DefaultPresenterFactory().Create(
+                    presenterType,
+                    viewType,
+                    null));
 
             // Assert
         }
@@ -211,7 +211,7 @@ namespace WebFormsMvp.UnitTests.Binder
                 // Assert
                 Assert.IsInstanceOf<InvalidOperationException>(ex);
                 Assert.IsInstanceOf<ApplicationException>(ex.InnerException);
-                Assert.AreEqual(ex.InnerException.Message, "test exception");
+                Assert.AreEqual(ex.InnerException?.Message, "test exception");
             }
         }
 

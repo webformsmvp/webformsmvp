@@ -111,7 +111,7 @@ namespace WebFormsMvp.UnitTests
             // Arrange
             var coordinator = new MessageCoordinator();
             
-            coordinator.Subscribe<TestMessage>(
+            coordinator.Subscribe(
                 (TestMessage message) => { },
                 () => { Assert.Fail("The not recieved callback should not be called"); });
 
@@ -128,7 +128,7 @@ namespace WebFormsMvp.UnitTests
             // Arrange
             var coordinator = new MessageCoordinator();
 
-            coordinator.Subscribe<InheritedTestMessage>(
+            coordinator.Subscribe(
                 (InheritedTestMessage message) => { Assert.Fail("The recieved callback should not be called"); },
                 () => { });
 
@@ -140,30 +140,20 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ApplicationException))]
         public void MessageCoordinator_Publish_ShouldNotFireSubsequentSubscribersIfOneFails()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
-            coordinator.Subscribe((string message) =>
-            {
-                throw new ApplicationException("Test exception");
-            });
+            coordinator.Subscribe((string message) => throw new ApplicationException("Test exception"));
             coordinator.Subscribe((string message) =>
             {
                 Assert.Fail();
             });
 
             // Act
-            try
-            {
-                coordinator.Publish("message");
-            }
-            catch (ApplicationException ex)
-            {
-                Assert.AreEqual("Test exception", ex.Message);
-                throw;
-            }
+            var exception = Assert.Throws<ApplicationException>(
+                () => coordinator.Publish("message"));
+            Assert.AreEqual("Test exception", exception.Message);
 
             // Assert
         }
@@ -181,7 +171,6 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void MessageCoordinator_Publish_ShouldThrowInvalidOperationExceptionIfCalledAfterClose()
         {
             // Arrange
@@ -189,7 +178,8 @@ namespace WebFormsMvp.UnitTests
 
             // Act
             coordinator.Close();
-            coordinator.Publish("message");
+            Assert.Throws<InvalidOperationException>(
+                () => coordinator.Publish("message"));
 
             // Assert
         }
@@ -269,7 +259,6 @@ namespace WebFormsMvp.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void MessageCoordinator_Subscribe_ShouldThrowInvalidOperationExceptionIfCalledAfterClose()
         {
             // Arrange
@@ -277,23 +266,24 @@ namespace WebFormsMvp.UnitTests
 
             // Act
             coordinator.Close();
-            coordinator.Subscribe((string message) =>
-            {
-                Assert.Fail();
-            });
+            Assert.Throws<InvalidOperationException>(
+                () => coordinator.Subscribe((string message) =>
+                        {
+                            Assert.Fail();
+                        }));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void MessageCoordinator_Subscribe_ShouldThrowArgumentNullExceptionIfMessageReceivedCallbackIsNull()
         {
             // Arrange
             var coordinator = new MessageCoordinator();
 
             // Act
-            coordinator.Subscribe((Action<object>)null);
+            Assert.Throws<ArgumentNullException>(
+                () => coordinator.Subscribe((Action<object>)null));
 
             // Assert
         }
